@@ -7,7 +7,7 @@ package com.git.gdsbuilder.type.validate.option.type;
  * @className UFMQAOptions.java
  * @description 
  * @author DY.Oh
- * @date 2018. 3. 15. 오전 11:24:38
+ * @since 2018. 3. 15. 오전 11:24:38
  * */
 public class UFMQAOptions {
 

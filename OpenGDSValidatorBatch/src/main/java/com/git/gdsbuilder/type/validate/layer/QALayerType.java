@@ -27,7 +27,7 @@ import com.git.gdsbuilder.type.validate.option.QAOption;
  * ValidateLayerType 정보를 담고 있는 클래스
  * 
  * @author DY.Oh
- * @Date 2017. 3. 11. 오후 3:02:56
+ * @since 2017. 3. 11. 오후 3:02:56
  */
 
 public class QALayerType {
@@ -38,7 +38,7 @@ public class QALayerType {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 30. 오후 2:22:05
+	 * @since 2018. 3. 30. 오후 2:22:05
 	 * @param string
 	 * @param colleciton
 	 * @return DTLayer

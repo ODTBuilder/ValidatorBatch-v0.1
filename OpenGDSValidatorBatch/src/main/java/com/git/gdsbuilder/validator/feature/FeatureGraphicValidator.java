@@ -49,13 +49,13 @@ import com.git.gdsbuilder.type.validate.option.specific.OptionTolerance;
  * SimpleFeature의 그래픽 검수하는 클래스
  * 
  * @author DY.Oh
- * @Date 2017. 4. 18. 오후 3:34:07
+ * @since 2017. 4. 18. 오후 3:34:07
  */
 public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:36:24
+	 * @since 2018. 1. 30. 오후 2:36:24
 	 * @param simpleFeature
 	 * @param neatLineSfc
 	 * @param tolerence
@@ -66,7 +66,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:36:26
+	 * @since 2018. 1. 30. 오후 2:36:26
 	 * @param tmpSimpleFeatureI
 	 * @return List<ErrorFeature>
 	 * @decription ConIntersected 검수 수행
@@ -75,7 +75,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:36:45
+	 * @since 2018. 1. 30. 오후 2:36:45
 	 * @param tmpSimpleFeatureI
 	 * @param tmpSimpleFeatureJ
 	 * @return List<ErrorFeature>
@@ -85,7 +85,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:36:50
+	 * @since 2018. 1. 30. 오후 2:36:50
 	 * @param simpleFeature
 	 * @param degree
 	 * @return List<ErrorFeature>
@@ -95,7 +95,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:36:57
+	 * @since 2018. 1. 30. 오후 2:36:57
 	 * @param simpleFeature
 	 * @return List<ErrorFeature>
 	 * @decription UselessPoint 검수 수행
@@ -104,7 +104,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:37:10
+	 * @since 2018. 1. 30. 오후 2:37:10
 	 * @param feature
 	 * @param optionTolerance
 	 * @return ErrorFeature
@@ -114,7 +114,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:37:18
+	 * @since 2018. 1. 30. 오후 2:37:18
 	 * @param simpleFeature
 	 * @param length
 	 * @return ErrorFeature
@@ -124,7 +124,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:37:30
+	 * @since 2018. 1. 30. 오후 2:37:30
 	 * @param simpleFeature
 	 * @param neatLineSfc
 	 * @param tolerence
@@ -135,7 +135,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:37:40
+	 * @since 2018. 1. 30. 오후 2:37:40
 	 * @param feature
 	 * @param reFeature
 	 * @param tolerance
@@ -146,7 +146,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:37:48
+	 * @since 2018. 1. 30. 오후 2:37:48
 	 * @param feature
 	 * @param relationLayer
 	 * @param tole
@@ -157,7 +157,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:37:57
+	 * @since 2018. 1. 30. 오후 2:37:57
 	 * @param tmpSimpleFeatureI
 	 * @param tmpSimpleFeatureJ
 	 * @return ErrorFeature
@@ -167,7 +167,7 @@ public interface FeatureGraphicValidator {
 
 	// /**
 	// * @author DY.Oh
-	// * @Date 2018. 1. 30. 오후 2:38:07
+	// * @since 2018. 1. 30. 오후 2:38:07
 	// * @param simpleFeature
 	// * @return ErrorFeature
 	// * @decription UselessEntity 검수 수행
@@ -176,7 +176,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:38:13
+	 * @since 2018. 1. 30. 오후 2:38:13
 	 * @param simpleFeature
 	 * @param neatLineSfc
 	 * @param tolerence
@@ -187,7 +187,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:38:23
+	 * @since 2018. 1. 30. 오후 2:38:23
 	 * @param simpleFeature
 	 * @param typeName
 	 * @return ErrorFeature
@@ -197,7 +197,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:38:30
+	 * @since 2018. 1. 30. 오후 2:38:30
 	 * @param simpleFeature
 	 * @return ErrorFeature
 	 * @decription TwistedPolygon 검수 수행
@@ -206,7 +206,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:38:38
+	 * @since 2018. 1. 30. 오후 2:38:38
 	 * @param simpleFeature
 	 * @param sfc
 	 * @param relationSfc
@@ -219,7 +219,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:38:47
+	 * @since 2018. 1. 30. 오후 2:38:47
 	 * @param simpleFeature
 	 * @return List<ErrorFeature>
 	 * @decription PointDuplicated 검수 수행
@@ -228,7 +228,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:38:57
+	 * @since 2018. 1. 30. 오후 2:38:57
 	 * @param simpleFeature
 	 * @param relationSfc
 	 * @return ErrorFeature
@@ -238,7 +238,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:39:09
+	 * @since 2018. 1. 30. 오후 2:39:09
 	 * @param feature
 	 * @param relationLayer
 	 * @return List<ErrorFeature>
@@ -248,7 +248,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:39:42
+	 * @since 2018. 1. 30. 오후 2:39:42
 	 * @param simpleFeature
 	 * @param relationSfc
 	 * @param attributeJson
@@ -259,7 +259,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:39:40
+	 * @since 2018. 1. 30. 오후 2:39:40
 	 * @param feature
 	 * @param relationLayer
 	 * @return ErrorFeature
@@ -269,7 +269,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:39:55
+	 * @since 2018. 1. 30. 오후 2:39:55
 	 * @param feature
 	 * @param relationLayer
 	 * @return ErrorFeature
@@ -279,7 +279,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:40:04
+	 * @since 2018. 1. 30. 오후 2:40:04
 	 * @param feature
 	 * @return List<ErrorFeature>
 	 * @decription HoleMisplacement 검수 수행
@@ -288,7 +288,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:40:11
+	 * @since 2018. 1. 30. 오후 2:40:11
 	 * @param feature
 	 * @param relationLayer
 	 * @param isEquals
@@ -299,7 +299,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:40:19
+	 * @since 2018. 1. 30. 오후 2:40:19
 	 * @param feature
 	 * @param relationlayer
 	 * @param tole
@@ -310,7 +310,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:40:26
+	 * @since 2018. 1. 30. 오후 2:40:26
 	 * @param simpleFeature
 	 * @return List<ErrorFeature>
 	 * @decription MultiPart 검수 수행
@@ -319,7 +319,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 2. 28. 오전 9:22:01
+	 * @since 2018. 2. 28. 오전 9:22:01
 	 * @param feature
 	 * @param tmpSf
 	 * @return ErrorFeature
@@ -329,7 +329,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 2. 28. 오전 9:48:22
+	 * @since 2018. 2. 28. 오전 9:48:22
 	 * @param feature
 	 * @param reFeature
 	 * @return List<ErrorFeature>
@@ -339,7 +339,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author hochul.Kim
-	 * @Date 2018. 3. 15. 오후 2:41:42
+	 * @since 2018. 3. 15. 오후 2:41:42
 	 * @param feature
 	 * @param reTolerance
 	 * @return ErrorFeature
@@ -349,7 +349,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author hochul.Kim
-	 * @Date 2018. 3. 15. 오후 2:41:42
+	 * @since 2018. 3. 15. 오후 2:41:42
 	 * @param feature
 	 * @param relationLayers
 	 * @param reTolerances
@@ -361,7 +361,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author hochul.Kim
-	 * @Date 2018. 3. 15. 오후 2:41:42
+	 * @since 2018. 3. 15. 오후 2:41:42
 	 * @param feature
 	 * @param validatorLayer
 	 * @return ErrorFeature
@@ -371,7 +371,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author hochul.Kim
-	 * @Date 2018. 3. 19. 오후 5:34:00
+	 * @since 2018. 3. 19. 오후 5:34:00
 	 * @param feature
 	 * @return List<ErrorFeature>
 	 * @decription
@@ -381,7 +381,7 @@ public interface FeatureGraphicValidator {
 	/**
 	 * @author DY.Oh
 	 * @param textLayer
-	 * @Date 2018. 2. 28. 오전 10:09:08
+	 * @since 2018. 2. 28. 오전 10:09:08
 	 * @param sf
 	 * @param lineSfc
 	 * @param textSfc
@@ -393,7 +393,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 23. 오전 11:00:17
+	 * @since 2018. 3. 23. 오전 11:00:17
 	 * @param feature
 	 * @param validatorLayer
 	 * @return List<ErrorFeature>
@@ -403,7 +403,7 @@ public interface FeatureGraphicValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 4. 10. 오전 11:19:12
+	 * @since 2018. 4. 10. 오전 11:19:12
 	 * @param feature
 	 * @param relationLayers
 	 * @return ErrorFeature

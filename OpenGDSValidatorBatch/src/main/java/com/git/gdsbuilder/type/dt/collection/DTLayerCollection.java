@@ -24,7 +24,7 @@ import com.git.gdsbuilder.type.dt.layer.DTLayerList;
  * DTLayerCollection 정보를 저장하는 클래스
  * 
  * @author DY.Oh
- * @Date 2017. 3. 11. 오전 11:45:40
+ * @since 2017. 3. 11. 오전 11:45:40
  */
 public class DTLayerCollection {
 
@@ -67,7 +67,7 @@ public class DTLayerCollection {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 1:59:38
+	 * @since 2018. 1. 30. 오후 1:59:38
 	 * @param layer
 	 * @decription layers에 layer를 추가함
 	 */
@@ -77,7 +77,7 @@ public class DTLayerCollection {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 1:59:49
+	 * @since 2018. 1. 30. 오후 1:59:49
 	 * @param layerName
 	 * @return DTLayer
 	 * @description DTLayerCollection에서 layerName에 해당하는 DTLayer 객체를 반환

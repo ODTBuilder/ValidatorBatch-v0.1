@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @className FileMetaList.java
  * @description
  * @author DY.Oh
- * @date 2018. 2. 21. 오후 2:13:21
+ * @since 2018. 2. 21. 오후 2:13:21
  */
 @SuppressWarnings("serial")
 public class FileMetaList extends ArrayList<FileMeta> {

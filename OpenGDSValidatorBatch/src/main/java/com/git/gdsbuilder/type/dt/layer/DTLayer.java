@@ -12,7 +12,7 @@ import com.git.gdsbuilder.type.validate.option.specific.OptionFilter;
  * @className DTLayer.java
  * @description DTLayer 정보를 저장하는 클래스
  * @author DY.Oh
- * @date 2018. 1. 30. 오후 2:03:42
+ * @since 2018. 1. 30. 오후 2:03:42
  */
 
 
@@ -36,7 +36,7 @@ public class DTLayer {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:03:58
+	 * @since 2018. 1. 30. 오후 2:03:58
 	 * @param feature
 	 * @decription simpleFeatureCollection에 feature를 더함
 	 */

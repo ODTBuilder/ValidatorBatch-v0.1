@@ -27,6 +27,11 @@ import com.git.gdsbuilder.type.validate.option.standard.LayerFixMiss;
 import me.tongfei.progressbar.ProgressBar;
 import me.tongfei.progressbar.ProgressBarStyle;
 
+/**
+ * 검수 Progress 관리 클래스
+ * @author SG.LEE
+ *
+ */
 public class Progress {
 
 	private static ProgressBar pb;
@@ -36,9 +41,10 @@ public class Progress {
 	static int i = 0;
 	DTLayerCollection collection;
 
-	public Progress() {
-	}
-
+	/**
+	 * 검수 시작시 Progress 객체 생성
+	 * @author SG.LEE
+	 */
 	public void startProgress() {
 		// System.out.println(max);
 		// pb = new ProgressBar("진행중", 100, ProgressBarStyle.ASCII);
@@ -46,11 +52,22 @@ public class Progress {
 		pb = new ProgressBar("Proceeding", 100, 1000, System.out, ProgressBarStyle.ASCII, "", 1);
 	}
 
+	/**
+	 * Max Size 수정 
+	 * @author SG.LEE
+	 */
 	public static void modifyMax() {
 		if (max > 0)
 			max--;
 	}
 
+	/**
+	 * 검수수행전 전체 Progress 크기 설정
+	 * @author SG.LEE
+	 * @param types {@link QALayerTypeList} 옵션 리스트
+	 * @param collection {@link DTLayerCollection} 검수 대상도엽
+	 * @param collectionList {@link DTLayerCollectionList} 인접도엽
+	 */
 	public void countTotalTask(QALayerTypeList types, DTLayerCollection collection,
 			DTLayerCollectionList collectionList) {
 		try {
@@ -70,11 +87,20 @@ public class Progress {
 
 	}
 
+	/**
+	 * 전체 Max Size 백분율로 변환
+	 * @author SG.LEE
+	 * @return long Max Size 백분율
+	 */
 	public long convertStepByMax() {
 		double div = percentage / max;
 		return (long) (current += div);
 	}
 
+	/**
+	 * 검수 한단계 진행완료시 {@link Progress} 업데이트
+	 * @author SG.LEE
+	 */
 	public void updateProgress() {
 		// System.out.println("MAX : " + max + " CURR : " + ++i);
 		if (pb != null) {
@@ -96,6 +122,10 @@ public class Progress {
 		}
 	}
 
+	/**
+	 * {@link Progress} 진행 100 설정후 {@link Progress} 진행 종료
+	 * @author SG.LEE
+	 */
 	public void terminate() {
 		if (pb != null) {
 			pb.stepTo(100);
@@ -230,6 +260,11 @@ public class Progress {
 		}
 	}
 
+	/**
+	 * {@link Progress} Max Size Get
+	 * @author SG.LEE
+	 * @return long Max Size
+	 */
 	public long getMax() {
 		return Progress.max;
 	}

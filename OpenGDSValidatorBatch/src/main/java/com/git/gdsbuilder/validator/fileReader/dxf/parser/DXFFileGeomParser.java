@@ -208,7 +208,7 @@ public class DXFFileGeomParser {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 2. 26. 오후 3:30:10
+	 * @since 2018. 2. 26. 오후 3:30:10
 	 * @param maximumX
 	 * @param maximumY
 	 * @param minimumX

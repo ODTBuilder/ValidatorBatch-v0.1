@@ -29,7 +29,7 @@ import com.git.gdsbuilder.type.validate.option.specific.OptionRelation;
  * ValidateLayerTypeList 정보를 담고 있는 클래스
  * 
  * @author DY.Oh
- * @Date 2017. 3. 11. 오후 3:02:56
+ * @since 2017. 3. 11. 오후 3:02:56
  */
 @SuppressWarnings("serial")
 public class QALayerTypeList extends ArrayList<QALayerType> {
@@ -83,7 +83,7 @@ public class QALayerTypeList extends ArrayList<QALayerType> {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 6. 오후 7:16:29
+	 * @since 2018. 3. 6. 오후 7:16:29
 	 * @param code
 	 * @param layerCollection
 	 * @decription
@@ -108,7 +108,7 @@ public class QALayerTypeList extends ArrayList<QALayerType> {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 16. 오후 5:42:03
+	 * @since 2018. 3. 16. 오후 5:42:03
 	 * @param relation
 	 * @param layerCollection
 	 * @return DTLayerList

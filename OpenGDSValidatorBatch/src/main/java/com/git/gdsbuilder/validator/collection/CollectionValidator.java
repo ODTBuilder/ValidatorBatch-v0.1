@@ -79,7 +79,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
  * ValidateLayerCollectionList를 검수하는 클래스
  * 
  * @author DY.Oh
- * @Date 2017. 4. 18. 오후 3:30:17
+ * @since 2017. 4. 18. 오후 3:30:17
  */
 public class CollectionValidator {
 
@@ -1792,7 +1792,7 @@ public class CollectionValidator {
  * 쓰레드 AttResult 클래스
  * 
  * @author SG.Lee
- * @Date 2017. 9. 6. 오후 3:09:38
+ * @since 2017. 9. 6. 오후 3:09:38
  */
 class AttResult {
 	ErrorLayer treadErrorLayer = new ErrorLayer();
@@ -1809,7 +1809,7 @@ class AttResult {
  * 쓰레드 GeomResult 클래스
  * 
  * @author SG.Lee
- * @Date 2017. 9. 6. 오후 3:09:38
+ * @since 2017. 9. 6. 오후 3:09:38
  */
 class GeometricResult {
 	ErrorLayer treadErrorLayer = new ErrorLayer();
@@ -1826,7 +1826,7 @@ class GeometricResult {
  * 쓰레드 CloseCollectionResult 클래스
  * 
  * @author SG.Lee
- * @Date 2017. 9. 6. 오후 3:09:38
+ * @since 2017. 9. 6. 오후 3:09:38
  */
 class CloseCollectionResult {
 	ErrorLayer treadErrorLayer = new ErrorLayer();

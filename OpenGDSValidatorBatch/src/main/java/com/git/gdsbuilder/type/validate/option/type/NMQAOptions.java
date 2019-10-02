@@ -7,7 +7,7 @@ package com.git.gdsbuilder.type.validate.option.type;
  * @className NFMQAOptions.java
  * @description 
  * @author DY.Oh
- * @date 2018. 3. 15. 오전 11:25:05
+ * @since 2018. 3. 15. 오전 11:25:05
  * */
 public class NMQAOptions {
 

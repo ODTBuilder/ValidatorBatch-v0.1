@@ -45,7 +45,7 @@ import com.git.gdsbuilder.type.validate.option.standard.LayerFixMiss;
  * JSONArray를 ValidateLayerTypeList 객체로 파싱하는 클래스
  * 
  * @author DY.Oh
- * @Date 2017. 4. 18. 오후 3:25:49
+ * @since 2017. 4. 18. 오후 3:25:49
  */
 public class QATypeParser {
 
@@ -150,7 +150,7 @@ public class QATypeParser {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 22. 오전 10:05:49
+	 * @since 2018. 3. 22. 오전 10:05:49
 	 * @param grapOption
 	 * @return List<CloseMiss>
 	 * @decription
@@ -207,7 +207,7 @@ public class QATypeParser {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 19. 오전 10:32:11
+	 * @since 2018. 3. 19. 오전 10:32:11
 	 * @param grapOption
 	 *            void
 	 * @decription
@@ -256,7 +256,7 @@ public class QATypeParser {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 19. 오전 10:32:09
+	 * @since 2018. 3. 19. 오전 10:32:09
 	 * @param attrOption
 	 *            void
 	 * @decription
@@ -305,7 +305,7 @@ public class QATypeParser {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 19. 오전 11:02:42
+	 * @since 2018. 3. 19. 오전 11:02:42
 	 * @param tolerances
 	 * @return List<OptionTolerance>
 	 * @decription
@@ -343,7 +343,7 @@ public class QATypeParser {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 19. 오전 11:01:12
+	 * @since 2018. 3. 19. 오전 11:01:12
 	 * @param relation
 	 * @return List<OptionRelation>
 	 * @decription
@@ -391,7 +391,7 @@ public class QATypeParser {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 19. 오전 11:00:08
+	 * @since 2018. 3. 19. 오전 11:00:08
 	 * @param filter
 	 * @return List<OptionFilter>
 	 * @decription
@@ -425,7 +425,7 @@ public class QATypeParser {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 19. 오전 11:15:48
+	 * @since 2018. 3. 19. 오전 11:15:48
 	 * @param attribute
 	 * @return List<AttributeFilter>
 	 * @decription

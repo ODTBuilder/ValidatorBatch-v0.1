@@ -30,7 +30,7 @@ import com.git.gdsbuilder.validator.fileReader.ngi.parser.NGIFileParser;
  * ngi/nda 파일을 QA20LayerCollection 객체로 파싱하는 클래스
  * 
  * @author DY.Oh
- * @Date 2017. 5. 11. 오전 10:36:07
+ * @since 2017. 5. 11. 오전 10:36:07
  */
 public class NGIFileReader {
 

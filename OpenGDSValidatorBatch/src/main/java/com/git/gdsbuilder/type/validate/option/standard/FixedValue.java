@@ -11,7 +11,7 @@ import java.util.List;
  * @className FixedValue.java
  * @description
  * @author DY.Oh
- * @date 2018. 3. 14. 오후 1:42:56
+ * @since 2018. 3. 14. 오후 1:42:56
  */
 
 

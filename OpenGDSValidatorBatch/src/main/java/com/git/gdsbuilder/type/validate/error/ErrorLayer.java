@@ -24,7 +24,7 @@ import java.util.List;
  * ErrorLayer 정보를 담고 있는 클래스
  * 
  * @author DY.Oh
- * @Date 2017. 3. 11. 오후 2:57:39
+ * @since 2017. 3. 11. 오후 2:57:39
  */
 public class ErrorLayer {
 
@@ -65,7 +65,7 @@ public class ErrorLayer {
 	}
 
 	/**
-	 * collectionName getter @author DY.Oh @Date 2017. 3. 11. 오후 3:00:44 @return
+	 * collectionName getter @author DY.Oh @since 2017. 3. 11. 오후 3:00:44 @return
 	 * String @throws
 	 */
 	public String getCollectionName() {
@@ -73,7 +73,7 @@ public class ErrorLayer {
 	}
 
 	/**
-	 * collectionName setter @author DY.Oh @Date 2017. 3. 11. 오후 3:00:45 @param
+	 * collectionName setter @author DY.Oh @since 2017. 3. 11. 오후 3:00:45 @param
 	 * collectionName void @throws
 	 */
 	public void setCollectionName(String collectionName) {
@@ -81,7 +81,7 @@ public class ErrorLayer {
 	}
 
 	/**
-	 * errFeatureList getter @author DY.Oh @Date 2017. 3. 11. 오후 3:00:48 @return
+	 * errFeatureList getter @author DY.Oh @since 2017. 3. 11. 오후 3:00:48 @return
 	 * List<ErrorFeature> @throws
 	 */
 	public List<ErrorFeature> getErrFeatureList() {
@@ -89,7 +89,7 @@ public class ErrorLayer {
 	}
 
 	/**
-	 * errFeatureList setter @author DY.Oh @Date 2017. 3. 11. 오후 3:00:50 @param
+	 * errFeatureList setter @author DY.Oh @since 2017. 3. 11. 오후 3:00:50 @param
 	 * errFeatureList void @throws
 	 */
 	public void setErrFeatureList(List<ErrorFeature> errFeatureList) {
@@ -97,7 +97,7 @@ public class ErrorLayer {
 	}
 
 	/**
-	 * errFeatureList에 errFeature를 더함 @author DY.Oh @Date 2017. 3. 11. 오후
+	 * errFeatureList에 errFeature를 더함 @author DY.Oh @since 2017. 3. 11. 오후
 	 * 3:00:51 @param errFeature void @throws
 	 */
 	public void addErrorFeature(ErrorFeature errFeature) {
@@ -105,7 +105,7 @@ public class ErrorLayer {
 	}
 
 	/**
-	 * errFeatureList에 errFeatures를 더함 @author DY.Oh @Date 2017. 3. 11. 오후
+	 * errFeatureList에 errFeatures를 더함 @author DY.Oh @since 2017. 3. 11. 오후
 	 * 3:00:53 @param errFeatures void @throws
 	 */
 	public void addErrorFeatureCollection(List<ErrorFeature> errFeatures) {
@@ -113,7 +113,7 @@ public class ErrorLayer {
 	}
 	
 	/**
-	 * 두 ErrorLayer를 합침 @author DY.Oh @Date 2017. 3. 11. 오후 3:01:09 @param
+	 * 두 ErrorLayer를 합침 @author DY.Oh @since 2017. 3. 11. 오후 3:01:09 @param
 	 * errLayer void @throws
 	 */
 	public void mergeErrorLayer(ErrorLayer errLayer) {

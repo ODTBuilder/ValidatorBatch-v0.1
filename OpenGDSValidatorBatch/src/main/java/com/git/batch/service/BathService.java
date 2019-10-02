@@ -46,6 +46,18 @@ import com.git.gdsbuilder.validator.collection.CollectionValidator;
 import com.git.gdsbuilder.validator.fileReader.UnZipFile;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
+/**
+ * 검수수행 요청을 처리하는 Service 클래스
+ * @author SG.LEE
+ */
+/**
+ * @author SG.LEE
+ *
+ */
+/**
+ * @author SG.LEE
+ *
+ */
 public class BathService {
 
 	private final String QA1DEFDIR;
@@ -69,7 +81,13 @@ public class BathService {
 	private final String FR5OPTIONDEF;
 	private final String FR25OPTIONDEF;
 
+	/**
+	 * 전체 검수 수행 개수
+	 */
 	public static int totalValidSize = 0;
+	/**
+	 * 검수 수행 {@link Progress}
+	 */
 	public static Progress pb;
 
 	{
@@ -110,21 +128,44 @@ public class BathService {
 		FR25OPTIONDEF = properties.getProperty("fr25OptionDef");
 	}
 
-	// file dir
+	/**
+	 * 에러 레이어 Output 최상위 폴더경로
+	 */
 	protected String ERR_OUTPUT_DIR;
+	/**
+	 * 에러 레이어 Output 폴더경로
+	 */
 	protected String ERR_FILE_DIR;
+	/**
+	 * 에러 레이어 Output 파일이름
+	 */
 	protected String ERR_OUTPUT_NAME;
+	/**
+	 * 에러 레이어 Output 압축파일 이름
+	 */
 	protected String ERR_ZIP_DIR;
 
-	// qa progress
+	/**
+	 * 검수수행 단계( 1 - 파일업로드 완료) 
+	 */
 	protected int fileUpload = 1;
+	/**
+	 * 검수수행 단계( 2 - 검수수행중)
+	 */
 	protected int validateProgresing = 2;
+	/**
+	 * 검수수행 단계( 3 - 검수성공)
+	 */
 	protected int validateSuccess = 3;
+	/**
+	 * 검수수행 단계( 4 - 검수실패)
+	 */
 	protected int validateFail = 4;
 
 	Logger logger = LoggerFactory.getLogger(BathService.class);
 
 	/**
+	 * 해당 경로 및 옵션파일을 통한 검수 수행 
 	 * @param baseDir 최상위 폴더
 	 * @param valType 검수타입(수치지도, 지하시설물, 임상도)
 	 * @param pFlag 기존옵션여부
@@ -135,8 +176,8 @@ public class BathService {
 	 * @param valOptPath 검수 옵션경로
 	 * @param objFilePath 검수 대상파일 경로
 	 * @param crs 좌표계
-	 * @return
-	 * @throws Throwable
+	 * @return boolean 검수 성공여부
+	 * @throws Throwable 검수 폴더 생성 {@link Exception}
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean validate(String baseDir, String valType, String pFlag, String valDType, String fileType,
@@ -433,13 +474,9 @@ public class BathService {
 		}
 	}
 
-	public void showProgress() {
-
-	}
-
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 2. 6. 오전 10:12:22
+	 * @since 2018. 2. 6. 오전 10:12:22
 	 * @param collectionList
 	 * @param validateLayerTypeList
 	 *            void
@@ -509,37 +546,6 @@ public class BathService {
 		return futureCount == collectionList.size();
 	}
 
-	/*
-	 * private void zipFileDirectory() {
-	 * 
-	 * File directory = new File(ERR_FILE_DIR); List<String> fileList =
-	 * getFileList(directory); try { ERR_ZIP_DIR = ERR_FILE_DIR + ".zip";
-	 * FileOutputStream fos = new FileOutputStream(ERR_ZIP_DIR); ZipOutputStream zos
-	 * = new ZipOutputStream(fos);
-	 * 
-	 * for (String filePath : fileList) { String name =
-	 * filePath.substring(directory.getAbsolutePath().length() + 1,
-	 * filePath.length()); ZipEntry zipEntry = new ZipEntry(name);
-	 * zos.putNextEntry(zipEntry); FileInputStream fis = new
-	 * FileInputStream(filePath); byte[] buffer = new byte[1024]; int length; while
-	 * ((length = fis.read(buffer)) > 0) { zos.write(buffer, 0, length); }
-	 * zos.closeEntry(); fis.close();
-	 * 
-	 * // 압축 후 삭제 File file = new File(filePath); file.delete(); } zos.close();
-	 * fos.close(); directory.delete(); } catch (IOException e) {
-	 * e.printStackTrace(); } }
-	 */
-
-	/*
-	 * private List<String> getFileList(File directory) {
-	 * 
-	 * List<String> fileList = new ArrayList<>();
-	 * 
-	 * File[] files = directory.listFiles(); if (files != null && files.length > 0)
-	 * { for (File file : files) { if (file.isFile()) {
-	 * fileList.add(file.getAbsolutePath()); } else { getFileList(file); } } }
-	 * return fileList; }
-	 */
 
 	private boolean writeErrShp(String epsg, CollectionValidator validator) {
 		try {
@@ -579,7 +585,7 @@ public class BathService {
 		dir.delete();
 	}
 
-	public File[] sortFileList(File[] files, final int compareType) {
+	private File[] sortFileList(File[] files, final int compareType) {
 		int COMPARETYPE_NAME = 0;
 		int COMPARETYPE_DATE = 1;
 
@@ -608,7 +614,7 @@ public class BathService {
 	 * 폴더 내에 폴더가 있을시 하위 폴더 탐색
 	 * 
 	 * @author SG.Lee
-	 * @Date 2018. 4. 18. 오전 9:09:33
+	 * @since 2018. 4. 18. 오전 9:09:33
 	 * @param source
 	 *            void
 	 */
@@ -673,96 +679,10 @@ public class BathService {
 	}
 
 	/**
-	 * 임상도 폴더 재생성
-	 * 
-	 * @author SG.Lee
-	 * @Date 2018. 4. 18. 오후 1:24:16
-	 * @param unzipFolder
-	 *            void
-	 */
-	// private File[] createCollectionFolders(File unzipFolder) {
-	// boolean equalFlag = false; // 파일명이랑 압축파일명이랑 같을시 대비 flag값
-	// String unzipName = unzipFolder.getName();
-	//
-	// if (unzipFolder.exists() == false) {
-	// System.out.println("경로가 존재하지 않습니다");
-	// }
-	//
-	// File[] fileList = unzipFolder.listFiles();
-	// List<File> indexFiles = new ArrayList<File>();
-	// String parentPath = unzipFolder.getParent(); // 상위 폴더 경로
-	//
-	// for (int i = 0; i < fileList.length; i++) {
-	// if (fileList[i].isDirectory()) {
-	// /*
-	// * String message = "[디렉토리] "; message = fileList[ i
-	// * ].getName(); System.out.println( message );
-	// *
-	// * subDirList( fileList[ i ].getPath());//하위 폴더 탐색
-	// */ } else {
-	// String filePath = fileList[i].getPath();
-	// String fFullName = fileList[i].getName();
-	//
-	// int Idx = fFullName.lastIndexOf(".");
-	// String _fileName = fFullName.substring(0, Idx);
-	//
-	// if (_fileName.equals(unzipName)) {
-	// equalFlag = true;
-	// }
-	//
-	// if (_fileName.endsWith("index")) {
-	// indexFiles.add(fileList[i]);// 도곽파일 리스트 add(shp,shx...)
-	// } else {
-	// if (_fileName.contains(".")) {
-	// moveDirectory(_fileName.substring(0, _fileName.lastIndexOf(".")), fFullName,
-	// filePath,
-	// parentPath);
-	// } else {
-	// moveDirectory(_fileName, fFullName, filePath, parentPath);
-	// }
-	// }
-	// }
-	// }
-	//
-	// fileList = unzipFolder.listFiles();
-	//
-	// // 도엽별 폴더 생성후 도곽파일 이동복사
-	// for (int i = 0; i < fileList.length; i++) {
-	// if (fileList[i].isDirectory()) {
-	// for (File iFile : indexFiles) {
-	// try {
-	// FileNio2Copy(iFile.getPath(), fileList[i].getPath() + File.separator +
-	// iFile.getName());
-	// } catch (IOException e) {
-	// // TODO Auto-generated catch block
-	// System.out.println(e.getMessage());
-	// }
-	// }
-	// }
-	// }
-	//
-	// // index파일 삭제
-	// for (File iFile : indexFiles) {
-	// iFile.delete();
-	// }
-	//
-	// // 원래 폴더 삭제
-	// if (!equalFlag) {
-	// unzipFolder.delete();
-	// }
-	//
-	// // 파일 사용후 객체초기화
-	// fileList = null;
-	// indexFiles = null;
-	//
-	// return new File(parentPath).listFiles();
-	// }
-
-	/**
 	 * 파일이동
 	 * 
 	 * @author SG.Lee
-	 * @Date 2018. 4. 18. 오전 9:46:27
+	 * @since 2018. 4. 18. 오전 9:46:27
 	 * @param folderName
 	 * @param fileName
 	 * @param beforeFilePath
@@ -797,7 +717,7 @@ public class BathService {
 	 * 파일복사
 	 * 
 	 * @author SG.Lee
-	 * @Date 2018. 4. 18. 오전 9:45:55
+	 * @since 2018. 4. 18. 오전 9:45:55
 	 * @param source
 	 * @param dest
 	 * @throws IOException

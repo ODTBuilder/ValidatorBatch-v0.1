@@ -27,7 +27,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @className CloseLayerOp.java
  * @description 인접 레이어 영역내의 객체를 계산하는 클래스
  * @author DY.Oh
- * @date 2018. 1. 30. 오후 2:32:24
+ * @since 2018. 1. 30. 오후 2:32:24
  */
 public class CloseLayerOp {
 
@@ -72,7 +72,7 @@ public class CloseLayerOp {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:33:07
+	 * @since 2018. 1. 30. 오후 2:33:07
 	 * @param type
 	 * @param neatLineLayer
 	 * @param typeLayer

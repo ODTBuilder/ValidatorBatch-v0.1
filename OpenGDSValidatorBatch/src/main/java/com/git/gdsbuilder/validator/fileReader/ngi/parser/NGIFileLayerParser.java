@@ -174,7 +174,7 @@ public class NGIFileLayerParser {
 	}
 
 	/**
-	 * ngi 파일의 header에 저장된 레이어 타입을 반환 @author DY.Oh @Date 2017. 3. 11. 오전
+	 * ngi 파일의 header에 저장된 레이어 타입을 반환 @author DY.Oh @since 2017. 3. 11. 오전
 	 * 11:29:04 @param header @return String[] @throws
 	 */
 	private String[] getLayerTypes(NGIHeader header) {
@@ -190,7 +190,7 @@ public class NGIFileLayerParser {
 	}
 
 	/**
-	 * ngi 파일의 header에 저장된 레이어 ID를 반환 @author DY.Oh @Date 2017. 3. 11. 오전
+	 * ngi 파일의 header에 저장된 레이어 ID를 반환 @author DY.Oh @since 2017. 3. 11. 오전
 	 * 11:29:58 @return String @throws IOException @throws
 	 */
 	private String getLayerID() throws IOException {
@@ -212,7 +212,7 @@ public class NGIFileLayerParser {
 	}
 
 	/**
-	 * ngi 파일의 header에 저장된 레이어 Name을 반환 @author DY.Oh @Date 2017. 3. 11. 오전
+	 * ngi 파일의 header에 저장된 레이어 Name을 반환 @author DY.Oh @since 2017. 3. 11. 오전
 	 * 11:29:58 @return String @throws IOException @throws
 	 */
 	private String getLayerName() throws IOException {
@@ -233,7 +233,7 @@ public class NGIFileLayerParser {
 	}
 
 	/**
-	 * nda 파일의 header 정보를 NDAHeader 객체로 파싱 @author DY.Oh @Date 2017. 3. 11. 오전
+	 * nda 파일의 header 정보를 NDAHeader 객체로 파싱 @author DY.Oh @since 2017. 3. 11. 오전
 	 * 11:30:30 @return NDAHeader @throws IOException @throws
 	 */
 	private NDAHeader getNdaHeader() throws IOException {
@@ -257,7 +257,7 @@ public class NGIFileLayerParser {
 	}
 
 	/**
-	 * nda 파일에 저장된 객체의 속성정보를 List<NGIField> 객체로 파싱 @author DY.Oh @Date 2017. 3.
+	 * nda 파일에 저장된 객체의 속성정보를 List<NGIField> 객체로 파싱 @author DY.Oh @since 2017. 3.
 	 * 11. 오전 11:31:07 @return List<NGIField> @throws IOException @throws
 	 */
 	private List<NDAField> getAttrib() throws IOException {
@@ -290,7 +290,7 @@ public class NGIFileLayerParser {
 	}
 
 	/**
-	 * 문자열에서 큰 따옴표("")안에 해당된 문자열을 반환 @author DY.Oh @Date 2017. 3. 11. 오전
+	 * 문자열에서 큰 따옴표("")안에 해당된 문자열을 반환 @author DY.Oh @since 2017. 3. 11. 오전
 	 * 11:08:21 @param line @return String @throws
 	 */
 	private String getQuotesText(String line) {
@@ -305,7 +305,7 @@ public class NGIFileLayerParser {
 	}
 
 	/**
-	 * 문자열에서 괄호( )안에 해당되는 문자열을 반환 @author DY.Oh @Date 2017. 3. 11. 오전
+	 * 문자열에서 괄호( )안에 해당되는 문자열을 반환 @author DY.Oh @since 2017. 3. 11. 오전
 	 * 11:09:53 @param line @return String @throws
 	 */
 	private String getText(String line) {
@@ -329,7 +329,7 @@ public class NGIFileLayerParser {
 	}
 
 	/**
-	 * ngi 파일의 header 정보를 NGIHeader 객체로 파싱 @author DY.Oh @Date 2017. 3. 11. 오전
+	 * ngi 파일의 header 정보를 NGIHeader 객체로 파싱 @author DY.Oh @since 2017. 3. 11. 오전
 	 * 11:30:30 @return NGIHeader @throws IOException @throws
 	 */
 	private NGIHeader getNgiHeader() throws IOException {

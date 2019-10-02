@@ -15,7 +15,7 @@ import com.git.gdsbuilder.type.validate.option.standard.LayerFixMiss;
  * @className QaOptionList.java
  * @description
  * @author DY.Oh
- * @date 2018. 3. 14. 오전 11:21:59
+ * @since 2018. 3. 14. 오전 11:21:59
  */
 
 public class QAOption {

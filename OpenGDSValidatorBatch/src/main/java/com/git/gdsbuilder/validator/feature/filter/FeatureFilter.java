@@ -20,7 +20,7 @@ import com.git.gdsbuilder.type.validate.option.specific.OptionTolerance;
  * @className FeatureFilter.java
  * @description
  * @author DY.Oh
- * @date 2018. 3. 19. 오후 2:58:26
+ * @since 2018. 3. 19. 오후 2:58:26
  */
 public class FeatureFilter {
 
@@ -56,7 +56,7 @@ public class FeatureFilter {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 19. 오후 5:36:39
+	 * @since 2018. 3. 19. 오후 5:36:39
 	 * @param relationLayers
 	 * @param reTolerances
 	 *            void

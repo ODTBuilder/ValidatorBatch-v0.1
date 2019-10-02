@@ -24,7 +24,7 @@ import java.util.List;
  * @className NGIHeader.java
  * @description NGIHeader 정보를 담고있는 클래스
  * @author DY.Oh
- * @date 2018. 1. 30. 오후 2:20:59
+ * @since 2018. 1. 30. 오후 2:20:59
  */
 public class NGIHeader {
 

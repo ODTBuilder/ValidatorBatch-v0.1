@@ -10,7 +10,7 @@ import java.util.List;
  * @className AttributeCondition.java
  * @description
  * @author DY.Oh
- * @date 2018. 3. 14. 오후 1:10:47
+ * @since 2018. 3. 14. 오후 1:10:47
  */
 
 public class AttributeFilter {

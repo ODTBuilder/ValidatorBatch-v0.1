@@ -10,7 +10,7 @@ import com.git.gdsbuilder.type.validate.layer.QALayerType;
  * @className MapSystemRule.java
  * @description DTLayerCollection의 인접 DTLayerCollection의 정보를 담고 있는 클래스
  * @author DY.Oh
- * @date 2018. 1. 30. 오후 2:02:11
+ * @since 2018. 1. 30. 오후 2:02:11
  */
 public class MapSystemRule {
 
@@ -23,7 +23,7 @@ public class MapSystemRule {
 	 * @className MapSystemRule.java
 	 * @description MapSystemRule의 Type
 	 * @author DY.Oh
-	 * @date 2018. 1. 30. 오후 2:02:56
+	 * @since 2018. 1. 30. 오후 2:02:56
 	 */
 	public enum MapSystemRuleType {
 		BOTTOM("BOTTOM"), LEFT("LEFT"), RIGHT("RIGHT"), TOP("TOP"), UNKNOWN(null);
@@ -101,7 +101,7 @@ public class MapSystemRule {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:03:13
+	 * @since 2018. 1. 30. 오후 2:03:13
 	 * @param ruleType
 	 * @return int
 	 * @decription ruleType에 해당하는 인접도엽 정보를 반환
@@ -157,7 +157,7 @@ public class MapSystemRule {
 	/**
 	 * @author DY.Oh
 	 * @param types
-	 * @Date 2018. 3. 30. 오후 1:29:44
+	 * @since 2018. 3. 30. 오후 1:29:44
 	 * @return MapSystemRule
 	 * @decription
 	 */

@@ -13,7 +13,7 @@ import com.git.gdsbuilder.type.validate.option.specific.AttributeFilter;
  * @className DTFeature.java
  * @description
  * @author DY.Oh
- * @date 2018. 3. 15. 오후 6:25:07
+ * @since 2018. 3. 15. 오후 6:25:07
  */
 
 public class DTFeature {

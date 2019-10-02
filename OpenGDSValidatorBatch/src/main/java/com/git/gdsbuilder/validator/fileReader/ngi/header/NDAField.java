@@ -21,7 +21,7 @@ package com.git.gdsbuilder.validator.fileReader.ngi.header;
  * @className NDAField.java
  * @description NGIField 정보를 담고있는 클래스
  * @author DY.Oh
- * @date 2018. 1. 30. 오후 2:18:15
+ * @since 2018. 1. 30. 오후 2:18:15
  */
 public class NDAField {
 
@@ -134,7 +134,7 @@ public class NDAField {
 	}
 
 	/**
-	 * decimal getter @author DY.Oh @Date 2017. 3. 11. 오후 2:40:08 @return
+	 * decimal getter @author DY.Oh @since 2017. 3. 11. 오후 2:40:08 @return
 	 * String @throws
 	 */
 	public String getDecimal() {

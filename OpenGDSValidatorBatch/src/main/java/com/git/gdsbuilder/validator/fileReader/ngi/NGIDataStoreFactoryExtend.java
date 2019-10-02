@@ -52,13 +52,13 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * NGIDataStore 객체를 생성하는 클래스
  * 
  * @author DY.Oh
- * @Date 2017. 3. 11. 오전 11:40:41
+ * @since 2017. 3. 11. 오전 11:40:41
  */
 public class NGIDataStoreFactoryExtend extends NGIDataStoreFactory {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 1:47:49
+	 * @since 2018. 1. 30. 오후 1:47:49
 	 * @param params
 	 * @throws IOException
 	 * @decription NGIDataStore 객체를 생성

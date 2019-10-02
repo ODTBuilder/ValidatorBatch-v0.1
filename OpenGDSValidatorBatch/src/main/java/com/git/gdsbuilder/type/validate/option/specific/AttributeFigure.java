@@ -9,7 +9,7 @@ import java.util.List;
  * @className AttributeFigure.java
  * @description
  * @author DY.Oh
- * @date 2018. 3. 16. 오후 5:01:12
+ * @since 2018. 3. 16. 오후 5:01:12
  */
 
 public class AttributeFigure {

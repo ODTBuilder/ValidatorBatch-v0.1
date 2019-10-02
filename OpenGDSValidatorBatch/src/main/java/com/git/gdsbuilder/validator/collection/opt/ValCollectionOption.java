@@ -9,7 +9,7 @@ public class ValCollectionOption extends HashMap<ValCollectionOptionType, Object
 	/**
 	 *
 	 * @author SG.Lee
-	 * @Date 2017. 7. 4. 오후 4:14:36
+	 * @since 2017. 7. 4. 오후 4:14:36
 	 */
 	private static final long serialVersionUID = 1L;
 

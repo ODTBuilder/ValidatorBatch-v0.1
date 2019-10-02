@@ -49,13 +49,13 @@ import com.git.gdsbuilder.type.validate.option.standard.FixedValue;
  * @className FeatureAttributeValidator.java
  * @description DTFeature의 속성을 검수하는 클래스
  * @author DY.Oh
- * @date 2018. 1. 30. 오후 2:33:43
+ * @since 2018. 1. 30. 오후 2:33:43
  */
 public interface FeatureAttributeValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:34:46
+	 * @since 2018. 1. 30. 오후 2:34:46
 	 * @param DTFeature
 	 * @param attributeKey
 	 * @return ErrorFeature
@@ -65,7 +65,7 @@ public interface FeatureAttributeValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:34:47
+	 * @since 2018. 1. 30. 오후 2:34:47
 	 * @param DTFeature
 	 * @param relationDTFeature
 	 * @param figure
@@ -79,7 +79,7 @@ public interface FeatureAttributeValidator {
 	/**
 	 * @author DY.Oh
 	 * @param nameFigure
-	 * @Date 2018. 1. 30. 오후 2:34:49
+	 * @since 2018. 1. 30. 오후 2:34:49
 	 * @param DTFeature
 	 * @return ErrorFeature
 	 * @decription AdminBoundaryMiss 검수 수행
@@ -88,7 +88,7 @@ public interface FeatureAttributeValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:34:55
+	 * @since 2018. 1. 30. 오후 2:34:55
 	 * @param DTFeature
 	 * @param attribute
 	 * @param condition
@@ -100,7 +100,7 @@ public interface FeatureAttributeValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:35:07
+	 * @since 2018. 1. 30. 오후 2:35:07
 	 * @param DTFeatureI
 	 * @param DTFeatureJ
 	 * @return ErrorFeature
@@ -112,7 +112,7 @@ public interface FeatureAttributeValidator {
 	 * @author DY.Oh
 	 * @param attrFigure
 	 * @param reAttrFigure
-	 * @Date 2018. 2. 28. 오전 9:44:54
+	 * @since 2018. 2. 28. 오전 9:44:54
 	 * @param DTFeature
 	 * @param lineAvrgKey
 	 * @param relationSfc
@@ -125,7 +125,7 @@ public interface FeatureAttributeValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 6. 오후 2:13:16
+	 * @since 2018. 3. 6. 오후 2:13:16
 	 * @param DTFeature
 	 * @param fixedValue
 	 * @return ErrorFeature
@@ -135,7 +135,7 @@ public interface FeatureAttributeValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 20. 오후 1:54:43
+	 * @since 2018. 3. 20. 오후 1:54:43
 	 * @param feature
 	 * @param attrFigure
 	 * @param reFeature
@@ -146,7 +146,7 @@ public interface FeatureAttributeValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 21. 오후 3:20:30
+	 * @since 2018. 3. 21. 오후 3:20:30
 	 * @param feature
 	 * @param figures
 	 * @return ErrorFeature
@@ -156,7 +156,7 @@ public interface FeatureAttributeValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 21. 오후 5:28:33
+	 * @since 2018. 3. 21. 오후 5:28:33
 	 * @param feature
 	 * @param figure
 	 * @return ErrorFeature
@@ -166,7 +166,7 @@ public interface FeatureAttributeValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 22. 오후 11:09:58
+	 * @since 2018. 3. 22. 오후 11:09:58
 	 * @param feature
 	 * @param collectionName
 	 * @param layerName
@@ -180,7 +180,7 @@ public interface FeatureAttributeValidator {
 
 	/**
 	 * @author hochul.kim
-	 * @Date 2018. 3. 27.
+	 * @since 2018. 3. 27.
 	 * @param feature
 	 * @param figure
 	 * @return ErrorFeature

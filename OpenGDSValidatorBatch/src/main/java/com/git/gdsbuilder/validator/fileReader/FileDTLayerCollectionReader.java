@@ -47,13 +47,13 @@ import com.git.gdsbuilder.validator.fileReader.shp.reader.SHPFileReader;
  * @className FileDTLayerCollectionReader.java
  * @description 검수 대상 파일을 읽어 DTLayerCollection로 파싱하는 클래스
  * @author DY.Oh
- * @date 2018. 1. 30. 오후 3:19:33
+ * @since 2018. 1. 30. 오후 3:19:33
  */
 public class FileDTLayerCollectionReader {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 4:29:53
+	 * @since 2018. 1. 30. 오후 4:29:53
 	 * @param filePath
 	 * @param fileName
 	 * @param neatLineName
@@ -72,7 +72,7 @@ public class FileDTLayerCollectionReader {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 4:30:21
+	 * @since 2018. 1. 30. 오후 4:30:21
 	 * @param epsg
 	 * @param filePath
 	 * @param fileName
@@ -91,7 +91,7 @@ public class FileDTLayerCollectionReader {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 4:30:35
+	 * @since 2018. 1. 30. 오후 4:30:35
 	 * @param filePath
 	 * @param fileName
 	 * @param neatLineName

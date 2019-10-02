@@ -21,7 +21,7 @@ package com.git.gdsbuilder.file;
  * 업로드파일에 대한 정보 객체
  * 
  * @author SG.Lee
- * @Date 2017. 5. 12. 오전 2:23:36
+ * @since 2017. 5. 12. 오전 2:23:36
  */
 public class FileMeta {
 

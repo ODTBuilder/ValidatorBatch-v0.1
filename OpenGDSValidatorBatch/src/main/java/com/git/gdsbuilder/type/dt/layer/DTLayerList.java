@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * LayerList 정보를 저장하는 클래스
  * 
  * @author DY.Oh
- * @Date 2017. 3. 11. 오후 1:32:25
+ * @since 2017. 3. 11. 오후 1:32:25
  */
 @SuppressWarnings("serial")
 public class DTLayerList extends ArrayList<DTLayer> {

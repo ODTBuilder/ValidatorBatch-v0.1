@@ -9,7 +9,7 @@ package com.git.gdsbuilder.type.validate.option.specific;
  * @className OptionTolerance.java
  * @description
  * @author DY.Oh
- * @date 2018. 3. 14. 오후 1:41:08
+ * @since 2018. 3. 14. 오후 1:41:08
  */
 
 

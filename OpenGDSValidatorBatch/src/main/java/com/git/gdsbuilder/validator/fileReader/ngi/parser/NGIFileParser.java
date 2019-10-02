@@ -56,12 +56,12 @@ import com.git.gdsbuilder.validator.fileReader.ngi.NGIDataStore;
  * ngi/nda 파일을 QA20DataStore로 파싱하는 클래스
  * 
  * @author DY.Oh
- * @Date 2017. 3. 11. 오전 11:33:11
+ * @since 2017. 3. 11. 오전 11:33:11
  */
 public class NGIFileParser extends NGIDataStoreFactory {
 
 	/**
-	 * ngi/nda 파일을 QA20DataStore로 파싱하여 반환 @author DY.Oh @Date 2017. 3. 11. 오전
+	 * ngi/nda 파일을 QA20DataStore로 파싱하여 반환 @author DY.Oh @since 2017. 3. 11. 오전
 	 * 11:42:42 @param ngiFilePath @param srs @param charset @return
 	 * QA20DataStore @throws IOException @throws
 	 */
@@ -78,7 +78,7 @@ public class NGIFileParser extends NGIDataStoreFactory {
 	}
 
 	/**
-	 * ngi/nda 파일을 QA20DataStore로 파싱하여 반환 @author DY.Oh @Date 2017. 3. 11. 오전
+	 * ngi/nda 파일을 QA20DataStore로 파싱하여 반환 @author DY.Oh @since 2017. 3. 11. 오전
 	 * 11:43:01 @param params @return QA20DataStore @throws IOException @throws
 	 */
 	private NGIDataStore createDTDataStore(Map<String, Serializable> params) throws IOException {

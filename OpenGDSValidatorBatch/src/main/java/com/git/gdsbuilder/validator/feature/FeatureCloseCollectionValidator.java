@@ -11,13 +11,13 @@ import com.vividsolutions.jts.geom.Geometry;
  * @className FeatureCloseCollectionValidator.java
  * @description 인접 SimpleFeature를 검수하는 클래스
  * @author DY.Oh
- * @date 2018. 1. 30. 오후 2:33:56
+ * @since 2018. 1. 30. 오후 2:33:56
  */
 public interface FeatureCloseCollectionValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:34:12
+	 * @since 2018. 1. 30. 오후 2:34:12
 	 * @param feature
 	 * @param closeLayer
 	 * @param closeBoundary
@@ -30,7 +30,7 @@ public interface FeatureCloseCollectionValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:34:12
+	 * @since 2018. 1. 30. 오후 2:34:12
 	 * @param feature
 	 * @param closeLayer
 	 * @param closeBoundary
@@ -43,7 +43,7 @@ public interface FeatureCloseCollectionValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:34:13
+	 * @since 2018. 1. 30. 오후 2:34:13
 	 * @param feature
 	 * @param closeLayer
 	 * @param closeBoundary
@@ -57,7 +57,7 @@ public interface FeatureCloseCollectionValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 2:34:14
+	 * @since 2018. 1. 30. 오후 2:34:14
 	 * @param feature
 	 * @param closeLayer
 	 * @param closeBoundary

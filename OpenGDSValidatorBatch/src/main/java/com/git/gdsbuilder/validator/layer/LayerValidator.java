@@ -54,14 +54,14 @@ import com.vividsolutions.jts.geom.Geometry;
  * DTLayer를 검수하는 클래스
  * 
  * @author DY.Oh
- * @Date 2017. 4. 18. 오후 3:32:00
+ * @since 2017. 4. 18. 오후 3:32:00
  */
 public interface LayerValidator {
 
 	// 수치지도 검수
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -72,7 +72,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -83,7 +83,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -94,7 +94,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -105,7 +105,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -117,7 +117,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -128,7 +128,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -139,7 +139,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:14:45
+	 * @since 2018. 1. 30. 오후 3:14:45
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -150,7 +150,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -163,7 +163,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -174,7 +174,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -185,7 +185,7 @@ public interface LayerValidator {
 
 	// /**
 	// * @author DY.Oh
-	// * @Date 2018. 1. 30. 오후 3:13:23
+	// * @since 2018. 1. 30. 오후 3:13:23
 	// * @param neatLayer
 	// * @param tolerence
 	// * @return ErrorLayer
@@ -196,7 +196,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -209,7 +209,7 @@ public interface LayerValidator {
 	 * @author DY.Oh
 	 * @param reFigures
 	 * @param figure
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -222,7 +222,7 @@ public interface LayerValidator {
 	/**
 	 * @author DY.Oh
 	 * @param figure
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -233,7 +233,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -244,7 +244,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -256,7 +256,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -267,7 +267,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -278,7 +278,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -290,7 +290,7 @@ public interface LayerValidator {
 	/**
 	 * @author DY.Oh
 	 * @param figure
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -302,7 +302,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -313,7 +313,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -324,7 +324,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -335,7 +335,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -346,7 +346,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -358,7 +358,7 @@ public interface LayerValidator {
 	/**
 	 * @author DY.Oh
 	 * @param tole
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -370,7 +370,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -381,7 +381,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -392,7 +392,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -403,7 +403,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -415,7 +415,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 1. 30. 오후 3:13:23
+	 * @since 2018. 1. 30. 오후 3:13:23
 	 * @param neatLayer
 	 * @param tolerence
 	 * @return ErrorLayer
@@ -440,7 +440,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author hochul.Kim
-	 * @Date 2018. 2. 28.
+	 * @since 2018. 2. 28.
 	 * @param DTLayerList
 	 * @return ErrorLayer
 	 * @decription 심볼 단독 존재 오류
@@ -450,7 +450,7 @@ public interface LayerValidator {
 	/**
 	 * @author hochul.Kim
 	 * @param reTolerances
-	 * @Date 2018. 3. 6.
+	 * @since 2018. 3. 6.
 	 * @param DTLayerList
 	 * @return ErrorLayer
 	 * @decription 라인 버텍스 내 심볼 미존재 오류
@@ -459,7 +459,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author hochul.Kim
-	 * @Date 2018. 3. 6.
+	 * @since 2018. 3. 6.
 	 * @return ErrorLayer
 	 * @decription 라인 버텍스(심볼)간의 거리 오류
 	 */
@@ -467,7 +467,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author hochul.Kim
-	 * @Date 2018. 3. 6.
+	 * @since 2018. 3. 6.
 	 * @param DTLayerList
 	 * @return ErrorLayer
 	 * @decription 라인 간의 교차 지점 버텍스 미존재 오류
@@ -476,7 +476,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 15. 오후 5:02:17
+	 * @since 2018. 3. 15. 오후 5:02:17
 	 * @param geometry
 	 * @param fixedValue
 	 * @return ErrorLayer
@@ -486,7 +486,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 21. 오후 2:30:17
+	 * @since 2018. 3. 21. 오후 2:30:17
 	 * @param figures
 	 * @return ErrorLayer
 	 * @decription
@@ -495,7 +495,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 21. 오후 5:28:01
+	 * @since 2018. 3. 21. 오후 5:28:01
 	 * @param figures
 	 * @return ErrorLayer
 	 * @decription
@@ -504,7 +504,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 22. 오후 10:48:11
+	 * @since 2018. 3. 22. 오후 10:48:11
 	 * @param figure
 	 * @return ErrorLayer
 	 * @decription
@@ -513,7 +513,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 23. 오전 10:56:22
+	 * @since 2018. 3. 23. 오전 10:56:22
 	 * @param tole
 	 * @return ErrorLayer
 	 * @decription
@@ -522,7 +522,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author hochul.Kim
-	 * @Date 2018. 3. 27.
+	 * @since 2018. 3. 27.
 	 * @param attrList
 	 * @return ErrorLayer
 	 * @decription 임상도 인접 속성 오류
@@ -531,7 +531,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 30. 오후 1:43:12
+	 * @since 2018. 3. 30. 오후 1:43:12
 	 * @param figures
 	 * @param closeLayer
 	 * @return ErrorLayer
@@ -541,7 +541,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 4. 5. 오전 11:56:38
+	 * @since 2018. 4. 5. 오전 11:56:38
 	 * @param tolerance
 	 * @return
 	 * @throws SchemaException
@@ -553,7 +553,7 @@ public interface LayerValidator {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 4. 10. 오전 11:18:17
+	 * @since 2018. 4. 10. 오전 11:18:17
 	 * @param relationLayers
 	 * @return ErrorLayer
 	 * @decription

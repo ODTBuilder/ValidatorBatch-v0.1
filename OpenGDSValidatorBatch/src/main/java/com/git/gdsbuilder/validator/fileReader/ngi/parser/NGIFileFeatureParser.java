@@ -47,7 +47,7 @@ import com.vividsolutions.jts.geom.LinearRing;
  * ngi/nda 파일의 feature를 QA20Feature객체로 파싱하는 클래스
  * 
  * @author DY.Oh
- * @Date 2017. 3. 11. 오전 11:18:11
+ * @since 2017. 3. 11. 오전 11:18:11
  */
 public class NGIFileFeatureParser {
 
@@ -77,7 +77,7 @@ public class NGIFileFeatureParser {
 	}
 
 	/**
-	 * BufferedReader getter @author DY.Oh @Date 2017. 3. 11. 오전
+	 * BufferedReader getter @author DY.Oh @since 2017. 3. 11. 오전
 	 * 10:42:35 @return BufferedReader @throws
 	 */
 	public BufferedReader getNgiReader() {
@@ -85,7 +85,7 @@ public class NGIFileFeatureParser {
 	}
 
 	/**
-	 * BufferedReader setter @author DY.Oh @Date 2017. 3. 11. 오전 10:43:28 @param
+	 * BufferedReader setter @author DY.Oh @since 2017. 3. 11. 오전 10:43:28 @param
 	 * ngiReader void @throws
 	 */
 	public void setNgiReader(BufferedReader ngiReader) {
@@ -93,7 +93,7 @@ public class NGIFileFeatureParser {
 	}
 
 	/**
-	 * BufferedReader getter @author DY.Oh @Date 2017. 3. 11. 오전
+	 * BufferedReader getter @author DY.Oh @since 2017. 3. 11. 오전
 	 * 10:43:41 @return BufferedReader @throws
 	 */
 	public BufferedReader getNdaReader() {
@@ -101,7 +101,7 @@ public class NGIFileFeatureParser {
 	}
 
 	/**
-	 * BufferedReader setter @author DY.Oh @Date 2017. 3. 11. 오전 10:43:51 @param
+	 * BufferedReader setter @author DY.Oh @since 2017. 3. 11. 오전 10:43:51 @param
 	 * ndaReader void @throws
 	 */
 	public void setNdaReader(BufferedReader ndaReader) {
@@ -109,7 +109,7 @@ public class NGIFileFeatureParser {
 	}
 
 	/**
-	 * 문자열에서 특수문자 제거 @author DY.Oh @Date 2017. 3. 11. 오전 10:44:42 @param
+	 * 문자열에서 특수문자 제거 @author DY.Oh @since 2017. 3. 11. 오전 10:44:42 @param
 	 * str @return String @throws
 	 */
 	private String StringReplace(String str) {
@@ -177,7 +177,7 @@ public class NGIFileFeatureParser {
 	}
 
 	/**
-	 * 문자열에서 괄호( )안에 해당되는 문자열을 반환 @author DY.Oh @Date 2017. 3. 11. 오전
+	 * 문자열에서 괄호( )안에 해당되는 문자열을 반환 @author DY.Oh @since 2017. 3. 11. 오전
 	 * 11:09:53 @param line @return String @throws
 	 */
 	private Map<String, Object> getText(String line) {
@@ -197,7 +197,7 @@ public class NGIFileFeatureParser {
 	}
 
 	/**
-	 * ngi파일에서 객체의 numparts 정보를 반환 @author DY.Oh @Date 2017. 3. 11. 오전
+	 * ngi파일에서 객체의 numparts 정보를 반환 @author DY.Oh @since 2017. 3. 11. 오전
 	 * 11:11:16 @return String @throws IOException @throws
 	 */
 	private String getLinearRingCount() throws IOException {
@@ -211,7 +211,7 @@ public class NGIFileFeatureParser {
 	}
 
 	/**
-	 * ngi파일에서 객체의 포인트 갯수를 반환 @author DY.Oh @Date 2017. 3. 11. 오전
+	 * ngi파일에서 객체의 포인트 갯수를 반환 @author DY.Oh @since 2017. 3. 11. 오전
 	 * 11:16:00 @return String @throws IOException @throws
 	 */
 	private String getCoordinateCount() throws IOException {
@@ -219,7 +219,7 @@ public class NGIFileFeatureParser {
 	}
 
 	/**
-	 * ngi파일에서 객체의 그래픽 ID를 반환 @author DY.Oh @Date 2017. 3. 11. 오전
+	 * ngi파일에서 객체의 그래픽 ID를 반환 @author DY.Oh @since 2017. 3. 11. 오전
 	 * 11:16:02 @return String @throws IOException @throws
 	 */
 	private String getGraphicID() throws IOException {
@@ -230,7 +230,7 @@ public class NGIFileFeatureParser {
 	 * TEXT 타입의 객체를 QA20Feature객체로 파싱
 	 * 
 	 * @author DY.Oh
-	 * @Date 2017. 3. 11. 오전 10:59:30
+	 * @since 2017. 3. 11. 오전 10:59:30
 	 * @param featureID
 	 * @param text
 	 * @param ndaHeader
@@ -322,7 +322,7 @@ public class NGIFileFeatureParser {
 	 * TEXT 타입의 객체를 QA20Feature객체로 파싱
 	 * 
 	 * @author DY.Oh
-	 * @Date 2017. 3. 11. 오전 10:59:30
+	 * @since 2017. 3. 11. 오전 10:59:30
 	 * @param featureID
 	 * @param text
 	 * @param ndaHeader
@@ -354,7 +354,7 @@ public class NGIFileFeatureParser {
 	 * POINT 타입의 객체를 QA20Feature객체로 파싱
 	 * 
 	 * @author DY.Oh
-	 * @Date 2017. 5. 11. 오전 10:59:30
+	 * @since 2017. 5. 11. 오전 10:59:30
 	 * @param featureID
 	 * @param text
 	 * @return QA20Feature
@@ -411,7 +411,7 @@ public class NGIFileFeatureParser {
 	 * POLYGON 타입의 객체를 QA20Feature객체로 파싱
 	 * 
 	 * @author DY.Oh
-	 * @Date 2017. 5. 11. 오전 10:59:30
+	 * @since 2017. 5. 11. 오전 10:59:30
 	 * @param featureID
 	 * @param ndaHeader
 	 * @param text
@@ -444,7 +444,7 @@ public class NGIFileFeatureParser {
 	}
 
 	/**
-	 * POLYGON 타입의 좌표값을 Geometry 객체로 생성 @author DY.Oh @Date 2017. 5. 11. 오전
+	 * POLYGON 타입의 좌표값을 Geometry 객체로 생성 @author DY.Oh @since 2017. 5. 11. 오전
 	 * 11:04:10 @return @throws IOException Geometry @throws
 	 */
 	private Geometry createPolygon() throws IOException {
@@ -469,7 +469,7 @@ public class NGIFileFeatureParser {
 	}
 
 	/**
-	 * HULL POLYGON 타입의 좌표값을 Geometry 객체로 생성 @author DY.Oh @Date 2017. 5. 11. 오전
+	 * HULL POLYGON 타입의 좌표값을 Geometry 객체로 생성 @author DY.Oh @since 2017. 5. 11. 오전
 	 * 11:04:10 @return @throws IOException Geometry @throws
 	 */
 	private Geometry createHolePolygon(int ringCount) throws IOException {
@@ -507,7 +507,7 @@ public class NGIFileFeatureParser {
 	 * nda파일에서 객체의 속성값과 데이터 타입을 읽어 Hashtable 형태로 반환
 	 * 
 	 * @author DY.Oh
-	 * @Date 2017. 5. 11. 오전 10:45:08
+	 * @since 2017. 5. 11. 오전 10:45:08
 	 * @param ndaHeader
 	 * @return Hashtable<String, Object>
 	 * @throws IOException

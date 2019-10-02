@@ -15,7 +15,7 @@ import java.net.URLDecoder;
  * @className DownloadValidateFile.java
  * @description
  * @author DY.Oh
- * @date 2018. 2. 13. 오후 4:38:32
+ * @since 2018. 2. 13. 오후 4:38:32
  */
 public class DownloadValidateFile {
 

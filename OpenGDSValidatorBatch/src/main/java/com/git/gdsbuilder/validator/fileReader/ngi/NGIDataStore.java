@@ -33,7 +33,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * ngi/nda 파일을 각각 BufferedReader 객체로 변환하는 클래스
  * 
  * @author DY.Oh
- * @Date 2017. 3. 11. 오전 11:35:53
+ * @since 2017. 3. 11. 오전 11:35:53
  */
 public class NGIDataStore {
 

@@ -23,7 +23,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * ErrorFeature 정보를 담고 있는 클래스
  * 
  * @author DY.Oh
- * @Date 2017. 3. 11. 오후 2:57:39
+ * @since 2017. 3. 11. 오후 2:57:39
  */
 
 public class ErrorFeature {

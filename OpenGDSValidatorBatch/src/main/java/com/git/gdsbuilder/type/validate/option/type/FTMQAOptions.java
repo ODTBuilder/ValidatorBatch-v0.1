@@ -7,7 +7,7 @@ package com.git.gdsbuilder.type.validate.option.type;
  * @className FTMQAOptions.java
  * @description
  * @author DY.Oh
- * @date 2018. 3. 15. 오전 11:25:57
+ * @since 2018. 3. 15. 오전 11:25:57
  */
 public class FTMQAOptions {
 

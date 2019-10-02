@@ -7,7 +7,7 @@ package com.git.gdsbuilder.type.validate.option.type;
  * @className LayerFieldOptions.java
  * @description
  * @author DY.Oh
- * @date 2018. 4. 2. 오전 10:14:08
+ * @since 2018. 4. 2. 오전 10:14:08
  */
 public class LayerFieldOptions {
 	
