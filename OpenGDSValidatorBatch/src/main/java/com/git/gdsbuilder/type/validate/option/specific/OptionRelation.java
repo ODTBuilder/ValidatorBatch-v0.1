@@ -5,14 +5,12 @@ package com.git.gdsbuilder.type.validate.option.specific;
 
 import java.util.List;
 
-
 /**
  * @className OptionRelation.java
  * @description
  * @author DY.Oh
  * @date 2018. 3. 14. 오후 1:40:54
  */
-
 
 public class OptionRelation {
 
@@ -22,18 +20,23 @@ public class OptionRelation {
 	List<OptionTolerance> tolerances;
 
 	public OptionFilter getFilter(String code) {
-		for (OptionFilter filter : filters) {
-			if (filter.getCode().equals(code)) {
-				return filter;
+
+		if (filters != null) {
+			for (OptionFilter filter : filters) {
+				if (filter.getCode().equals(code)) {
+					return filter;
+				}
 			}
 		}
 		return null;
 	}
 
 	public OptionFigure getFigure(String code) {
-		for (OptionFigure figure : figures) {
-			if (figure.getCode().equals(code)) {
-				return figure;
+		if (figures != null) {
+			for (OptionFigure figure : figures) {
+				if (figure.getCode().equals(code)) {
+					return figure;
+				}
 			}
 		}
 		return null;
@@ -70,6 +73,5 @@ public class OptionRelation {
 	public void setTolerances(List<OptionTolerance> tolerances) {
 		this.tolerances = tolerances;
 	}
-	
-	
+
 }

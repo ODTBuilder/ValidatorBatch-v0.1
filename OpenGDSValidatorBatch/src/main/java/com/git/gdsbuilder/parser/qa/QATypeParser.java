@@ -45,7 +45,7 @@ import com.git.gdsbuilder.type.validate.option.standard.LayerFixMiss;
  * JSONArray를 ValidateLayerTypeList 객체로 파싱하는 클래스
  * 
  * @author DY.Oh
- * @Date 2017. 4. 18. 오후 3:25:49
+ * @Since 2017. 4. 18. 오후 3:25:49
  */
 public class QATypeParser {
 
@@ -82,7 +82,7 @@ public class QATypeParser {
 			validateLayerTypeList = null;
 		}
 		if (validateTypeArray.size() != 0) {
-			try {
+		//	try {
 				this.validateLayerTypeList = new QALayerTypeList();
 				for (int j = 0; j < validateTypeArray.size(); j++) {
 					JSONObject layerType = (JSONObject) validateTypeArray.get(j);
@@ -93,14 +93,13 @@ public class QATypeParser {
 				if (validateLayerTypeList.size() < 0) {
 					this.comment += "옵션 미존재" + "<br>";
 				}
-			} catch (Exception e) {
-				this.comment += "레이어 정의 옵션과 검수 옵션이 연관되지 않습니다." + "<br>";
-				validateLayerTypeList = null;
-			}
+//			} catch (Exception e) {
+//				this.comment += "옵션 설정 오류" + "<br>";
+//				validateLayerTypeList = null;
+//			}
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public QALayerType typeOptionParserT(JSONObject layerType) {
 
 		QALayerType type = new QALayerType();
@@ -110,6 +109,10 @@ public class QATypeParser {
 		String name = (String) layerType.get("name");
 		type.setName(name);
 		qaOption.setName(name);
+
+		if (name.equals("차도경계면")) {
+			System.out.println("");
+		}
 
 		// layers
 		JSONArray typeLayers = (JSONArray) layerType.get("layers");
@@ -150,7 +153,7 @@ public class QATypeParser {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 22. 오전 10:05:49
+	 * @Since 2018. 3. 22. 오전 10:05:49
 	 * @param grapOption
 	 * @return List<CloseMiss>
 	 * @decription
@@ -158,154 +161,228 @@ public class QATypeParser {
 	private List<CloseMiss> parseCloseOption(JSONObject closeOption) {
 
 		List<CloseMiss> closeMisses = new ArrayList<>();
-		Iterator<?> optionIter = closeOption.keySet().iterator();
-		while (optionIter.hasNext()) {
-			CloseMiss closeMiss = new CloseMiss();
-			String optionName = (String) optionIter.next();
-			closeMiss.setOption(optionName);
-			JSONObject optionValue = (JSONObject) closeOption.get(optionName);
-			Object filterObj = optionValue.get("filter");
-			Object relationObj = optionValue.get("relation");
-			Object toleranceObj = optionValue.get("tolerance");
-			Object figureObj = optionValue.get("figure");
-			// filter
-			if (filterObj == null) {
-				closeMiss.setFilter(null);
-			} else {
-				JSONArray filter = (JSONArray) filterObj;
-				List<OptionFilter> optionConditions = parseFilter(filter);
-				closeMiss.setFilter(optionConditions);
+		Iterator optionIter = closeOption.keySet().iterator();
+		Object attrRun = closeOption.get("run");
+		boolean isCrossRun = true;
+		if (attrRun != null) {
+			isCrossRun = (boolean) attrRun;
+		}
+		if (isCrossRun) {
+			while (optionIter.hasNext()) {
+				String optionName = (String) optionIter.next();
+				if (optionName.equals("run")) {
+					continue;
+				}
+				CloseMiss closeMiss = new CloseMiss();
+				closeMiss.setOption(optionName);
+				JSONObject optionValue = (JSONObject) closeOption.get(optionName);
+				Object run = optionValue.get("run");
+				Boolean isRun = true;
+				if (run != null) {
+					isRun = (Boolean) run;
+				}
+				if (!isRun) {
+					continue;
+				}
+				Object filterObj = optionValue.get("filter");
+				Object relationObj = optionValue.get("relation");
+				Object toleranceObj = optionValue.get("tolerance");
+				Object figureObj = optionValue.get("figure");
+				// filter
+				if (filterObj == null) {
+					closeMiss.setFilter(null);
+				} else {
+					JSONArray filter = (JSONArray) filterObj;
+					List<OptionFilter> optionConditions = parseFilter(filter);
+					closeMiss.setFilter(optionConditions);
+				}
+				// relation
+				if (relationObj == null) {
+					closeMiss.setRetaion(null);
+				} else {
+					JSONArray relation = (JSONArray) relationObj;
+					List<OptionRelation> optionRelations = parseRelation(relation);
+					closeMiss.setRetaion(optionRelations);
+				}
+				// tolerance
+				if (toleranceObj == null) {
+					closeMiss.setTolerance(null);
+				} else {
+					JSONArray tolerances = (JSONArray) toleranceObj;
+					List<OptionTolerance> optionsTolerances = parseTolerance(tolerances);
+					closeMiss.setTolerance(optionsTolerances);
+				}
+				// figure
+				if (figureObj == null) {
+					closeMiss.setFigure(null);
+				} else {
+					JSONArray figures = (JSONArray) figureObj;
+					List<OptionFigure> optionFigureList = parseFigure(figures);
+					closeMiss.setFigure(optionFigureList);
+				}
+				closeMisses.add(closeMiss);
 			}
-			// relation
-			if (relationObj == null) {
-				closeMiss.setRetaion(null);
-			} else {
-				JSONArray relation = (JSONArray) relationObj;
-				List<OptionRelation> optionRelations = parseRelation(relation);
-				closeMiss.setRetaion(optionRelations);
-			}
-			// tolerance
-			if (toleranceObj == null) {
-				closeMiss.setTolerance(null);
-			} else {
-				JSONArray tolerances = (JSONArray) toleranceObj;
-				List<OptionTolerance> optionsTolerances = parseTolerance(tolerances);
-				closeMiss.setTolerance(optionsTolerances);
-			}
-			// figure
-			if (figureObj == null) {
-				closeMiss.setFigure(null);
-			} else {
-				JSONArray figures = (JSONArray) figureObj;
-				List<OptionFigure> optionFigureList = parseFigure(figures);
-				closeMiss.setFigure(optionFigureList);
-			}
-			closeMisses.add(closeMiss);
 		}
 		return closeMisses;
 	}
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 19. 오전 10:32:11
-	 * @param grapOption
-	 *            void
+	 * @Since 2018. 3. 19. 오전 10:32:11
+	 * @param grapOption void
 	 * @decription
 	 */
 	private List<GraphicMiss> parseGraphicOption(JSONObject grapOption) {
 
 		List<GraphicMiss> graphicMisses = new ArrayList<>();
+		Iterator optionIter = grapOption.keySet().iterator();
+		Object attrRun = grapOption.get("run");
+		boolean isGrapRun = true;
+		if (attrRun != null) {
+			isGrapRun = (boolean) attrRun;
+		}
+		if (isGrapRun) {
+			while (optionIter.hasNext()) {
+				String optionName = (String) optionIter.next();
 
-		Iterator<?> optionIter = grapOption.keySet().iterator();
-		while (optionIter.hasNext()) {
-			GraphicMiss graphicMiss = new GraphicMiss();
-			String optionName = (String) optionIter.next();
-			graphicMiss.setOption(optionName);
-			JSONObject optionValue = (JSONObject) grapOption.get(optionName);
-			Object filterObj = optionValue.get("filter");
-			Object relationObj = optionValue.get("relation");
-			Object toleranceObj = optionValue.get("tolerance"); // 그래픽검수
-			// filter
-			if (filterObj == null) {
-				graphicMiss.setFilter(null);
-			} else {
-				JSONArray filter = (JSONArray) filterObj;
-				List<OptionFilter> optionConditions = parseFilter(filter);
-				graphicMiss.setFilter(optionConditions);
+				if (optionName.equals("ConBreak")) {
+					System.out.println("");
+				}
+
+				if (optionName.equals("run")) {
+					continue;
+				}
+				GraphicMiss graphicMiss = new GraphicMiss();
+				graphicMiss.setOption(optionName);
+				JSONObject optionValue = (JSONObject) grapOption.get(optionName);
+				Object run = optionValue.get("run");
+				Boolean isRun = true;
+				if (run != null) {
+					isRun = (Boolean) run;
+				}
+				if (!isRun) {
+					continue;
+				}
+				Object filterObj = optionValue.get("filter");
+				Object figureObj = optionValue.get("figure");
+				Object relationObj = optionValue.get("relation");
+				Object toleranceObj = optionValue.get("tolerance"); // 그래픽검수
+				// filter
+				if (filterObj == null) {
+					graphicMiss.setFilter(null);
+				} else {
+					JSONArray filter = (JSONArray) filterObj;
+					List<OptionFilter> optionConditions = parseFilter(filter);
+					graphicMiss.setFilter(optionConditions);
+				}
+				// figure
+				if (figureObj == null) {
+					graphicMiss.setFigure(null);
+				} else {
+					JSONArray figure = (JSONArray) figureObj;
+					List<OptionFigure> optionConditions = parseFigure(figure);
+					graphicMiss.setFigure(optionConditions);
+				}
+
+				// relation
+				if (relationObj == null) {
+					graphicMiss.setRetaion(null);
+				} else {
+					JSONArray relation = (JSONArray) relationObj;
+					List<OptionRelation> optionRelations = parseRelation(relation);
+					graphicMiss.setRetaion(optionRelations);
+				}
+				// tolerance
+				if (toleranceObj == null) {
+					graphicMiss.setTolerance(null);
+				} else {
+					JSONArray tolerances = (JSONArray) toleranceObj;
+					List<OptionTolerance> optionsTolerances = parseTolerance(tolerances);
+					graphicMiss.setTolerance(optionsTolerances);
+				}
+				graphicMisses.add(graphicMiss);
 			}
-			// relation
-			if (relationObj == null) {
-				graphicMiss.setRetaion(null);
-			} else {
-				JSONArray relation = (JSONArray) relationObj;
-				List<OptionRelation> optionRelations = parseRelation(relation);
-				graphicMiss.setRetaion(optionRelations);
-			}
-			// tolerance
-			if (toleranceObj == null) {
-				graphicMiss.setTolerance(null);
-			} else {
-				JSONArray tolerances = (JSONArray) toleranceObj;
-				List<OptionTolerance> optionsTolerances = parseTolerance(tolerances);
-				graphicMiss.setTolerance(optionsTolerances);
-			}
-			graphicMisses.add(graphicMiss);
 		}
 		return graphicMisses;
 	}
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 19. 오전 10:32:09
-	 * @param attrOption
-	 *            void
+	 * @Since 2018. 3. 19. 오전 10:32:09
+	 * @param attrOption void
 	 * @decription
 	 */
 	private List<AttributeMiss> parseAttributeOption(JSONObject attrOption) {
 
 		List<AttributeMiss> attributeMisses = new ArrayList<>();
-
-		Iterator<?> optionIter = attrOption.keySet().iterator();
-		while (optionIter.hasNext()) {
-			AttributeMiss attributeMiss = new AttributeMiss();
-			String optionName = (String) optionIter.next();
-			attributeMiss.setOption(optionName);
-			JSONObject optionValue = (JSONObject) attrOption.get(optionName);
-			Object filterObj = optionValue.get("filter");
-			Object relationObj = optionValue.get("relation");
-			Object figureObj = optionValue.get("figure"); // 속성검수
-			// filter
-			if (filterObj == null) {
-				attributeMiss.setFilter(null);
-			} else {
-				JSONArray filter = (JSONArray) filterObj;
-				List<OptionFilter> optionConditions = parseFilter(filter);
-				attributeMiss.setFilter(optionConditions);
+		Iterator optionIter = attrOption.keySet().iterator();
+		Object attrRun = attrOption.get("run");
+		boolean isAttrRun = true;
+		if (attrRun != null) {
+			isAttrRun = (boolean) attrRun;
+		}
+		if (isAttrRun) {
+			while (optionIter.hasNext()) {
+				String optionName = (String) optionIter.next();
+				if (optionName.equals("run")) {
+					continue;
+				}
+				AttributeMiss attributeMiss = new AttributeMiss();
+				attributeMiss.setOption(optionName);
+				JSONObject optionValue = (JSONObject) attrOption.get(optionName);
+				Object run = optionValue.get("run");
+				Boolean isRun = true;
+				if (run != null) {
+					isRun = (Boolean) run;
+				}
+				if (!isRun) {
+					continue;
+				}
+				Object filterObj = optionValue.get("filter");
+				Object relationObj = optionValue.get("relation");
+				Object figureObj = optionValue.get("figure"); // 속성검수
+				Object toleranceObj = optionValue.get("tolerance");
+				// filter
+				if (filterObj == null) {
+					attributeMiss.setFilter(null);
+				} else {
+					JSONArray filter = (JSONArray) filterObj;
+					List<OptionFilter> optionConditions = parseFilter(filter);
+					attributeMiss.setFilter(optionConditions);
+				}
+				// relation
+				if (relationObj == null) {
+					attributeMiss.setRetaion(null);
+				} else {
+					JSONArray relation = (JSONArray) relationObj;
+					List<OptionRelation> optionRelations = parseRelation(relation);
+					attributeMiss.setRetaion(optionRelations);
+				}
+				// figure
+				if (figureObj == null) {
+					attributeMiss.setFigure(null);
+				} else {
+					JSONArray figures = (JSONArray) figureObj;
+					List<OptionFigure> optionFigureList = parseFigure(figures);
+					attributeMiss.setFigure(optionFigureList);
+				}
+				// tolerance
+				if (toleranceObj == null) {
+					attributeMiss.setTolerance(null);
+				} else {
+					JSONArray tolerances = (JSONArray) toleranceObj;
+					List<OptionTolerance> optionsTolerances = parseTolerance(tolerances);
+					attributeMiss.setTolerance(optionsTolerances);
+				}
+				attributeMisses.add(attributeMiss);
 			}
-			// relation
-			if (relationObj == null) {
-				attributeMiss.setRetaion(null);
-			} else {
-				JSONArray relation = (JSONArray) relationObj;
-				List<OptionRelation> optionRelations = parseRelation(relation);
-				attributeMiss.setRetaion(optionRelations);
-			}
-			// figure
-			if (figureObj == null) {
-				attributeMiss.setFigure(null);
-			} else {
-				JSONArray figures = (JSONArray) figureObj;
-				List<OptionFigure> optionFigureList = parseFigure(figures);
-				attributeMiss.setFigure(optionFigureList);
-			}
-			attributeMisses.add(attributeMiss);
 		}
 		return attributeMisses;
 	}
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 19. 오전 11:02:42
+	 * @Since 2018. 3. 19. 오전 11:02:42
 	 * @param tolerances
 	 * @return List<OptionTolerance>
 	 * @decription
@@ -316,9 +393,14 @@ public class QATypeParser {
 		for (int j = 0; j < tolerances.size(); j++) {
 			OptionTolerance optionToleracne = new OptionTolerance();
 			JSONObject tolerance = (JSONObject) tolerances.get(j);
-			String code = (String) tolerance.get("code");
-			optionToleracne.setCode(code);
-
+			// code
+			Object codeObj = tolerance.get("code");
+			if (codeObj != null) {
+				optionToleracne.setCode((String) codeObj);
+			} else {
+				optionToleracne.setCode(null);
+			}
+			// value
 			Double value;
 			if (tolerance.get("value") == null) {
 				value = null;
@@ -326,8 +408,14 @@ public class QATypeParser {
 				value = Double.valueOf(tolerance.get("value").toString());
 			}
 			optionToleracne.setValue(value);
-			String condition = (String) tolerance.get("condition");
-			optionToleracne.setCondition(condition);
+			// condition
+			Object conditionObj = tolerance.get("condition");
+			if (conditionObj != null) {
+				optionToleracne.setCondition((String) conditionObj);
+			} else {
+				optionToleracne.setCondition(null);
+			}
+			// interval
 			Object intervalObj = tolerance.get("interval");
 			if (intervalObj == null) {
 				// null
@@ -343,7 +431,7 @@ public class QATypeParser {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 19. 오전 11:01:12
+	 * @Since 2018. 3. 19. 오전 11:01:12
 	 * @param relation
 	 * @return List<OptionRelation>
 	 * @decription
@@ -391,7 +479,7 @@ public class QATypeParser {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 19. 오전 11:00:08
+	 * @Since 2018. 3. 19. 오전 11:00:08
 	 * @param filter
 	 * @return List<OptionFilter>
 	 * @decription
@@ -425,12 +513,11 @@ public class QATypeParser {
 
 	/**
 	 * @author DY.Oh
-	 * @Date 2018. 3. 19. 오전 11:15:48
+	 * @Since 2018. 3. 19. 오전 11:15:48
 	 * @param attribute
 	 * @return List<AttributeFilter>
 	 * @decription
 	 */
-	@SuppressWarnings("unchecked")
 	private List<AttributeFilter> parseAttribute(JSONArray attribute) {
 
 		List<AttributeFilter> filters = new ArrayList<>();
@@ -452,7 +539,7 @@ public class QATypeParser {
 		}
 		return filters;
 	}
-	@SuppressWarnings("unchecked")
+
 	public List<OptionFigure> parseFigure(JSONArray figures) {
 
 		List<OptionFigure> optionFigureList = new ArrayList<>();
@@ -461,8 +548,12 @@ public class QATypeParser {
 			OptionFigure optionFigure = new OptionFigure();
 			JSONObject figure = (JSONObject) figures.get(f);
 			// code
-			String code = (String) figure.get("code");
-			optionFigure.setCode(code);
+			Object codeObj = figure.get("code");
+			if (codeObj != null) {
+				optionFigure.setCode((String) codeObj);
+			} else {
+				optionFigure.setCode(null);
+			}
 			// attribute
 			List<AttributeFigure> attributeConditions = new ArrayList<>();
 			Object attrObj = figure.get("attribute");
@@ -474,8 +565,24 @@ public class QATypeParser {
 				for (int a = 0; a < attribute.size(); a++) {
 					JSONObject attrJson = (JSONObject) attribute.get(a);
 					AttributeFigure attributeCondition = new AttributeFigure();
+					// filter index
+					Object fIdxObj = attrJson.get("fidx");
+					if (fIdxObj != null) {
+						Long fIdx = (Long) fIdxObj;
+						attributeCondition.setfIdx(fIdx);
+					} else {
+						attributeCondition.setfIdx(null);
+					}
 					// key
-					String key = (String) attrJson.get("key");
+					String key = null;
+					Object keyObj = attrJson.get("key");
+					if (keyObj != null) {
+						key = (String) keyObj;
+						attributeCondition.setKey(key);
+					} else {
+						attributeCondition.setKey(null);
+					}
+					// valuess
 					Object valuesObj = attrJson.get("values");
 					if (valuesObj != null) {
 						List<Object> values = (List<Object>) valuesObj;
@@ -483,17 +590,18 @@ public class QATypeParser {
 					} else {
 						attributeCondition.setValues(null);
 					}
+					// number
 					Object numberObj = attrJson.get("number");
 					if (numberObj != null) {
 						Double number = Double.valueOf(numberObj.toString());
 						attributeCondition.setNumber(number);
-						Object conditionObj = attrJson.get("number");
+						Object conditionObj = attrJson.get("condition");
 						if (conditionObj != null) {
 							attributeCondition.setCondition(conditionObj.toString());
 						} else {
 							attributeCondition.setCondition(null);
 						}
-						Object intervalObj = attrJson.get("number");
+						Object intervalObj = attrJson.get("interval");
 						if (intervalObj != null) {
 							attributeCondition.setInterval(Double.valueOf(intervalObj.toString()));
 						} else {
@@ -514,54 +622,74 @@ public class QATypeParser {
 
 	public Map<String, Object> parseLayerFix(JSONArray typeLayers) {
 
-		try {
+	//	try {
 			Map<String, Object> returnMap = new HashMap<>();
 
 			List<String> layerIDList = new ArrayList<>();
 			List<LayerFixMiss> layerFixList = new ArrayList<>();
 			for (int i = 0; i < typeLayers.size(); i++) {
 				JSONObject layer = (JSONObject) typeLayers.get(i);
-				String code = (String) layer.get("code");
-				layerIDList.add(code);
-
-				LayerFixMiss fix = new LayerFixMiss();
-				fix.setOption("LayerFixMiss");
-				fix.setCode(code);
-				fix.setGeometry((String) layer.get("geometry"));
-
-				// attrFix
-				Object fixObj = layer.get("fix");
-				if (fixObj != null) {
-					List<FixedValue> fixedValues = new ArrayList<>();
-					JSONArray fixArr = (JSONArray) layer.get("fix");
-					for (int j = 0; j < fixArr.size(); j++) {
-						FixedValue fixedValue = new FixedValue();
-						JSONObject fixJson = (JSONObject) fixArr.get(j);
-						fixedValue.setName((String) fixJson.get("name"));
-						fixedValue.setType((String) fixJson.get("type"));
-						fixedValue.setIsnull((Boolean) fixJson.get("isnull"));
-						fixedValue.setLength((Long) fixJson.get("length"));
-
-						Object valueObj = fixJson.get("values");
-						if (valueObj != null) {
-							List<Object> values = new ArrayList<>();
-							JSONArray valueArr = (JSONArray) valueObj;
-							for (int v = 0; v < valueArr.size(); v++) {
-								values.add(valueArr.get(v));
-							}
-							fixedValue.setValues(values);
-							fixedValues.add(fixedValue);
-						}
-					}
-					fix.setFix(fixedValues);
+				// code
+				Object codeObj = layer.get("code");
+				String code = null;
+				if (codeObj != null) {
+					code = (String) codeObj;
 				}
-				layerFixList.add(fix);
+				// run
+				Object run = layer.get("run");
+				Boolean isRun = true;
+				if (run != null) {
+					isRun = (Boolean) run;
+				}
+				if (isRun) {
+					layerIDList.add(code);
+					// fixrun
+					Object fixrun = layer.get("fixrun");
+					Boolean isFixRun = true;
+					if (fixrun != null) {
+						isFixRun = (Boolean) fixrun;
+					}
+					if (isFixRun) {
+						LayerFixMiss fix = new LayerFixMiss();
+						fix.setOption("LayerFixMiss");
+						fix.setCode(code);
+						fix.setGeometry((String) layer.get("geometry"));
+						// attrFix
+						Object fixObj = layer.get("fix");
+						if (fixObj != null) {
+							List<FixedValue> fixedValues = new ArrayList<>();
+							JSONArray fixArr = (JSONArray) layer.get("fix");
+							for (int j = 0; j < fixArr.size(); j++) {
+								FixedValue fixedValue = new FixedValue();
+								JSONObject fixJson = (JSONObject) fixArr.get(j);
+								fixedValue.setName((String) fixJson.get("name"));
+								fixedValue.setType((String) fixJson.get("type"));
+								fixedValue.setIsnull((Boolean) fixJson.get("isnull"));
+								fixedValue.setLength((String) fixJson.get("length"));
+								Object valueObj = fixJson.get("values");
+								if (valueObj != null) {
+									List<Object> values = new ArrayList<>();
+									JSONArray valueArr = (JSONArray) valueObj;
+									for (int v = 0; v < valueArr.size(); v++) {
+										values.add(valueArr.get(v));
+									}
+									fixedValue.setValues(values);
+									fixedValues.add(fixedValue);
+								} else {
+									fixedValues.add(fixedValue);
+								}
+							}
+							fix.setFix(fixedValues);
+						}
+						layerFixList.add(fix);
+					}
+				}
 			}
 			returnMap.put("layerFix", layerFixList);
 			returnMap.put("layerCodes", layerIDList);
 			return returnMap;
-		} catch (Exception e) {
-			return null;
-		}
+//		} catch (Exception e) {
+//			return null;
+//		}
 	}
 }

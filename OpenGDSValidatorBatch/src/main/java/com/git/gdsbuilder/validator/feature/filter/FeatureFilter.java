@@ -24,6 +24,33 @@ import com.git.gdsbuilder.type.validate.option.specific.OptionTolerance;
  */
 public class FeatureFilter {
 
+	public static boolean filter(SimpleFeature sf, AttributeFilter filter) {
+
+		boolean isTrue = false;
+		if (filter == null) {
+			isTrue = true;
+		} else {
+			String key = filter.getKey();
+			if (key != null) {
+				// filter
+				List<Object> values = filter.getValues();
+				if (values != null) {
+					Object attribute = sf.getAttribute(key);
+					if (attribute != null) {
+						for (Object value : values) {
+							if (attribute.toString().equals(value)) {
+								isTrue = true;
+							}
+						}
+					}
+				} else {
+					isTrue = true;
+				}
+			}
+		}
+		return isTrue;
+	}
+
 	// attr filter
 	public static boolean filter(SimpleFeature sf, List<AttributeFilter> filters) {
 
@@ -58,8 +85,7 @@ public class FeatureFilter {
 	 * @author DY.Oh
 	 * @Date 2018. 3. 19. 오후 5:36:39
 	 * @param relationLayers
-	 * @param reTolerances
-	 *            void
+	 * @param reTolerances   void
 	 * @decription
 	 */
 	public static DefaultFeatureCollection filter(DTLayerList relationLayers, List<OptionTolerance> reTolerances) {
@@ -72,7 +98,7 @@ public class FeatureFilter {
 			DTLayer relationLayer = relationLayers.get(i);
 			String reLayerCode = relationLayer.getLayerID();
 			// tolerance
-			if(reTolerances != null) {
+			if (reTolerances != null) {
 				for (OptionTolerance reTolerance : reTolerances) {
 					if (!reLayerCode.equals(reTolerance.getCode())) {
 						continue;
@@ -116,7 +142,7 @@ public class FeatureFilter {
 				}
 			}
 		}
-		if(tempIterator!=null){
+		if (tempIterator != null) {
 			tempIterator.close();
 		}
 		return relationSfc;

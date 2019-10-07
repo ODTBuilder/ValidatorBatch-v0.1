@@ -19,7 +19,6 @@ import org.apache.commons.io.FileUtils;
 import com.git.gdsbuilder.file.FileMeta;
 import com.git.gdsbuilder.file.FileMetaList;
 
-
 /**
  * @className UnZipFile.java
  * @description 압축파일를 지정경로에 압축을 푸는 클래스
@@ -34,7 +33,7 @@ public class UnZipFile {
 	private String brTag = "<br>";
 
 	int totalFileSize = 0;
-	
+
 	String fileName;
 	String entryName;
 	String fileDirectory;
@@ -113,8 +112,7 @@ public class UnZipFile {
 	 * 
 	 * @author SG.Lee
 	 * @Date 2018. 4. 18. 오전 9:09:33
-	 * @param source
-	 *            void
+	 * @param source void
 	 */
 	@SuppressWarnings("unused")
 	private static void subDirList(String source) {
@@ -181,8 +179,7 @@ public class UnZipFile {
 	 * 
 	 * @author SG.Lee
 	 * @Date 2018. 4. 18. 오후 1:24:16
-	 * @param unzipFolder
-	 *            void
+	 * @param unzipFolder void
 	 */
 	private static File[] createCollectionFolders(File unzipFolder) {
 		// boolean equalFlag = false; // 파일명이랑 압축파일명이랑 같을시 대비 flag값
@@ -197,10 +194,10 @@ public class UnZipFile {
 		String parentPath = unzipFolder.getParent(); // 상위 폴더 경로
 
 		for (int i = 0; i < fileList.length; i++) {
-			if (fileList[i].isDirectory()) { 		
+			if (fileList[i].isDirectory()) {
 				/*
-				 * String message = "[디렉토리] "; message = fileList[ i
-				 * ].getName(); System.out.println( message );
+				 * String message = "[디렉토리] "; message = fileList[ i ].getName();
+				 * System.out.println( message );
 				 * 
 				 * subDirList( fileList[ i ].getPath());//하위 폴더 탐색
 				 */ } else {
@@ -302,8 +299,7 @@ public class UnZipFile {
 	 * @Date 2018. 4. 18. 오전 9:45:55
 	 * @param source
 	 * @param dest
-	 * @throws IOException
-	 *             void
+	 * @throws IOException void
 	 */
 	private static void FileNio2Copy(String source, String dest) throws IOException {
 		Files.copy(new File(source).toPath(), new File(dest).toPath());
@@ -316,7 +312,7 @@ public class UnZipFile {
 	 * @param type
 	 * @decription
 	 */
-	private void getFilMeta(String fileDirectory) {
+	public void getFilMeta(String fileDirectory) {
 
 		File outputFile = new File(fileDirectory);
 		File[] subDirs = outputFile.listFiles();
@@ -403,25 +399,22 @@ public class UnZipFile {
 			}
 			fos.close();
 			isTrue = true;
-			
+
 		} catch (Exception e) {
 			isTrue = false;
 		}
 		return isTrue;
 	}
-	
-	public int getTotalSize(){
+
+	public int getTotalSize() {
 		return this.totalFileSize;
 	}
-/*
- * 
-	private String getFileName(String filePath) {
-		String[] splitArr = filePath.split("\\\\");
-		String fileName = splitArr[splitArr.length - 1];
-		int pos = fileName.lastIndexOf(".");
-		return fileName.substring(0, pos);
-	}
- */
+	/*
+	 * 
+	 * private String getFileName(String filePath) { String[] splitArr =
+	 * filePath.split("\\\\"); String fileName = splitArr[splitArr.length - 1]; int
+	 * pos = fileName.lastIndexOf("."); return fileName.substring(0, pos); }
+	 */
 
 	public String getFileState() {
 		return fileState;
@@ -522,5 +515,5 @@ public class UnZipFile {
 	public void setFiles(boolean isFiles) {
 		this.isFiles = isFiles;
 	}
-	
+
 }

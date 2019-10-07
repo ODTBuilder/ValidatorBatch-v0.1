@@ -263,7 +263,7 @@ public class FeatureAttributeValidatorImpl implements FeatureAttributeValidator 
 			// fixed
 			String name = fix.getName();
 			String type = fix.getType();
-			Long length = fix.getLength();
+			String length = fix.getLength();
 			List<Object> valuesObj = fix.getValues();
 			Boolean flag = fix.isIsnull();
 
@@ -283,7 +283,7 @@ public class FeatureAttributeValidatorImpl implements FeatureAttributeValidator 
 				}
 			}
 			String valueType = attrObj.getClass().getSimpleName();
-			if (type!=null) {
+			if (type != null) {
 				if (valueType.equals("Long")) {
 					if (!type.equals("INTEGER") && !type.equals("NUMBER")) {
 						isErr = true;
@@ -316,7 +316,7 @@ public class FeatureAttributeValidatorImpl implements FeatureAttributeValidator 
 							if (valueStr.equals(attrStr)) {
 								isTrueValue = true;
 								if (length != null) {
-									if (attrStr.length() != length) {
+									if (attrStr.length() != Long.valueOf(length)) {
 										isErr = true;
 										break;
 									}
