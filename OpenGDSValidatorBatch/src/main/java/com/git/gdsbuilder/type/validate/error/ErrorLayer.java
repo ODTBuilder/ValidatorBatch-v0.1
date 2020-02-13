@@ -111,10 +111,10 @@ public class ErrorLayer {
 	public void addErrorFeatureCollection(List<ErrorFeature> errFeatures) {
 		this.errFeatureList.addAll(errFeatures);
 	}
-	
+
 	/**
-	 * 두 ErrorLayer를 합침 @author DY.Oh @Date 2017. 3. 11. 오후 3:01:09 @param
-	 * errLayer void @throws
+	 * 두 ErrorLayer를 합침 @author DY.Oh @Date 2017. 3. 11. 오후 3:01:09 @param errLayer
+	 * void @throws
 	 */
 	public void mergeErrorLayer(ErrorLayer errLayer) {
 		this.errFeatureList.addAll(errLayer.getErrFeatureList());
@@ -133,6 +133,5 @@ public class ErrorLayer {
 		return "ErrorLayer [layerName=" + layerName + ", collectionName=" + collectionName + ", errFeatureList="
 				+ errFeatureList + ", collectionType=" + collectionType + "]";
 	}
-	
 
 }

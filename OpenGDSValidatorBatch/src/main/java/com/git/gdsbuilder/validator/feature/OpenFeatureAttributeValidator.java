@@ -11,7 +11,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 
 import com.git.gdsbuilder.type.dt.feature.DTFeature;
-import com.git.gdsbuilder.type.dt.layer.BasicDTLayer;
+import com.git.gdsbuilder.type.dt.layer.OpenDTLayer;
 import com.git.gdsbuilder.type.validate.error.ErrorFeature;
 import com.git.gdsbuilder.type.validate.option.en.LangType;
 import com.git.gdsbuilder.type.validate.option.specific.AttributeFigure;
@@ -355,7 +355,7 @@ public class OpenFeatureAttributeValidator {
 	}
 
 	public List<ErrorFeature> validateRefAttributeMiss(DTFeature feature, OptionFigure figure,
-			OptionTolerance tolerance, SimpleFeatureCollection sfc, BasicDTLayer retargetLayer) {
+			OptionTolerance tolerance, SimpleFeatureCollection sfc, OpenDTLayer retargetLayer) {
 
 		SimpleFeature sf = feature.getSimefeature();
 

@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * 
  * @author DY.Oh
  */
-public class BasicDTLayerList extends ArrayList<BasicDTLayer> {
+public class OpenDTLayerList extends ArrayList<OpenDTLayer> {
 
 	/**
 	 * {@link com.git.gdsbuilder.type.dt.layer.DTLayerList} 중 layerID에 해당하는
@@ -39,10 +39,10 @@ public class BasicDTLayerList extends ArrayList<BasicDTLayer> {
 	 * 
 	 * @author DY.Oh
 	 */
-	public BasicDTLayer getDTLayer(String layerID) {
+	public OpenDTLayer getDTLayer(String layerID) {
 
 		for (int i = 0; i < this.size(); i++) {
-			BasicDTLayer layer = this.get(i);
+			OpenDTLayer layer = this.get(i);
 			if (layerID.equals(layer.getLayerID())) {
 				return layer;
 			}
@@ -64,7 +64,7 @@ public class BasicDTLayerList extends ArrayList<BasicDTLayer> {
 	public boolean isEqualsLayer(String id, String type) {
 
 		for (int i = 0; i < this.size(); i++) {
-			BasicDTLayer layer = this.get(i);
+			OpenDTLayer layer = this.get(i);
 			String layerID = layer.getLayerID();
 			if (layerID.equals(id + "_" + type)) {
 				return true;

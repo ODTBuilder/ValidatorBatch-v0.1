@@ -15,6 +15,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import com.git.gdsbuilder.file.FileMeta;
 import com.git.gdsbuilder.file.FileMetaList;
@@ -315,6 +316,7 @@ public class UnZipFile {
 	public void getFilMeta(String fileDirectory) {
 
 		File outputFile = new File(fileDirectory);
+		entryName = FilenameUtils.getBaseName(outputFile.getName());
 		File[] subDirs = outputFile.listFiles();
 		for (File subDir : subDirs) {
 			if (subDir.isDirectory()) {

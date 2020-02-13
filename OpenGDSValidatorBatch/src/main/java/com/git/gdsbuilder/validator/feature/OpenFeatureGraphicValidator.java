@@ -13,11 +13,15 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.geometry.MismatchedDimensionException;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 
 import com.git.gdsbuilder.type.dt.feature.DTFeature;
-import com.git.gdsbuilder.type.dt.layer.BasicDTLayer;
-import com.git.gdsbuilder.type.dt.layer.BasicDTLayerList;
+import com.git.gdsbuilder.type.dt.layer.OpenDTLayer;
+import com.git.gdsbuilder.type.dt.layer.OpenDTLayerList;
 import com.git.gdsbuilder.type.validate.error.ErrorFeature;
 import com.git.gdsbuilder.type.validate.option.en.LangType;
 import com.git.gdsbuilder.type.validate.option.specific.AttributeFigure;
@@ -45,7 +49,7 @@ public class OpenFeatureGraphicValidator {
 	}
 
 	// 허용범위 이하 길이 (SmallLength)
-	public List<ErrorFeature> validateSmallLength(DTFeature feature, OptionTolerance tolerance) {
+	public List<ErrorFeature> validateSmallLength(DTFeature feature, OptionTolerance tolerance, String epsg) {
 
 		SimpleFeature sf = feature.getSimefeature();
 		List<AttributeFilter> filters = feature.getFilter();
@@ -56,7 +60,26 @@ public class OpenFeatureGraphicValidator {
 		} else {
 			isTrue = true;
 		}
+		if (tolerance == null) {
+			return null;
+		}
 		Geometry geom = (Geometry) sf.getDefaultGeometry();
+		if (epsg.equals("EPSG:4326")) {
+			try {
+				CoordinateReferenceSystem dataCRS = CRS.decode("EPSG:4326");
+				CoordinateReferenceSystem worldCRS = CRS.decode("EPSG:32652");
+				MathTransform transform = CRS.findMathTransform(dataCRS, worldCRS, true);
+				try {
+					geom = JTS.transform(geom, transform);
+				} catch (MismatchedDimensionException | TransformException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} catch (FactoryException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		Double value = tolerance.getValue();
 		String conditon = tolerance.getCondition();
 		List<ErrorFeature> errList = new ArrayList<>();
@@ -117,7 +140,7 @@ public class OpenFeatureGraphicValidator {
 	}
 
 	// 허용범위 이하 면적 (SmallArea)
-	public List<ErrorFeature> validateSmallArea(DTFeature feature, OptionTolerance tolerance) {
+	public List<ErrorFeature> validateSmallArea(DTFeature feature, OptionTolerance tolerance, String epsg) {
 
 		SimpleFeature sf = feature.getSimefeature();
 
@@ -128,7 +151,26 @@ public class OpenFeatureGraphicValidator {
 		} else {
 			isTrue = true;
 		}
+		if (tolerance == null) {
+			return null;
+		}
 		Geometry geom = (Geometry) sf.getDefaultGeometry();
+		if (epsg.equals("EPSG:4326")) {
+			try {
+				CoordinateReferenceSystem dataCRS = CRS.decode("EPSG:4326");
+				CoordinateReferenceSystem worldCRS = CRS.decode("EPSG:32652");
+				MathTransform transform = CRS.findMathTransform(dataCRS, worldCRS, true);
+				try {
+					geom = JTS.transform(geom, transform);
+				} catch (MismatchedDimensionException | TransformException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} catch (FactoryException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		Double value = tolerance.getValue();
 		String conditon = tolerance.getCondition();
 		List<ErrorFeature> errList = new ArrayList<>();
@@ -191,10 +233,8 @@ public class OpenFeatureGraphicValidator {
 		}
 	}
 
-	// 문자의 정확성(Text Accuracy)
-
 	// 단독존재오류 (Self Entity)
-	public List<ErrorFeature> validateSelfEntity(DTFeature feature, DTFeature reFeature) {
+	public List<ErrorFeature> validateSelfEntity(DTFeature feature, DTFeature reFeature, OptionTolerance tolerance) {
 
 		boolean isTrue = false;
 		SimpleFeature sf = feature.getSimefeature();
@@ -235,42 +275,107 @@ public class OpenFeatureGraphicValidator {
 			if (returnGeom != null && !returnGeom.isEmpty()) {
 				String layerID = feature.getLayerID();
 				String refLayerID = reFeature.getLayerID();
-//				String typeName = feature.getTypeName();
-//				String retypeName = reFeature.getTypeName();
-//				String errName = typeName + "/" + retypeName;
-				String returnGeomType = returnGeom.getGeometryType().toUpperCase();
-				if (returnGeomType.equals("LINESTRING")) {
-					if (returnGeom.getLength() == 0.0 || returnGeom.getLength() == 0) {
-						Coordinate[] coordinates = returnGeom.getCoordinates();
-						Point startPoint = geometryFactory.createPoint(coordinates[0]);
+				int numGeom = reGeom.getNumGeometries();
+
+				String conditon = tolerance.getCondition();
+				Double value = tolerance.getValue();
+				for (int n = 0; n < numGeom; n++) {
+					Geometry innerGeom = returnGeom.getGeometryN(n);
+					String returnGeomType = innerGeom.getGeometryType();
+					if (conditon == null || value == null) {
 						ErrorFeature errFeature = new ErrorFeature();
 						errFeature.setLayerID(layerID);
 						errFeature.setRefLayerId(refLayerID);
 						errFeature.setErrCode(OpenDMQAOptions.QAType.SELFENTITY.getErrCode());
 						errFeature.setErrType(OpenDMQAOptions.QAType.SELFENTITY.getErrType(langType));
 						errFeature.setErrName(OpenDMQAOptions.QAType.SELFENTITY.getErrName(langType));
-						errFeature.setErrPoint(startPoint);
+						errFeature.setErrPoint(innerGeom.getInteriorPoint());
 						errFeatures.add(errFeature);
 					} else {
-						ErrorFeature errFeature = new ErrorFeature();
-						errFeature.setLayerID(layerID);
-						errFeature.setRefLayerId(refLayerID);
-						errFeature.setErrCode(OpenDMQAOptions.QAType.SELFENTITY.getErrCode());
-						errFeature.setErrType(OpenDMQAOptions.QAType.SELFENTITY.getErrType(langType));
-						errFeature.setErrName(OpenDMQAOptions.QAType.SELFENTITY.getErrName(langType));
-						errFeature.setErrPoint(returnGeom.getInteriorPoint());
-						errFeatures.add(errFeature);
-					}
-				} else {
-					for (int i = 0; i < returnGeom.getNumGeometries(); i++) {
-						ErrorFeature errFeature = new ErrorFeature();
-						errFeature.setLayerID(layerID);
-						errFeature.setRefLayerId(refLayerID);
-						errFeature.setErrCode(OpenDMQAOptions.QAType.SELFENTITY.getErrCode());
-						errFeature.setErrType(OpenDMQAOptions.QAType.SELFENTITY.getErrType(langType));
-						errFeature.setErrName(OpenDMQAOptions.QAType.SELFENTITY.getErrName(langType));
-						errFeature.setErrPoint(returnGeom.getGeometryN(i).getInteriorPoint());
-						errFeatures.add(errFeature);
+						if (returnGeomType.equals("LineString")) {
+							boolean isError = false;
+							double geomLength = returnGeom.getLength();
+							if (conditon.equals("over")) {
+								if (geomLength <= value) {
+									isError = true;
+								}
+							} else if (conditon.equals("under")) {
+								if (geomLength >= value) {
+									isError = true;
+								}
+							} else if (conditon.equals("equal")) {
+								if (geomLength != value) {
+									isError = true;
+								}
+							} else if (conditon.equals("andover")) {
+								if (geomLength < value) {
+									isError = true;
+								}
+							} else if (conditon.equals("andunder")) {
+								if (geomLength > value) {
+									isError = true;
+								}
+							}
+							if (isError) {
+								Coordinate[] coordinates = innerGeom.getCoordinates();
+								Point startPoint = geometryFactory.createPoint(coordinates[0]);
+								ErrorFeature errFeature = new ErrorFeature();
+								errFeature.setLayerID(layerID);
+								errFeature.setRefLayerId(refLayerID);
+								errFeature.setErrCode(OpenDMQAOptions.QAType.SELFENTITY.getErrCode());
+								errFeature.setErrType(OpenDMQAOptions.QAType.SELFENTITY.getErrType(langType));
+								errFeature.setErrName(OpenDMQAOptions.QAType.SELFENTITY.getErrName(langType));
+								errFeature.setErrPoint(startPoint);
+								errFeatures.add(errFeature);
+							}
+						} else if (returnGeomType.equals("Point")) {
+							if (conditon.equals("equal") && value == 0) {
+								continue;
+							} else {
+								ErrorFeature errFeature = new ErrorFeature();
+								errFeature.setLayerID(layerID);
+								errFeature.setRefLayerId(refLayerID);
+								errFeature.setErrCode(OpenDMQAOptions.QAType.SELFENTITY.getErrCode());
+								errFeature.setErrType(OpenDMQAOptions.QAType.SELFENTITY.getErrType(langType));
+								errFeature.setErrName(OpenDMQAOptions.QAType.SELFENTITY.getErrName(langType));
+								errFeature.setErrPoint((Point) innerGeom);
+								errFeatures.add(errFeature);
+							}
+						} else if (returnGeomType.equals("Polygon")) {
+							boolean isError = false;
+							double geomLength = returnGeom.getArea();
+							if (conditon.equals("over")) {
+								if (geomLength <= value) {
+									isError = true;
+								}
+							} else if (conditon.equals("under")) {
+								if (geomLength >= value) {
+									isError = true;
+								}
+							} else if (conditon.equals("equal")) {
+								if (geomLength != value) {
+									isError = true;
+								}
+							} else if (conditon.equals("andover")) {
+								if (geomLength < value) {
+									isError = true;
+								}
+							} else if (conditon.equals("andunder")) {
+								if (geomLength > value) {
+									isError = true;
+								}
+							}
+							if (isError) {
+								ErrorFeature errFeature = new ErrorFeature();
+								errFeature.setLayerID(layerID);
+								errFeature.setRefLayerId(refLayerID);
+								errFeature.setErrCode(OpenDMQAOptions.QAType.SELFENTITY.getErrCode());
+								errFeature.setErrType(OpenDMQAOptions.QAType.SELFENTITY.getErrType(langType));
+								errFeature.setErrName(OpenDMQAOptions.QAType.SELFENTITY.getErrName(langType));
+								errFeature.setErrPoint(innerGeom.getInteriorPoint());
+								errFeatures.add(errFeature);
+							}
+						}
 					}
 				}
 			}
@@ -437,7 +542,7 @@ public class OpenFeatureGraphicValidator {
 
 	// 등고선 끊김오류 (ConBreak)
 	public List<ErrorFeature> validateConBreak(DTFeature feature, OptionTolerance tolerance, OptionFigure figure,
-			SimpleFeatureCollection sfc, BasicDTLayerList reDTLayers, Geometry bEnvelope) throws IOException {
+			SimpleFeatureCollection sfc, OpenDTLayerList reDTLayers, Geometry bEnvelope) throws IOException {
 
 		SimpleFeature sf = feature.getSimefeature();
 		boolean isTrue = true;
@@ -557,7 +662,7 @@ public class OpenFeatureGraphicValidator {
 			}
 
 			// 5. 관계 레이어 검수
-			reFor: for (BasicDTLayer reDTLayer : reDTLayers) {
+			reFor: for (OpenDTLayer reDTLayer : reDTLayers) {
 				OptionFilter reAttrFilter = reDTLayer.getFilter();
 				List<AttributeFilter> reAttrFilters = null;
 				if (reAttrFilter != null) {
@@ -704,6 +809,11 @@ public class OpenFeatureGraphicValidator {
 	public List<ErrorFeature> validatePointDuplicated(DTFeature feature) {
 
 		SimpleFeature sf = feature.getSimefeature();
+
+		if (sf.getAttribute("osm_id").toString().equals("310762455")) {
+			System.out.println("");
+		}
+
 		boolean isTrue = false;
 		List<AttributeFilter> filters = feature.getFilter();
 
@@ -804,9 +914,86 @@ public class OpenFeatureGraphicValidator {
 	}
 
 	// 경계초과오류 (OutBoundary)
-	public ErrorFeature validateOutBoundary(DTFeature feature, OptionTolerance tolerance, BasicDTLayerList reDTLayers) {
+//	public ErrorFeature validateOutBoundary(DTFeature feature, OptionTolerance tolerance, BasicDTLayerList reDTLayers) {
+//
+//		// simplefeature : 터널, 지하도, 교량.....
+//		// relationSfc : 도로경계
+//		SimpleFeature sf = feature.getSimefeature();
+//		boolean isTrue = true;
+//		List<AttributeFilter> filters = feature.getFilter();
+//		if (filters != null) {
+//			isTrue = FeatureFilter.filter(sf, filters);
+//		}
+//		if (isTrue) {
+//			Geometry geom = (Geometry) sf.getDefaultGeometry();
+//			Coordinate[] geomCoors = geom.getCoordinates();
+//			int geomCoorsLength = geomCoors.length;
+//			Double value = tolerance.getValue();
+//			String layerID = feature.getLayerID();
+//
+//			boolean isErr = true;
+//			reFor: for (BasicDTLayer reDTLayer : reDTLayers) {
+//				SimpleFeatureCollection reSfc = reDTLayer.getSimpleFeatureCollection();
+//				SimpleFeatureIterator iterator = reSfc.features();
+//				OptionFilter reFilter = reDTLayer.getFilter();
+//				List<AttributeFilter> reAttrFilters = null;
+//				if (reFilter != null) {
+//					reAttrFilters = reFilter.getFilter();
+//				}
+//				while (iterator.hasNext()) {
+//					// A001
+//					SimpleFeature relationSf = iterator.next();
+//					if (FeatureFilter.filter(relationSf, reAttrFilters)) {
+//						Geometry relationGeom = (Geometry) relationSf.getDefaultGeometry();
+//						if (relationGeom == null) {
+//							continue;
+//						}
+//						boolean allContains = true;
+//						if (geom.intersects(relationGeom)) {
+//							for (int j = 0; j < geomCoorsLength; j++) {
+//								Coordinate coor = geomCoors[j];
+//								Geometry pt = new GeometryFactory().createPoint(coor);
+//								if (!pt.intersects(relationGeom.buffer(value))) {
+//									allContains = false;
+//								}
+//							}
+//						} else {
+//							allContains = false;
+//						}
+//						if (allContains) {
+//							isErr = false;
+//							break reFor;
+//						}
+//					}
+//				}
+//				iterator.close();
+//			}
+//			if (isErr) {
+//				Geometry errPt = null;
+//				try {
+//					errPt = geom.getInteriorPoint();
+//				} catch (TopologyException e) {
+//					Coordinate[] coors = geom.getCoordinates();
+//					errPt = new GeometryFactory().createPoint(coors[0]);
+//				}
+//				ErrorFeature errFeature = new ErrorFeature();
+//				errFeature.setLayerID(layerID);
+//				errFeature.setErrCode(OpenDMQAOptions.QAType.OUTBOUNDARY.getErrCode());
+//				errFeature.setErrType(OpenDMQAOptions.QAType.OUTBOUNDARY.getErrType(langType));
+//				errFeature.setErrName(OpenDMQAOptions.QAType.OUTBOUNDARY.getErrName(langType));
+//				errFeature.setErrPoint(errPt);
+//				return errFeature;
+//			} else {
+//				return null;
+//			}
+//		} else {
+//			return null;
+//		}
+//	}
 
-		// simplefeature : 터널, 지하도, 교량.....
+	public ErrorFeature validateOutBoundary(DTFeature feature, OptionTolerance tolerance,
+			SimpleFeatureCollection reValSfc) {
+
 		// relationSfc : 도로경계
 		SimpleFeature sf = feature.getSimefeature();
 		boolean isTrue = true;
@@ -818,46 +1005,45 @@ public class OpenFeatureGraphicValidator {
 			Geometry geom = (Geometry) sf.getDefaultGeometry();
 			Coordinate[] geomCoors = geom.getCoordinates();
 			int geomCoorsLength = geomCoors.length;
-			Double value = tolerance.getValue();
 			String layerID = feature.getLayerID();
 
+			String condition = tolerance.getCondition();
+			Double value = tolerance.getValue();
+
 			boolean isErr = true;
-			reFor: for (BasicDTLayer reDTLayer : reDTLayers) {
-				SimpleFeatureCollection reSfc = reDTLayer.getSimpleFeatureCollection();
-				SimpleFeatureIterator iterator = reSfc.features();
-				OptionFilter reFilter = reDTLayer.getFilter();
-				List<AttributeFilter> reAttrFilters = null;
-				if (reFilter != null) {
-					reAttrFilters = reFilter.getFilter();
+			SimpleFeatureIterator reIterator = reValSfc.features();
+			while (reIterator.hasNext()) {
+				// A001
+				SimpleFeature relationSf = reIterator.next();
+				Geometry relationGeom = (Geometry) relationSf.getDefaultGeometry();
+				if (relationGeom == null) {
+					continue;
 				}
-				while (iterator.hasNext()) {
-					// A001
-					SimpleFeature relationSf = iterator.next();
-					if (FeatureFilter.filter(relationSf, reAttrFilters)) {
-						Geometry relationGeom = (Geometry) relationSf.getDefaultGeometry();
-						if (relationGeom == null) {
-							continue;
-						}
-						boolean allContains = true;
-						if (geom.intersects(relationGeom)) {
-							for (int j = 0; j < geomCoorsLength; j++) {
-								Coordinate coor = geomCoors[j];
-								Geometry pt = new GeometryFactory().createPoint(coor);
-								if (!pt.intersects(relationGeom.buffer(value))) {
-									allContains = false;
-								}
+				boolean allContains = true;
+				if (condition == null || value == null) {
+					if (!geom.equals(relationGeom)) {
+						allContains = false;
+					}
+				} else {
+					Geometry bufferGeom = relationGeom.buffer(value);
+					if (geom.intersects(relationGeom)) {
+						for (int j = 0; j < geomCoorsLength; j++) {
+							Coordinate coor = geomCoors[j];
+							Geometry pt = new GeometryFactory().createPoint(coor);
+							if (!pt.intersects(bufferGeom)) {
+								allContains = false;
 							}
-						} else {
-							allContains = false;
 						}
-						if (allContains) {
-							isErr = false;
-							break reFor;
-						}
+					} else {
+						allContains = false;
+					}
+					if (allContains) {
+						isErr = false;
+						break;
 					}
 				}
-				iterator.close();
 			}
+			reIterator.close();
 			if (isErr) {
 				Geometry errPt = null;
 				try {
@@ -868,6 +1054,7 @@ public class OpenFeatureGraphicValidator {
 				}
 				ErrorFeature errFeature = new ErrorFeature();
 				errFeature.setLayerID(layerID);
+				errFeature.setRefLayerId(reValSfc.getSchema().getName().getLocalPart());
 				errFeature.setErrCode(OpenDMQAOptions.QAType.OUTBOUNDARY.getErrCode());
 				errFeature.setErrType(OpenDMQAOptions.QAType.OUTBOUNDARY.getErrType(langType));
 				errFeature.setErrName(OpenDMQAOptions.QAType.OUTBOUNDARY.getErrName(langType));
@@ -882,7 +1069,7 @@ public class OpenFeatureGraphicValidator {
 	}
 
 	// 노드오류 (NodeMiss)
-	public List<ErrorFeature> validateNodeMiss(DTFeature feature, SimpleFeatureCollection sfc, BasicDTLayer reLayer,
+	public List<ErrorFeature> validateNodeMiss(DTFeature feature, SimpleFeatureCollection sfc, OpenDTLayer reLayer,
 			OptionTolerance tolerance, OptionFigure figure, Geometry envelopBdr) {
 
 		// tar 중심선
@@ -1395,9 +1582,9 @@ public class OpenFeatureGraphicValidator {
 						errPt = new GeometryFactory().createPoint(coors[0]);
 					}
 					ErrorFeature errFeature = new ErrorFeature();
-					errFeature.setErrCode(OpenDMQAOptions.QAType.TWISTEDPOLYGON.getErrCode());
-					errFeature.setErrType(OpenDMQAOptions.QAType.TWISTEDPOLYGON.getErrType(langType));
-					errFeature.setErrName(OpenDMQAOptions.QAType.TWISTEDPOLYGON.getErrName(langType));
+					errFeature.setErrCode(OpenDMQAOptions.QAType.ENTITYTWISTED.getErrCode());
+					errFeature.setErrType(OpenDMQAOptions.QAType.ENTITYTWISTED.getErrType(langType));
+					errFeature.setErrName(OpenDMQAOptions.QAType.ENTITYTWISTED.getErrName(langType));
 					errFeature.setErrPoint(errPt);
 					errList.add(errFeature);
 				}

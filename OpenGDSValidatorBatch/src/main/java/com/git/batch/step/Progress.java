@@ -19,9 +19,9 @@ import com.git.gdsbuilder.type.dt.collection.DTLayerCollection;
 import com.git.gdsbuilder.type.dt.collection.DTLayerCollectionList;
 import com.git.gdsbuilder.type.dt.collection.MapSystemRule;
 import com.git.gdsbuilder.type.dt.collection.MapSystemRule.MapSystemRuleType;
+import com.git.gdsbuilder.type.dt.layer.OpenDTLayer;
+import com.git.gdsbuilder.type.dt.layer.OpenDTLayerList;
 import com.git.gdsbuilder.type.dt.layer.DTLayer;
-import com.git.gdsbuilder.type.dt.layer.BasicDTLayer;
-import com.git.gdsbuilder.type.dt.layer.BasicDTLayerList;
 import com.git.gdsbuilder.type.validate.error.ErrorLayer;
 import com.git.gdsbuilder.type.validate.layer.QALayerType;
 import com.git.gdsbuilder.type.validate.layer.QALayerTypeList;
@@ -69,12 +69,12 @@ public class Progress {
 			max--;
 	}
 
-	public void countBasicTotalTask(String fileDir, QALayerTypeList validateLayerTypeList) {
+	public void countOpenTotalTask(String fileDir, QALayerTypeList validateLayerTypeList) {
 		for (QALayerType qaType : validateLayerTypeList) {
 			List<String> layerNames = qaType.getLayerIDList();
 			for (String layerName : layerNames) {
 				// target layer
-				BasicDTLayer dtLayer = null;
+				OpenDTLayer dtLayer = null;
 				dtLayer = getDTLayer(fileDir, layerName);
 				if (dtLayer == null) {
 					continue;
@@ -95,21 +95,35 @@ public class Progress {
 					for (AttributeMiss attrMiss : attrMissArr) {
 						String optionName = attrMiss.getOption();
 						List<OptionRelation> relations = attrMiss.getRetaion();
-						if (optionName.equals("ZValueAmbiguous")) {
+						// 속성오류 (AttributeMiss)
+						if (optionName.equals("AttributeMiss")) {
+							LayerFixMiss fix = qaOption.getLayerMissOption(layerName);
+							if (fix != null) {
+								max++;
+							}
+						}
+						// 필수속성오류 (AttributeFixMiss)
+						if (optionName.equals("AttributeFixMiss")) {
+							LayerFixMiss fix = qaOption.getLayerMissOption(layerName);
+							if (fix != null) {
+								max++;
+							}
+						}
+						// 고도값오류 (Z-Value Abmiguous)
+						if (optionName.equals("ZValueAmbiguous2")) {
 							max++;
 						}
-						if (optionName.equals("RefAttributeMiss")) {
+						// 인접속성오류 (RefAttributeMiss)
+						if (optionName.equals("RefAttributeMissB")) {
 							if (relations != null) {
 								for (OptionRelation relation : relations) {
-									BasicDTLayerList reDTLayers = getRelationTypeDTLayers(dtLayer, relation,
-											validateLayerTypeList);
-									if (reDTLayers != null) {
-										for (BasicDTLayer reDTLayer : reDTLayers) {
-											max++;
-										}
-									}
+									max++;
 								}
 							}
+						}
+						// 문자의 정확성(Text Accuracy)
+						if (optionName.equals("FixValues")) {
+							max++;
 						}
 					}
 				}
@@ -118,72 +132,74 @@ public class Progress {
 					for (GraphicMiss grapMiss : grapMissArr) {
 						String optionName = grapMiss.getOption();
 						List<OptionRelation> relations = grapMiss.getRetaion();
-						if (optionName.equals("SmallLength")) {
+						// 계층오류 (LayerFix)
+						if (optionName.equals("LayerMiss")) {
+							LayerFixMiss fix = qaOption.getLayerMissOption(layerName);
+							if (fix != null) {
+								max++;
+							}
+						}
+						// 허용범위 이하 길이 (SmallLength)
+						if (optionName.equals("SmallLengthB")) {
 							max++;
 						}
-						if (optionName.equals("SmallArea")) {
+						// 허용범위 이하 면적 (SmallArea)
+						if (optionName.equals("SmallAreaB")) {
 							max++;
 						}
-						if (optionName.equals("SelfEntity")) {
+						// 단독존재오류 (Self Entity)
+						if (optionName.equals("SelfEntityB")) {
 							if (relations != null) {
 								for (OptionRelation relation : relations) {
-									BasicDTLayerList reDTLayers = getRelationTypeDTLayers(dtLayer, relation,
-											validateLayerTypeList);
-									if (reDTLayers != null) {
-										for (BasicDTLayer reDTLayer : reDTLayers) {
-											max++;
-										}
-									}
+									max++;
 								}
 							}
 						}
-						if (optionName.equals("EntityDuplicated")) {
+						// 요소중복오류 (EntityDuplicated)
+						if (optionName.equals("EntityDuplicatedB")) {
 							max++;
 						}
-						if (optionName.equals("ConOverDegree")) {
+						// 등고선 꺾임 오류 (ConOverDegree)
+						if (optionName.equals("ConOverDegreeB")) {
 							max++;
 						}
-						if (optionName.equals("ConIntersected")) {
+						// 등고선교차오류 (ConIntersected)
+						if (optionName.equals("ConIntersectedB")) {
 							max++;
 						}
-						if (optionName.equals("ConBreak")) {
+						// 등고선 끊김오류 (ConBreak)
+						if (optionName.equals("ConBreakB")) {
 							max++;
 						}
+						// 등고선 직선화미처리오류(UselessPoint)
 						if (optionName.equals("UselessPoint")) {
 							max++;
 						}
-						if (optionName.equals("PointDuplicated")) {
+						// 중복점오류(DuplicatedPoint)
+						if (optionName.equals("PointDuplicatedB")) {
 							max++;
 						}
-						if (optionName.equals("OutBoundary")) {
+						// 경계초과오류 (OutBoundary)
+						if (optionName.equals("OutBoundaryB")) {
 							if (relations != null) {
 								for (OptionRelation relation : relations) {
-									BasicDTLayerList reDTLayers = getRelationTypeDTLayers(dtLayer, relation,
-											validateLayerTypeList);
-									if (reDTLayers != null) {
-										for (BasicDTLayer reDTLayer : reDTLayers) {
-											max++;
-										}
-									}
+								}
+							}
+							max++;
+						}
+						// 노드오류 (NodeMiss)
+						if (optionName.equals("NodeMissB")) {
+							if (relations != null) {
+								for (OptionRelation relation : relations) {
+									max++;
 								}
 							}
 						}
-						if (optionName.equals("NodeMiss")) {
-							if (relations != null) {
-								for (OptionRelation relation : relations) {
-									BasicDTLayerList reDTLayers = getRelationTypeDTLayers(dtLayer, relation,
-											validateLayerTypeList);
-									if (reDTLayers != null) {
-										for (BasicDTLayer reDTLayer : reDTLayers) {
-											max++;
-										}
-									}
-								}
-							}
-						}
-						if (optionName.equals("OverShoot")) {
+						// 기준점 초과오류 (OverShoot)
+						if (optionName.equals("OverShootB")) {
 							max++;
 						}
+						// 폴리곤 꼬임 오류 (InvalidPolygon)
 						if (optionName.equals("EntityTwisted")) {
 							max++;
 						}
@@ -191,6 +207,7 @@ public class Progress {
 				}
 			}
 		}
+
 	}
 
 	public void countTotalTask(QALayerTypeList types, DTLayerCollection collection,
@@ -374,9 +391,9 @@ public class Progress {
 		return Progress.max;
 	}
 
-	private BasicDTLayer getDTLayer(String filePath, String fileName) {
+	private OpenDTLayer getDTLayer(String filePath, String fileName) {
 
-		BasicDTLayer dtLayer = new BasicDTLayer();
+		OpenDTLayer dtLayer = new OpenDTLayer();
 		File layerFile = new File(filePath + File.separator + fileName + ".shp");
 		SimpleFeatureCollection sfc = new SHPFileLayerParser().getShpObject(layerFile);
 		if (sfc != null) {
@@ -392,10 +409,10 @@ public class Progress {
 		}
 	}
 
-	public BasicDTLayerList getRelationTypeDTLayers(BasicDTLayer dtLayer, OptionRelation relation,
+	public OpenDTLayerList getRelationTypeDTLayers(OpenDTLayer dtLayer, OptionRelation relation,
 			QALayerTypeList qaTypes) {
 
-		BasicDTLayerList reDTLayers = new BasicDTLayerList();
+		OpenDTLayerList reDTLayers = new OpenDTLayerList();
 
 		String layerName = dtLayer.getLayerID();
 		String reLayerType = relation.getName();
@@ -414,7 +431,7 @@ public class Progress {
 				for (OptionFilter refilter : reFilters) {
 					String refilterCode = refilter.getCode();
 					if (refilterCode.equals(layerName)) {
-						BasicDTLayer reDtLayer = dtLayer;
+						OpenDTLayer reDtLayer = dtLayer;
 						reDTLayers.add(reDtLayer);
 					}
 				}
@@ -422,14 +439,14 @@ public class Progress {
 				List<String> reLayerIDs = reQaType.getLayerIDList();
 				for (String reLayerId : reLayerIDs) {
 					if (reLayerId.equals(layerName)) {
-						BasicDTLayer reDtLayer = dtLayer;
+						OpenDTLayer reDtLayer = dtLayer;
 						reDTLayers.add(reDtLayer);
 					}
 				}
 			}
 		}
 		if (reDTLayers.size() > 0) {
-			for (BasicDTLayer tmp : reDTLayers) {
+			for (OpenDTLayer tmp : reDTLayers) {
 				String code = tmp.getLayerID();
 				OptionFilter filter = relation.getFilter(code);
 				OptionFigure figure = relation.getFigure(code);

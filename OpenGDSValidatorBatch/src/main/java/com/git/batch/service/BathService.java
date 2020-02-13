@@ -36,8 +36,8 @@ import com.git.gdsbuilder.type.dt.collection.DTLayerCollectionList;
 import com.git.gdsbuilder.type.validate.error.ErrorLayer;
 import com.git.gdsbuilder.type.validate.layer.QALayerTypeList;
 import com.git.gdsbuilder.type.validate.option.en.LangType;
-import com.git.gdsbuilder.validator.collection.OpenCollectionValidator;
 import com.git.gdsbuilder.validator.collection.CollectionValidator;
+import com.git.gdsbuilder.validator.collection.OpenCollectionValidator;
 import com.git.gdsbuilder.validator.fileReader.UnZipFile;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
@@ -133,15 +133,15 @@ public class BathService {
 			try {
 				option = (JSONObject) ((Object) jsonP.parse(new FileReader(valOptPath)));
 			} catch (ClassCastException e) {
-				System.out.println("잘못된 옵션 파일입니다.");
-//				System.out.println("Invalid option file");
+				// System.out.println("잘못된 옵션 파일입니다.");
+				System.out.println("Invalid option file");
 				throw new Throwable();
 			}
 			try {
 				layers = (JSONArray) ((Object) jsonP.parse(new FileReader(layerDefPath)));
 			} catch (ClassCastException e) {
-				System.out.println("잘못된 레이어 정의 파일입니다.");
-//				System.out.println("Invalid layer definition file.");
+				// System.out.println("잘못된 레이어 정의 파일입니다.");
+				System.out.println("Invalid layer definition file.");
 				throw new Throwable();
 			}
 
@@ -265,7 +265,7 @@ public class BathService {
 		org.geotools.util.logging.Logging.getLogger("org").setLevel(Level.OFF);
 
 		pb = new Progress(epsg, attrFilter, stateFilter);
-		pb.countBasicTotalTask(fileDir, validateLayerTypeList);
+		pb.countOpenTotalTask(fileDir, validateLayerTypeList);
 		pb.startProgress();
 
 		boolean isSuccess = false;
@@ -369,16 +369,12 @@ public class BathService {
 				int errSize = errLayer.getErrFeatureList().size();
 				if (errSize > 0) {
 					SHPFileWriter.writeSHP(epsg, errLayer, fileName);
-				} else {
-					System.out.println(qaType + " 오류 객체가 없습니다.");
 				}
-			} else {
-				System.out.println(qaType + " 오류 객체가 없습니다.");
 			}
-			System.out.println(qaType + " 검수 요청이 성공적으로 완료되었습니다.");
+			System.out.println(qaType + " Success.");
 			return true;
 		} catch (Exception e) {
-			System.out.println(qaType + " 검수 요청이 실패했습니다.");
+			System.out.println(qaType + " Fail.");
 			return false;
 		}
 	}

@@ -1,9 +1,18 @@
 package com.git.gdsbuilder.validator.quad;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.util.NullProgressListener;
+import org.opengis.feature.Feature;
+import org.opengis.feature.FeatureVisitor;
+import org.opengis.feature.simple.SimpleFeature;
+
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.index.*;
 
 /**
@@ -222,6 +231,31 @@ public class Quadtree implements SpatialIndex, Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public static Quadtree buildQuadTree(SimpleFeatureCollection sfc) {
+
+		Quadtree quad = new Quadtree();
+		try {
+			sfc.accepts(new FeatureVisitor() {
+				@Override
+				public void visit(Feature feature) {
+					SimpleFeature simpleFeature = (SimpleFeature) feature;
+					Geometry geom = (Geometry) simpleFeature.getDefaultGeometry();
+					// Just in case: check for null or empty geometry
+					if (geom != null) {
+						Envelope env = geom.getEnvelopeInternal();
+						if (!env.isNull()) {
+							quad.insert(env, simpleFeature);
+						}
+					}
+				}
+			}, new NullProgressListener());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return quad;
 	}
 
 }

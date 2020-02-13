@@ -9,8 +9,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryType;
 
 import com.git.gdsbuilder.type.dt.collection.DTLayerCollection;
-import com.git.gdsbuilder.type.dt.layer.BasicDTLayer;
-import com.git.gdsbuilder.type.dt.layer.BasicDTLayerList;
+import com.git.gdsbuilder.type.dt.layer.OpenDTLayer;
+import com.git.gdsbuilder.type.dt.layer.OpenDTLayerList;
 import com.git.gdsbuilder.type.validate.layer.QALayerType;
 import com.git.gdsbuilder.type.validate.layer.QALayerTypeList;
 import com.git.gdsbuilder.type.validate.option.QAOption;
@@ -60,7 +60,7 @@ public class OpenProgress {
 			List<String> layerNames = qaType.getLayerIDList();
 			for (String layerName : layerNames) {
 				// target layer
-				BasicDTLayer dtLayer = null;
+				OpenDTLayer dtLayer = null;
 				dtLayer = getDTLayer(fileDir, layerName);
 				if (dtLayer == null) {
 					continue;
@@ -87,10 +87,10 @@ public class OpenProgress {
 						if (optionName.equals("RefAttributeMiss")) {
 							if (relations != null) {
 								for (OptionRelation relation : relations) {
-									BasicDTLayerList reDTLayers = getRelationTypeDTLayers(dtLayer, relation,
+									OpenDTLayerList reDTLayers = getRelationTypeDTLayers(dtLayer, relation,
 											validateLayerTypeList);
 									if (reDTLayers != null) {
-										for (BasicDTLayer reDTLayer : reDTLayers) {
+										for (OpenDTLayer reDTLayer : reDTLayers) {
 											max++;
 										}
 									}
@@ -113,10 +113,10 @@ public class OpenProgress {
 						if (optionName.equals("SelfEntity")) {
 							if (relations != null) {
 								for (OptionRelation relation : relations) {
-									BasicDTLayerList reDTLayers = getRelationTypeDTLayers(dtLayer, relation,
+									OpenDTLayerList reDTLayers = getRelationTypeDTLayers(dtLayer, relation,
 											validateLayerTypeList);
 									if (reDTLayers != null) {
-										for (BasicDTLayer reDTLayer : reDTLayers) {
+										for (OpenDTLayer reDTLayer : reDTLayers) {
 											max++;
 										}
 									}
@@ -144,10 +144,10 @@ public class OpenProgress {
 						if (optionName.equals("OutBoundary")) {
 							if (relations != null) {
 								for (OptionRelation relation : relations) {
-									BasicDTLayerList reDTLayers = getRelationTypeDTLayers(dtLayer, relation,
+									OpenDTLayerList reDTLayers = getRelationTypeDTLayers(dtLayer, relation,
 											validateLayerTypeList);
 									if (reDTLayers != null) {
-										for (BasicDTLayer reDTLayer : reDTLayers) {
+										for (OpenDTLayer reDTLayer : reDTLayers) {
 											max++;
 										}
 									}
@@ -157,10 +157,10 @@ public class OpenProgress {
 						if (optionName.equals("NodeMiss")) {
 							if (relations != null) {
 								for (OptionRelation relation : relations) {
-									BasicDTLayerList reDTLayers = getRelationTypeDTLayers(dtLayer, relation,
+									OpenDTLayerList reDTLayers = getRelationTypeDTLayers(dtLayer, relation,
 											validateLayerTypeList);
 									if (reDTLayers != null) {
-										for (BasicDTLayer reDTLayer : reDTLayers) {
+										for (OpenDTLayer reDTLayer : reDTLayers) {
 											max++;
 										}
 									}
@@ -217,9 +217,9 @@ public class OpenProgress {
 		return OpenProgress.max;
 	}
 
-	private BasicDTLayer getDTLayer(String filePath, String fileName) {
+	private OpenDTLayer getDTLayer(String filePath, String fileName) {
 
-		BasicDTLayer dtLayer = new BasicDTLayer();
+		OpenDTLayer dtLayer = new OpenDTLayer();
 		File layerFile = new File(filePath + File.separator + fileName + ".shp");
 		SimpleFeatureCollection sfc = new SHPFileLayerParser().getShpObject(layerFile);
 		if (sfc != null) {
@@ -235,10 +235,10 @@ public class OpenProgress {
 		}
 	}
 
-	public BasicDTLayerList getRelationTypeDTLayers(BasicDTLayer dtLayer, OptionRelation relation,
+	public OpenDTLayerList getRelationTypeDTLayers(OpenDTLayer dtLayer, OptionRelation relation,
 			QALayerTypeList qaTypes) {
 
-		BasicDTLayerList reDTLayers = new BasicDTLayerList();
+		OpenDTLayerList reDTLayers = new OpenDTLayerList();
 
 		String layerName = dtLayer.getLayerID();
 		String reLayerType = relation.getName();
@@ -257,7 +257,7 @@ public class OpenProgress {
 				for (OptionFilter refilter : reFilters) {
 					String refilterCode = refilter.getCode();
 					if (refilterCode.equals(layerName)) {
-						BasicDTLayer reDtLayer = dtLayer;
+						OpenDTLayer reDtLayer = dtLayer;
 						reDTLayers.add(reDtLayer);
 					}
 				}
@@ -265,14 +265,14 @@ public class OpenProgress {
 				List<String> reLayerIDs = reQaType.getLayerIDList();
 				for (String reLayerId : reLayerIDs) {
 					if (reLayerId.equals(layerName)) {
-						BasicDTLayer reDtLayer = dtLayer;
+						OpenDTLayer reDtLayer = dtLayer;
 						reDTLayers.add(reDtLayer);
 					}
 				}
 			}
 		}
 		if (reDTLayers.size() > 0) {
-			for (BasicDTLayer tmp : reDTLayers) {
+			for (OpenDTLayer tmp : reDTLayers) {
 				String code = tmp.getLayerID();
 				tmp.setFilter(relation.getFilter(code));
 				tmp.setFigure(relation.getFigure(code));

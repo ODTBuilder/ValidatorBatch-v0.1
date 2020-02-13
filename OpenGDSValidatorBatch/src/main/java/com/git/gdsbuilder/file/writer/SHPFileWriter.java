@@ -35,9 +35,9 @@ public class SHPFileWriter {
 
 	public static void writeSHP(String epsg, SimpleFeatureCollection simpleFeatureCollection, String filePath)
 			throws IOException, SchemaException, NoSuchAuthorityCodeException, FactoryException {
-		
+
 		org.geotools.util.logging.Logging.getLogger("org").setLevel(Level.OFF);
-		
+
 		FileDataStoreFactorySpi factory = new ShapefileDataStoreFactory();
 
 		File file = new File(filePath);
@@ -67,42 +67,29 @@ public class SHPFileWriter {
 	public static void writeSHP(String epsg, ErrorLayer errLayer, String filePath)
 			throws IOException, SchemaException, NoSuchAuthorityCodeException, FactoryException {
 		DefaultFeatureCollection collection = new DefaultFeatureCollection();
-		
+
 		org.geotools.util.logging.Logging.getLogger("org").setLevel(Level.OFF);
-	
 		List<ErrorFeature> errList = errLayer.getErrFeatureList();
-		
+
+		SimpleFeatureType sfType = DataUtilities.createType("ErrorLayer",
+				"layerID:String,refLayerID:String,featureID:String,errCode:String,errType:String,errName:String,comment:String,the_geom:Point");
+
 		if (errList.size() > 0) {
 			for (int i = 0; i < errList.size(); i++) {
 				ErrorFeature err = errList.get(i);
 				String layerID = err.getLayerID();
+				String refLayerID = err.getRefLayerId();
 				String featureID = err.getFeatureID();
+				String errCode = err.getErrCode();
 				String errType = err.getErrType();
 				String errName = err.getErrName();
-				Geometry errPoint = err.getErrPoint();
 				String featureIdx = "f_" + i;
-				String geomType = errPoint.getGeometryType();
 				String comment = err.getComment();
+				Geometry errPoint = err.getErrPoint();
 
-//				CoordinateReferenceSystem worldCRS = CRS.decode("EPSG:32652");
-//				CoordinateReferenceSystem dataCRS = CRS.decode(epsg);
-//				MathTransform transform = CRS.findMathTransform(worldCRS, dataCRS);
-//				Geometry afterGeom = null;
-//				try {
-//					afterGeom = JTS.transform(errPoint, transform);
-//				} catch (MismatchedDimensionException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				} catch (TransformException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-				SimpleFeatureType sfType = DataUtilities.createType(featureIdx,
-						"layerID:String,featureID:String,errType:String,errName:String,comment:String,the_geom:"
-								+ geomType);
 				SimpleFeature newSimpleFeature = SimpleFeatureBuilder.build(sfType,
-						new Object[] { layerID, featureID, errType, errName, comment, errPoint }, featureIdx);
-
+						new Object[] { layerID, refLayerID, featureID, errCode, errType, errName, comment, errPoint },
+						featureIdx);
 				collection.add(newSimpleFeature);
 			}
 

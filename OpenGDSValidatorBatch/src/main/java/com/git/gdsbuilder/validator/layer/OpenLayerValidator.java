@@ -34,8 +34,8 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 
 import com.git.gdsbuilder.type.dt.feature.DTFeature;
-import com.git.gdsbuilder.type.dt.layer.BasicDTLayer;
-import com.git.gdsbuilder.type.dt.layer.BasicDTLayerList;
+import com.git.gdsbuilder.type.dt.layer.OpenDTLayer;
+import com.git.gdsbuilder.type.dt.layer.OpenDTLayerList;
 import com.git.gdsbuilder.type.validate.error.ErrorFeature;
 import com.git.gdsbuilder.type.validate.error.ErrorLayer;
 import com.git.gdsbuilder.type.validate.option.en.LangType;
@@ -55,19 +55,28 @@ import com.vividsolutions.jts.geom.TopologyException;
 
 public class OpenLayerValidator {
 
-	BasicDTLayer validatorLayer;
+	OpenDTLayer validatorLayer;
 	String typeName;
 	OpenFeatureAttributeValidator attrValidator;
 	OpenFeatureGraphicValidator grapValidator;
 	LangType langType;
+	String epsg;
 
-	public OpenLayerValidator(BasicDTLayer validatorLayer, LangType langType) {
-
+	public OpenLayerValidator(OpenDTLayer validatorLayer, LangType langType) {
 		this.validatorLayer = validatorLayer;
 		this.typeName = validatorLayer.getTypeName();
 		this.attrValidator = new OpenFeatureAttributeValidator(langType);
 		this.grapValidator = new OpenFeatureGraphicValidator(langType);
 		this.langType = langType;
+	}
+
+	public OpenLayerValidator(OpenDTLayer validatorLayer, LangType langType, String epsg) {
+		this.validatorLayer = validatorLayer;
+		this.typeName = validatorLayer.getTypeName();
+		this.attrValidator = new OpenFeatureAttributeValidator(langType);
+		this.grapValidator = new OpenFeatureGraphicValidator(langType);
+		this.langType = langType;
+		this.epsg = epsg;
 	}
 
 	// 허용범위 이하 길이 (SmallLength)
@@ -84,7 +93,7 @@ public class OpenLayerValidator {
 			SimpleFeature simpleFeature = simpleFeatureIterator.next();
 			String layerID = simpleFeature.getFeatureType().getName().toString();
 			DTFeature feature = new DTFeature(typeName, layerID, simpleFeature, attrConditions);
-			List<ErrorFeature> errorFeatures = grapValidator.validateSmallLength(feature, tolerance);
+			List<ErrorFeature> errorFeatures = grapValidator.validateSmallLength(feature, tolerance, epsg);
 			if (errorFeatures != null) {
 				for (ErrorFeature errorFeature : errorFeatures) {
 					errorFeature.setFeatureID(simpleFeature.getID());
@@ -118,7 +127,7 @@ public class OpenLayerValidator {
 			SimpleFeature simpleFeature = simpleFeatureIterator.next();
 			String layerID = simpleFeature.getFeatureType().getName().toString();
 			DTFeature feature = new DTFeature(typeName, layerID, simpleFeature, attrConditions);
-			List<ErrorFeature> errorFeatures = grapValidator.validateSmallArea(feature, tolerance);
+			List<ErrorFeature> errorFeatures = grapValidator.validateSmallArea(feature, tolerance, epsg);
 			if (errorFeatures != null) {
 				for (ErrorFeature errorFeature : errorFeatures) {
 					errorFeature.setFeatureID(simpleFeature.getID());
@@ -173,7 +182,8 @@ public class OpenLayerValidator {
 	}
 
 	// 단독존재오류 (Self Entity)
-	public ErrorLayer validateSelfEntity(OptionFilter filter, Envelope sfcEnvel, int enSize) {
+	public ErrorLayer validateSelfEntity(OptionFilter filter, OptionTolerance tolerance, Envelope sfcEnvel,
+			int enSize) {
 
 		ErrorLayer errorLayer = new ErrorLayer();
 		List<AttributeFilter> attrConditions = null;
@@ -183,6 +193,7 @@ public class OpenLayerValidator {
 		validatorLayer.buildQuad();
 		Quadtree quad = validatorLayer.getQuadTree();
 		SimpleFeatureCollection sfc = validatorLayer.getSimpleFeatureCollection();
+
 		List<Envelope> envelopes = new ArrayList<Envelope>();
 		Map<String, Object> valiMap = new HashMap<>();
 		envelopes.add(sfcEnvel);
@@ -245,7 +256,8 @@ public class OpenLayerValidator {
 				// self
 				for (int j = i + 1; j < tmpSize; j++) {
 					DTFeature tmpSimpleFeatureJ = tmpsSimpleFeatures.get(j);
-					List<ErrorFeature> errFeatures = grapValidator.validateSelfEntity(feature, tmpSimpleFeatureJ);
+					List<ErrorFeature> errFeatures = grapValidator.validateSelfEntity(feature, tmpSimpleFeatureJ,
+							tolerance);
 					if (errFeatures != null) {
 						for (ErrorFeature errFeature : errFeatures) {
 							errFeature.setFeatureID(feature.getSimefeature().getID());
@@ -268,7 +280,7 @@ public class OpenLayerValidator {
 	}
 
 	// 단독존재오류 (Self Entity)
-	public ErrorLayer validateSelfEntity(OptionFilter filter, OptionTolerance tolerance, BasicDTLayer reLayer,
+	public ErrorLayer validateSelfEntity(OptionFilter filter, OptionTolerance tolerance, OpenDTLayer reLayer,
 			Envelope sfcEnvel, int enSize) {
 
 		ErrorLayer errorLayer = new ErrorLayer();
@@ -287,12 +299,14 @@ public class OpenLayerValidator {
 		if (reAttrFilter != null) {
 			reAttrConditions = reAttrFilter.getFilter();
 		}
+
 		// tar
 		validatorLayer.buildQuad();
 		Quadtree tarQuad = validatorLayer.getQuadTree();
 		// re
 		reLayer.buildQuad();
 		Quadtree reQuad = reLayer.getQuadTree();
+
 		Map<String, Object> validMap = new HashMap<>();
 		FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 		for (int en = 0; en < envelopes.size(); en++) {
@@ -387,7 +401,7 @@ public class OpenLayerValidator {
 					SimpleFeature reSf = reSfcIter.next();
 					String relayerID = reSf.getFeatureType().getName().toString();
 					DTFeature reFeature = new DTFeature(retypeName, relayerID, reSf, reAttrConditions);
-					List<ErrorFeature> errFeatures = grapValidator.validateSelfEntity(feature, reFeature);
+					List<ErrorFeature> errFeatures = grapValidator.validateSelfEntity(feature, reFeature, tolerance);
 					if (errFeatures != null) {
 						for (ErrorFeature errFeature : errFeatures) {
 							errFeature.setFeatureID(simpleFeature.getID());
@@ -561,6 +575,7 @@ public class OpenLayerValidator {
 		validatorLayer.buildQuad();
 		Quadtree quad = validatorLayer.getQuadTree();
 		SimpleFeatureCollection sfc = validatorLayer.getSimpleFeatureCollection();
+
 		List<Envelope> envelopes = new ArrayList<Envelope>();
 		Map<String, Object> valiMap = new HashMap<>();
 		envelopes.add(sfcEnvel);
@@ -648,7 +663,7 @@ public class OpenLayerValidator {
 
 	// 등고선 끊김오류 (ConBreak)
 	public ErrorLayer validateConBreak(OptionFilter filter, OptionTolerance tolerance, OptionFigure figure,
-			BasicDTLayerList reDTLayers, Geometry bEnvelope) throws IOException {
+			OpenDTLayerList reDTLayers, Geometry bEnvelope) throws IOException {
 
 		ErrorLayer errorLayer = new ErrorLayer();
 		List<AttributeFilter> attrConditions = null;
@@ -785,29 +800,144 @@ public class OpenLayerValidator {
 	}
 
 	// 경계초과오류 (OutBoundary)
-	public ErrorLayer validateOutBoundary(OptionFilter filter, OptionTolerance tolerance, BasicDTLayerList reDTLayers) {
+	public ErrorLayer validateOutBoundary(OptionFilter filter, OptionTolerance tolerance, OpenDTLayerList reDTLayers,
+			Envelope sfcEnvel, int enSize) {
 
 		ErrorLayer errorLayer = new ErrorLayer();
+		SimpleFeatureCollection sfc = validatorLayer.getSimpleFeatureCollection();
+
 		List<AttributeFilter> attrConditions = null;
 		if (filter != null) {
 			attrConditions = filter.getFilter();
 		}
-		SimpleFeatureCollection sfc = validatorLayer.getSimpleFeatureCollection();
-		SimpleFeatureIterator simpleFeatureIterator = sfc.features();
-		while (simpleFeatureIterator.hasNext()) {
-			SimpleFeature simpleFeature = simpleFeatureIterator.next();
-			String layerID = simpleFeature.getFeatureType().getName().toString();
-			DTFeature feature = new DTFeature(typeName, layerID, simpleFeature, attrConditions);
-			ErrorFeature errFeature = grapValidator.validateOutBoundary(feature, tolerance, reDTLayers);
-			if (errFeature != null) {
-				errFeature.setFeatureID(simpleFeature.getID());
-				errorLayer.addErrorFeature(errFeature);
-			} else {
-				continue;
+		DefaultFeatureCollection reDfc = new DefaultFeatureCollection();
+		for (OpenDTLayer reDtLayer : reDTLayers) {
+			SimpleFeatureCollection reSfc = reDtLayer.getSimpleFeatureCollection();
+			OptionFilter reAttrFilter = reDtLayer.getFilter();
+			List<AttributeFilter> reAttrConditions = null;
+			if (reAttrFilter != null) {
+				reAttrConditions = reAttrFilter.getFilter();
+			}
+			SimpleFeatureIterator iterator = reSfc.features();
+			while (iterator.hasNext()) {
+				SimpleFeature relationSf = iterator.next();
+				if (FeatureFilter.filter(relationSf, reAttrConditions)) {
+					reDfc.add(relationSf);
+				}
+			}
+			iterator.close();
+		}
+		// tar
+		Quadtree tarQuad = Quadtree.buildQuadTree(sfc);
+		// re
+		Quadtree reQuad = Quadtree.buildQuadTree(reDfc);
+
+		List<Envelope> envelopes = new ArrayList<Envelope>();
+		envelopes.add(sfcEnvel);
+		Map<String, Object> validMap = new HashMap<>();
+		FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+		for (int en = 0; en < envelopes.size(); en++) {
+			Envelope envelope = envelopes.get(en);
+			if (en == 0) {
+				if (sfc.size() < enSize && reDfc.size() < enSize) {
+					List<SimpleFeatureCollection> sfcList = new ArrayList<>();
+					sfcList.add(sfc);
+					sfcList.add(reDfc);
+					validMap.put(envelope.toString(), sfcList);
+					break;
+				}
+			}
+			List<Envelope> halfEnvels = getGrids(envelope, envelope.getWidth() / 2);
+			for (Envelope halfEnvel : halfEnvels) {
+				List halfTarItems = tarQuad.query(halfEnvel);
+				int tmpSize = halfTarItems.size();
+				SimpleFeatureCollection tarTmp = new DefaultFeatureCollection();
+				for (int i = 0; i < tmpSize; i++) {
+					SimpleFeature sf = (SimpleFeature) halfTarItems.get(i);
+					if (sf != null) {
+						((DefaultFeatureCollection) tarTmp).add(sf);
+					}
+				}
+				Filter tarGeomFilter = ff.intersects(ff.property("the_geom"), ff.literal(halfEnvel));
+				tarTmp = (SimpleFeatureCollection) tarTmp.subCollection(tarGeomFilter);
+				DefaultFeatureCollection tarDfc = new DefaultFeatureCollection();
+				SimpleFeatureIterator iter = tarTmp.features();
+				while (iter.hasNext()) {
+					SimpleFeature isf = getIntersection(halfEnvel, (SimpleFeature) iter.next());
+					if (isf != null) {
+						tarDfc.add(isf);
+					}
+				}
+				iter.close();
+				int tarDfcSize = tarDfc.size();
+				if (tarDfcSize == 0) {
+					continue;
+				}
+				List halfReItems = reQuad.query(halfEnvel);
+				int tmpReSize = halfReItems.size();
+				SimpleFeatureCollection reTmp = new DefaultFeatureCollection();
+				for (int i = 0; i < tmpReSize; i++) {
+					SimpleFeature sf = (SimpleFeature) halfReItems.get(i);
+					if (sf != null) {
+						((DefaultFeatureCollection) reTmp).add(sf);
+					}
+				}
+				SimpleFeatureCollection reTarDfc = new DefaultFeatureCollection();
+				Filter reGeomFilter = ff.intersects(ff.property("the_geom"), ff.literal(halfEnvel));
+				SimpleFeatureCollection tmpReDfc = (SimpleFeatureCollection) reTmp.subCollection(reGeomFilter);
+				SimpleFeatureIterator reiter = tmpReDfc.features();
+				while (reiter.hasNext()) {
+					SimpleFeature isf = getIntersection(halfEnvel, (SimpleFeature) reiter.next());
+					if (isf != null) {
+						((DefaultFeatureCollection) reTarDfc).add(isf);
+					}
+				}
+				reiter.close();
+				int reTarDfcSize = reTarDfc.size();
+				if (reTarDfcSize == 0) {
+					continue;
+				}
+				if (tarDfcSize > enSize || reTarDfcSize > enSize) {
+					envelopes.add(halfEnvel);
+				} else {
+					if (tarDfcSize > 0 && reTarDfcSize > 0) {
+						List<SimpleFeatureCollection> sfcList = new ArrayList<>();
+						sfcList.add(tarDfc);
+						sfcList.add(reTarDfc);
+						validMap.put(halfEnvel.toString(), sfcList);
+					}
+				}
 			}
 		}
-		simpleFeatureIterator.close();
-		simpleFeatureIterator = null;
+
+		Iterator iter = validMap.keySet().iterator();
+		while (iter.hasNext()) {
+			String key = (String) iter.next();
+			List<SimpleFeatureCollection> sfcList = (List<SimpleFeatureCollection>) validMap.get(key);
+
+			SimpleFeatureCollection tarValSfc = sfcList.get(0);
+			SimpleFeatureCollection reValSfc = sfcList.get(1);
+
+			SimpleFeatureIterator sfIter = tarValSfc.features();
+			while (sfIter.hasNext()) {
+				SimpleFeature simpleFeature = sfIter.next();
+				String layerID = simpleFeature.getFeatureType().getName().toString();
+				DTFeature feature = new DTFeature(typeName, layerID, simpleFeature, attrConditions);
+				ErrorFeature errFeature = grapValidator.validateOutBoundary(feature, tolerance, reValSfc);
+				if (errFeature != null) {
+					errFeature.setFeatureID(simpleFeature.getID());
+					errorLayer.addErrorFeature(errFeature);
+				}
+			}
+			sfIter.close();
+			tarValSfc = null;
+			reValSfc = null;
+			sfIter = null;
+		}
+		validMap = null;
+		envelopes = null;
+		tarQuad = null;
+		reQuad = null;
 		sfc = null;
 		if (errorLayer.getErrFeatureList().size() > 0) {
 			return errorLayer;
@@ -819,7 +949,7 @@ public class OpenLayerValidator {
 
 	// 노드오류 (NodeMiss)
 	public ErrorLayer validateNodeMiss(OptionFilter filter, OptionTolerance tolerance, OptionFigure figure,
-			BasicDTLayer reLayer, Geometry envelop) {
+			OpenDTLayer reLayer, Geometry envelop) {
 
 		ErrorLayer errorLayer = new ErrorLayer();
 		List<AttributeFilter> attrConditions = null;
@@ -985,7 +1115,7 @@ public class OpenLayerValidator {
 
 	// 인접요소속성오류 (RefAttributeMiss)
 	public ErrorLayer validateRefAttributeMiss(OptionFilter filter, OptionFigure figure, OptionTolerance tolerance,
-			BasicDTLayer retargetLayer) {
+			OpenDTLayer retargetLayer) {
 
 		ErrorLayer errorLayer = new ErrorLayer();
 		List<AttributeFilter> attrConditions = null;

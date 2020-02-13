@@ -23,7 +23,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @Since 2018. 1. 30. 오후 2:03:42
  */
 
-public class BasicDTLayer {
+public class OpenDTLayer {
 
 	String typeName;
 	String layerID;
@@ -34,11 +34,11 @@ public class BasicDTLayer {
 	MapSystemRule mapRule; // 인접도엽 정보
 	Quadtree quadTree = null;
 
-	public BasicDTLayer() {
+	public OpenDTLayer() {
 		super();
 	}
 
-	public BasicDTLayer(String layerID, String layerType, SimpleFeatureCollection simpleFeatureCollection,
+	public OpenDTLayer(String layerID, String layerType, SimpleFeatureCollection simpleFeatureCollection,
 			OptionFilter filter, MapSystemRule mapRule) {
 		this.layerID = layerID;
 		this.layerType = layerType;
@@ -47,8 +47,9 @@ public class BasicDTLayer {
 		this.mapRule = mapRule;
 	}
 
-	public BasicDTLayer(String typeName, String layerID, String layerType, SimpleFeatureCollection simpleFeatureCollection,
-			OptionFilter filter, OptionFigure figure, MapSystemRule mapRule) {
+	public OpenDTLayer(String typeName, String layerID, String layerType,
+			SimpleFeatureCollection simpleFeatureCollection, OptionFilter filter, OptionFigure figure,
+			MapSystemRule mapRule) {
 		super();
 		this.typeName = typeName;
 		this.layerID = layerID;
@@ -139,7 +140,7 @@ public class BasicDTLayer {
 		}
 	}
 
-	private Quadtree getQuadTree(SimpleFeatureCollection sfc) {
+	public Quadtree getQuadTree(SimpleFeatureCollection sfc) {
 
 		Quadtree quad = new Quadtree();
 		try {
