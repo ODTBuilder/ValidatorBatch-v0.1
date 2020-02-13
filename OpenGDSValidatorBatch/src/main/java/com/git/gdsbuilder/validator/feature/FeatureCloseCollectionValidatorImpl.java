@@ -10,6 +10,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import com.git.gdsbuilder.type.dt.feature.DTFeature;
 import com.git.gdsbuilder.type.dt.layer.DTLayer;
 import com.git.gdsbuilder.type.validate.error.ErrorFeature;
+import com.git.gdsbuilder.type.validate.option.en.LangType;
 import com.git.gdsbuilder.type.validate.option.specific.AttributeFigure;
 import com.git.gdsbuilder.type.validate.option.specific.AttributeFilter;
 import com.git.gdsbuilder.type.validate.option.specific.OptionFigure;
@@ -23,6 +24,12 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 
 public class FeatureCloseCollectionValidatorImpl implements FeatureCloseCollectionValidator {
+
+	LangType langType;
+
+	public FeatureCloseCollectionValidatorImpl(LangType langType) {
+		this.langType = langType;
+	}
 
 	@Override
 	public ErrorFeature validateFRefEntityNone(DTFeature feature, DTLayer closeLayer, Geometry closeBoundary,
@@ -112,8 +119,8 @@ public class FeatureCloseCollectionValidatorImpl implements FeatureCloseCollecti
 				return null;
 			}
 			ErrorFeature errFeature = new ErrorFeature(featureID, DMQAOptions.Type.REFENTITYNONE.getErrCode(),
-					DMQAOptions.Type.REFENTITYNONE.getErrTypeE(), DMQAOptions.Type.REFENTITYNONE.getErrNameE(), "",
-					minDistPt);
+					DMQAOptions.Type.REFENTITYNONE.getErrTypeE(), DMQAOptions.Type.REFENTITYNONE.getErrName(langType),
+					"", minDistPt);
 			return errFeature;
 		} else {
 			return null;
@@ -208,8 +215,8 @@ public class FeatureCloseCollectionValidatorImpl implements FeatureCloseCollecti
 				return null;
 			}
 			ErrorFeature errFeature = new ErrorFeature(featureID, DMQAOptions.Type.REFENTITYNONE.getErrCode(),
-					DMQAOptions.Type.REFENTITYNONE.getErrTypeE(), DMQAOptions.Type.REFENTITYNONE.getErrNameE(), "",
-					minDistPt);
+					DMQAOptions.Type.REFENTITYNONE.getErrTypeE(), DMQAOptions.Type.REFENTITYNONE.getErrName(langType),
+					"", minDistPt);
 			return errFeature;
 		} else {
 			return null;
@@ -318,7 +325,7 @@ public class FeatureCloseCollectionValidatorImpl implements FeatureCloseCollecti
 
 			ErrorFeature errFeature = new ErrorFeature(featureID, reLayerId, reFeatureID,
 					DMQAOptions.Type.REFZVALUEMISS.getErrCode(), DMQAOptions.Type.REFZVALUEMISS.getErrTypeE(),
-					DMQAOptions.Type.REFZVALUEMISS.getErrNameE(), "", minDistPt);
+					DMQAOptions.Type.REFZVALUEMISS.getErrName(langType), "", minDistPt);
 			return errFeature;
 		} else {
 			return null;
@@ -449,7 +456,7 @@ public class FeatureCloseCollectionValidatorImpl implements FeatureCloseCollecti
 			String reLayerId = closeLayer.getLayerID();
 			ErrorFeature errFeature = new ErrorFeature(featureID, reLayerId, reFeatureID,
 					DMQAOptions.Type.REFATTRIBUTEMISS.getErrCode(), DMQAOptions.Type.REFATTRIBUTEMISS.getErrTypeE(),
-					DMQAOptions.Type.REFATTRIBUTEMISS.getErrNameE(), "", minDistPt);
+					DMQAOptions.Type.REFATTRIBUTEMISS.getErrName(langType), "", minDistPt);
 			return errFeature;
 		} else {
 			return null;

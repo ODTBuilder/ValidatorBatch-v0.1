@@ -810,10 +810,6 @@ public class OpenFeatureGraphicValidator {
 
 		SimpleFeature sf = feature.getSimefeature();
 
-		if (sf.getAttribute("osm_id").toString().equals("310762455")) {
-			System.out.println("");
-		}
-
 		boolean isTrue = false;
 		List<AttributeFilter> filters = feature.getFilter();
 

@@ -3,6 +3,8 @@
  */
 package com.git.gdsbuilder.type.validate.option.type;
 
+import com.git.gdsbuilder.type.validate.option.en.LangType;
+
 /**
  * @className NFMQAOptions.java
  * @description
@@ -10,10 +12,6 @@ package com.git.gdsbuilder.type.validate.option.type;
  * @since 2018. 3. 15. 오전 11:25:05
  */
 public class DMQAOptions {
-
-	public enum EnLangType {
-		DEFALUT, EN, KO
-	}
 
 	public enum Type {
 
@@ -71,20 +69,6 @@ public class DMQAOptions {
 			return errCode;
 		}
 
-		public String getErrCode(EnLangType type) {
-			String rErrCode = "";
-			if (type == null) {
-
-			} else if (type == type.DEFALUT) {
-
-			} else if (type == type.KO) {
-
-			} else if (type == type.EN) {
-
-			}
-			return errCode;
-		}
-
 		public void setErrCode(String errCode) {
 			this.errCode = errCode;
 		}
@@ -97,8 +81,15 @@ public class DMQAOptions {
 			this.errNameE = errNameE;
 		}
 
-		public String getErrName() {
-			return errName;
+		public String getErrName(LangType langType) {
+
+			String name = null;
+			if (langType.getLang().equals("ko")) {
+				name = errName;
+			} else if (langType.getLang().equals("en")) {
+				name = errNameE;
+			}
+			return name;
 		}
 
 		public void setErrName(String errName) {

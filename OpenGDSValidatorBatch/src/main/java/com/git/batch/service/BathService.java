@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -41,6 +39,9 @@ import com.git.gdsbuilder.validator.collection.OpenCollectionValidator;
 import com.git.gdsbuilder.validator.fileReader.UnZipFile;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
+import me.tongfei.progressbar.ProgressBar;
+import me.tongfei.progressbar.ProgressBarStyle;
+
 /**
  * 검수수행 요청을 처리하는 Service 클래스
  * @author SG.LEE
@@ -55,84 +56,13 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
  */
 public class BathService {
 
-<<<<<<< HEAD
-	private final String QA1DEFDIR;
-	private final String QA2DEFDIR;
-	private final String NM1LAYERDEF;
-	private final String NM5LAYERDEF;
-	private final String NM25LAYERDEF;
-	private final String UG1LAYERDEF;
-	private final String UG5LAYERDEF;
-	private final String UG25LAYERDEF;
-	private final String FR1LAYERDEF;
-	private final String FR5LAYERDEF;
-	private final String FR25LAYERDEF;
-	private final String NM1OPTIONDEF;
-	private final String NM5OPTIONDEF;
-	private final String NM25OPTIONDEF;
-	private final String UG1OPTIONDEF;
-	private final String UG5OPTIONDEF;
-	private final String UG25OPTIONDEF;
-	private final String FR1OPTIONDEF;
-	private final String FR5OPTIONDEF;
-	private final String FR25OPTIONDEF;
-
-	/**
-	 * 전체 검수 수행 개수
-	 */
-=======
->>>>>>> open
 	public static int totalValidSize = 0;
 	/**
 	 * 검수 수행 {@link Progress}
 	 */
 	public static Progress pb;
 
-<<<<<<< HEAD
-	{
-
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		Properties properties = new Properties();
-		
-		try {
-			InputStream inputStream = classLoader.getResourceAsStream("batch.properties");
-			properties.load(inputStream);
-			inputStream.close();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		QA1DEFDIR = properties.getProperty("qa1DefDir");
-		QA2DEFDIR = properties.getProperty("qa2DefDir");
-
-		NM1LAYERDEF = properties.getProperty("nm1LayerDef");
-		NM5LAYERDEF = properties.getProperty("nm5LayerDef");
-		NM25LAYERDEF = properties.getProperty("nm25LayerDef");
-		UG1LAYERDEF = properties.getProperty("ug1LayerDef");
-		UG5LAYERDEF = properties.getProperty("ug5LayerDef");
-		UG25LAYERDEF = properties.getProperty("ug25LayerDef");
-		FR1LAYERDEF = properties.getProperty("fr1LayerDef");
-		FR5LAYERDEF = properties.getProperty("fr5LayerDef");
-		FR25LAYERDEF = properties.getProperty("fr25LayerDef");
-
-		NM1OPTIONDEF = properties.getProperty("nm1OptionDef");
-		NM5OPTIONDEF = properties.getProperty("nm5OptionDef");
-		NM25OPTIONDEF = properties.getProperty("nm25OptionDef");
-		UG1OPTIONDEF = properties.getProperty("ug1OptionDef");
-		UG5OPTIONDEF = properties.getProperty("ug5OptionDef");
-		UG25OPTIONDEF = properties.getProperty("ug25OptionDef");
-		FR1OPTIONDEF = properties.getProperty("fr1OptionDef");
-		FR5OPTIONDEF = properties.getProperty("fr5OptionDef");
-		FR25OPTIONDEF = properties.getProperty("fr25OptionDef");
-	}
-
-	/**
-	 * 에러 레이어 Output 최상위 폴더경로
-	 */
-=======
 	// file dir
->>>>>>> open
 	protected String ERR_OUTPUT_DIR;
 	/**
 	 * 에러 레이어 Output 폴더경로
@@ -148,7 +78,7 @@ public class BathService {
 	protected String ERR_ZIP_DIR;
 
 	/**
-	 * 검수수행 단계( 1 - 파일업로드 완료) 
+	 * 검수수행 단계( 1 - 파일업로드 완료)
 	 */
 	protected int fileUpload = 1;
 	/**
@@ -166,24 +96,23 @@ public class BathService {
 
 	Logger logger = LoggerFactory.getLogger(BathService.class);
 
-<<<<<<< HEAD
 	/**
-	 * 해당 경로 및 옵션파일을 통한 검수 수행 
-	 * @param baseDir 최상위 폴더
-	 * @param valType 검수타입(수치지도, 지하시설물, 임상도)
-	 * @param pFlag 기존옵션여부
-	 * @param valDType 검수 세부타입(정위치, 구조화)
-	 * @param fileType 파일타입(dxf, ngi, shp)
-	 * @param category 옵션타입(1 - 수치지도1.0, 2 - 수치지도 2.0, 3 - 지하시설물 1.0, 4 - 지하시설물 2.0, 5 - 임상도)
+	 * 해당 경로 및 옵션파일을 통한 검수 수행
+	 * 
+	 * @param baseDir      최상위 폴더
+	 * @param valType      검수타입(수치지도, 지하시설물, 임상도)
+	 * @param pFlag        기존옵션여부
+	 * @param valDType     검수 세부타입(정위치, 구조화)
+	 * @param fileType     파일타입(dxf, ngi, shp)
+	 * @param category     옵션타입(1 - 수치지도1.0, 2 - 수치지도 2.0, 3 - 지하시설물 1.0, 4 - 지하시설물
+	 *                     2.0, 5 - 임상도)
 	 * @param layerDefPath 레이어 정의 옵션 경로
-	 * @param valOptPath 검수 옵션경로
-	 * @param objFilePath 검수 대상파일 경로
-	 * @param crs 좌표계
+	 * @param valOptPath   검수 옵션경로
+	 * @param objFilePath  검수 대상파일 경로
+	 * @param crs          좌표계
 	 * @return boolean 검수 성공여부
 	 * @throws Throwable 검수 폴더 생성 {@link Exception}
 	 */
-=======
->>>>>>> open
 	@SuppressWarnings("unchecked")
 	public boolean validate(String baseDir, String valType, String pFlag, String valDType, String fileType,
 			int category, String layerDefPath, String valOptPath, String objFilePath, String crs, LangType langType)
@@ -201,10 +130,18 @@ public class BathService {
 
 		// 옵션또는 파일이 제대로 넘어오지 않았을때 강제로 예외발생
 		if (qaVer == null || qaType == null || prid == null) {
-			System.out.println("Please request again.");
+			if (langType.getLang().equals("ko")) {
+				System.out.println("검수 옵션을 재설정하세요");
+			} else if (langType.getLang().equals("en")) {
+				System.out.println("Please request again.");
+			}
 			return isSuccess;
 		} else if (fileformat == null) {
-			System.out.println("Please set the file format.");
+			if (langType.getLang().equals("ko")) {
+				System.out.println("검수 파일 포맷을 재설정하세요.");
+			} else if (langType.getLang().equals("en")) {
+				System.out.println("Please set the file format.");
+			}
 			return isSuccess;
 		} else {
 			long time = System.currentTimeMillis();
@@ -212,7 +149,6 @@ public class BathService {
 			SimpleDateFormat dayTime = new SimpleDateFormat("yyMMdd_HHmmss");
 			String cTimeStr = dayTime.format(new Date(time));
 
-//			File unZipfile = new File(objFilePath);
 			UnZipFile unZipFile = new UnZipFile(objFilePath);
 			unZipFile.getFilMeta(objFilePath);
 			String comment = unZipFile.getFileState();
@@ -244,11 +180,13 @@ public class BathService {
 				}
 			}
 			if (!checkExt) {
-				System.out.println("검수 대상 파일에 " + fileType + "가 존재하지 않습니다.");
-//				System.out.println(fileType + " does not exist in the target file.");
+				if (langType.getLang().equals("ko")) {
+					System.out.println("검수 대상 파일에 " + fileType + "가 존재하지 않습니다.");
+				} else if (langType.getLang().equals("en")) {
+					System.out.println(fileType + " does not exist in the target file.");
+				}
 				throw new Throwable();
 			}
-			// #####################################
 
 			// option parsing
 			JSONParser jsonP = new JSONParser();
@@ -257,15 +195,21 @@ public class BathService {
 			try {
 				option = (JSONObject) ((Object) jsonP.parse(new FileReader(valOptPath)));
 			} catch (ClassCastException e) {
-				// System.out.println("잘못된 옵션 파일입니다.");
-				System.out.println("Invalid option file");
+				if (langType.getLang().equals("ko")) {
+					System.out.println("잘못된 옵션 파일입니다.");
+				} else if (langType.getLang().equals("en")) {
+					System.out.println("Invalid option file");
+				}
 				throw new Throwable();
 			}
 			try {
 				layers = (JSONArray) ((Object) jsonP.parse(new FileReader(layerDefPath)));
 			} catch (ClassCastException e) {
-				// System.out.println("잘못된 레이어 정의 파일입니다.");
-				System.out.println("Invalid layer definition file.");
+				if (langType.getLang().equals("ko")) {
+					System.out.println("잘못된 레이어 정의 파일입니다.");
+				} else if (langType.getLang().equals("en")) {
+					System.out.println("Invalid layer definition file.");
+				}
 				throw new Throwable();
 			}
 
@@ -367,7 +311,7 @@ public class BathService {
 					}
 				}
 				// excute validation
-				isSuccess = executorValidate(collectionList, validateLayerTypeList, epsg);
+				isSuccess = executorValidate(collectionList, validateLayerTypeList, epsg, langType);
 				parser = null;
 				collectionList = null;
 			}
@@ -383,27 +327,12 @@ public class BathService {
 		}
 	}
 
-<<<<<<< HEAD
-	/**
-	 * @author DY.Oh
-	 * @since 2018. 2. 6. 오전 10:12:22
-	 * @param collectionList
-	 * @param validateLayerTypeList
-	 *            void
-	 * @throws IOException
-	 * @throws TransformException
-	 * @throws FactoryException
-	 * @throws SchemaException
-	 * @throws NoSuchAuthorityCodeException
-	 * @description
-	 */
-=======
 	private boolean executorValidate(String fileDir, QALayerTypeList validateLayerTypeList, String epsg,
 			JSONArray attrFilter, JSONArray stateFilter, LangType langType) throws SchemaException {
 		// 콘솔창에 로그 안찍히게 하기
 		org.geotools.util.logging.Logging.getLogger("org").setLevel(Level.OFF);
 
-		pb = new Progress(epsg, attrFilter, stateFilter);
+		pb = new Progress(epsg, attrFilter, stateFilter, langType);
 		pb.countOpenTotalTask(fileDir, validateLayerTypeList);
 		pb.startProgress();
 
@@ -418,18 +347,21 @@ public class BathService {
 			String fileName = ERR_FILE_DIR + "\\" + cTimeStr;
 
 			isSuccess = writeErrShp(epsg, validator.collectionAttributeValidate(), fileName + "_attribute_err.shp",
-					"Attribute");
+					"Attribute", langType);
 			isSuccess = writeErrShp(epsg, validator.collectionGraphicValidate(), fileName + "_graphic_err.shp",
-					"Graphic");
+					"Graphic", langType);
 		} catch (IOException e) {
-			System.out.println("검수 요청이 실패했습니다.");
+			if (langType.getLang().equals("ko")) {
+				System.out.println("검수 요청이 실패했습니다.");
+			} else if (langType.getLang().equals("en")) {
+				System.out.println("Request failed");
+			}
 		}
 		return isSuccess;
 	}
 
->>>>>>> open
 	private boolean executorValidate(DTLayerCollectionList collectionList, QALayerTypeList validateLayerTypeList,
-			String epsg) {
+			String epsg, LangType langType) {
 		// 콘솔창에 로그 안찍히게 하기
 		org.geotools.util.logging.Logging.getLogger("org").setLevel(Level.OFF);
 
@@ -438,7 +370,7 @@ public class BathService {
 		ExecutorService execService = Executors.newFixedThreadPool(3,
 				new ThreadFactoryBuilder().setNameFormat("도엽별 검수-%d").build());
 
-		pb = new Progress();
+		pb = new Progress(langType);
 		for (final DTLayerCollection collection : collectionList) {
 			pb.countTotalTask(validateLayerTypeList, collection,
 					collectionList.getCloseLayerCollections(collection.getMapRule()));
@@ -453,7 +385,7 @@ public class BathService {
 					try {
 						DTLayerCollectionList closeCollections = collectionList
 								.getCloseLayerCollections(collection.getMapRule());
-						validator = new CollectionValidator(collection, closeCollections, validateLayerTypeList);
+						validator = new CollectionValidator(collection, closeCollections, validateLayerTypeList, langType);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -487,10 +419,6 @@ public class BathService {
 		return futureCount == collectionList.size();
 	}
 
-<<<<<<< HEAD
-
-=======
->>>>>>> open
 	private boolean writeErrShp(String epsg, CollectionValidator validator) {
 		try {
 			// 오류레이어 발행
@@ -506,7 +434,7 @@ public class BathService {
 		return false;
 	}
 
-	private boolean writeErrShp(String epsg, ErrorLayer errLayer, String fileName, String qaType) {
+	private boolean writeErrShp(String epsg, ErrorLayer errLayer, String fileName, String qaType, LangType langType) {
 		try {
 			// 오류레이어 발행
 			if (errLayer != null) {
@@ -515,10 +443,18 @@ public class BathService {
 					SHPFileWriter.writeSHP(epsg, errLayer, fileName);
 				}
 			}
-			System.out.println(qaType + " Success.");
+			if (langType.getLang().equals("ko")) {
+				System.out.println(qaType + " 완료.");
+			} else if (langType.getLang().equals("en")) {
+				System.out.println(qaType + " Success.");
+			}
 			return true;
 		} catch (Exception e) {
-			System.out.println(qaType + " Fail.");
+			if (langType.getLang().equals("ko")) {
+				System.out.println(qaType + " 실패.");
+			} else if (langType.getLang().equals("en")) {
+				System.out.println(qaType + " Fail.");
+			}
 			return false;
 		}
 	}
@@ -530,58 +466,14 @@ public class BathService {
 		}
 	}
 
-	private void deleteDirectory(File dir) {
-
-		if (dir.exists()) {
-			File[] files = dir.listFiles();
-			for (File file : files) {
-				if (file.isDirectory()) {
-					deleteDirectory(file);
-				} else {
-					file.delete();
-				}
-			}
-		}
-		dir.delete();
-	}
-
-	private File[] sortFileList(File[] files, final int compareType) {
-		int COMPARETYPE_NAME = 0;
-		int COMPARETYPE_DATE = 1;
-
-		Arrays.sort(files, new Comparator<Object>() {
-			@Override
-			public int compare(Object object1, Object object2) {
-
-				String s1 = "";
-				String s2 = "";
-
-				if (compareType == COMPARETYPE_NAME) {
-					s1 = ((File) object1).getName();
-					s2 = ((File) object2).getName();
-				} else if (compareType == COMPARETYPE_DATE) {
-					s1 = ((File) object1).lastModified() + "";
-					s2 = ((File) object2).lastModified() + "";
-				}
-				return s1.compareTo(s2);
-			}
-		});
-
-		return files;
-	}
-
 	/**
 	 * 폴더 내에 폴더가 있을시 하위 폴더 탐색
 	 * 
-	 * @author SG.Lee
-<<<<<<< HEAD
+	 * @author SG.Lee <<<<<<< HEAD
 	 * @since 2018. 4. 18. 오전 9:09:33
-	 * @param source
-	 *            void
-=======
+	 * @param source void =======
 	 * @Date 2018. 4. 18. 오전 9:09:33
-	 * @param source void
->>>>>>> open
+	 * @param source void >>>>>>> open
 	 */
 	@SuppressWarnings("unused")
 	private void subDirList(String source) {

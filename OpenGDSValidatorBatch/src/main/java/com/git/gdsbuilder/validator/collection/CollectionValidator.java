@@ -62,6 +62,7 @@ import com.git.gdsbuilder.type.validate.error.ErrorLayer;
 import com.git.gdsbuilder.type.validate.layer.QALayerType;
 import com.git.gdsbuilder.type.validate.layer.QALayerTypeList;
 import com.git.gdsbuilder.type.validate.option.QAOption;
+import com.git.gdsbuilder.type.validate.option.en.LangType;
 import com.git.gdsbuilder.type.validate.option.specific.AttributeMiss;
 import com.git.gdsbuilder.type.validate.option.specific.CloseMiss;
 import com.git.gdsbuilder.type.validate.option.specific.GraphicMiss;
@@ -88,13 +89,14 @@ public class CollectionValidator {
 	int geo_ = 0;
 	int close_ = 0;
 	int attr_ = 0;
-	
+
 	ErrorLayer errLayer;
 	DTLayerCollection collection;
 	DTLayerCollectionList closeCollections;
 	QALayerTypeList types;
 	Map<String, Object> progress;
 	String collectionType;
+	LangType langType;
 
 	/**
 	 * CollectionValidator 생성자
@@ -109,15 +111,15 @@ public class CollectionValidator {
 	 * @throws IOException
 	 */
 	public CollectionValidator(DTLayerCollection collection, DTLayerCollectionList closeCollections,
-			QALayerTypeList types)
+			QALayerTypeList types, LangType langType)
 			throws NoSuchAuthorityCodeException, SchemaException, FactoryException, TransformException, IOException {
 		this.collection = collection;
 		this.types = types;
 		this.closeCollections = closeCollections;
 		this.errLayer = new ErrorLayer();
 		this.progress = new HashMap<String, Object>();
+		this.langType = langType;
 		collectionValidate();
-		
 	}
 
 	public static double getSpatialAccuracyTolorence() {
@@ -240,7 +242,8 @@ public class CollectionValidator {
 			closeMap.put(MapSystemRuleType.RIGHT, rightGeoCollection);
 			isTrue = true;
 		}
-		ExecutorService executorService = Executors.newFixedThreadPool(5, new ThreadFactoryBuilder().setNameFormat("CollectionValidator.인접검수-%d").build());
+		ExecutorService executorService = Executors.newFixedThreadPool(5,
+				new ThreadFactoryBuilder().setNameFormat("CollectionValidator.인접검수-%d").build());
 		CloseCollectionResult closeCollectionResult = new CloseCollectionResult();
 
 		class Task implements Runnable {
@@ -329,7 +332,8 @@ public class CollectionValidator {
 											filterLayer.setLayerType(typeLayer.getLayerType());
 											filterLayer.setSimpleFeatureCollection(
 													layerOp.getTypeLayer().getSimpleFeatureCollection());
-											LayerValidator layerValidator = new LayerValidatorImpl(filterLayer);
+											LayerValidator layerValidator = new LayerValidatorImpl(filterLayer,
+													langType);
 											if (filters != null) {
 												String closeLayerId = closeLayer.getLayerID();
 												for (OptionFilter filter : filters) {
@@ -379,7 +383,7 @@ public class CollectionValidator {
 										filterLayer.setLayerType(typeLayer.getLayerType());
 										filterLayer.setSimpleFeatureCollection(
 												layerOp.getTypeLayer().getSimpleFeatureCollection());
-										LayerValidator layerValidator = new LayerValidatorImpl(filterLayer);
+										LayerValidator layerValidator = new LayerValidatorImpl(filterLayer, langType);
 										if (filters != null) {
 											String closeLayerId = closeLayer.getLayerID();
 											for (OptionFilter filter : filters) {
@@ -428,7 +432,7 @@ public class CollectionValidator {
 										filterLayer.setLayerType(typeLayer.getLayerType());
 										filterLayer.setSimpleFeatureCollection(
 												layerOp.getTypeLayer().getSimpleFeatureCollection());
-										LayerValidator layerValidator = new LayerValidatorImpl(filterLayer);
+										LayerValidator layerValidator = new LayerValidatorImpl(filterLayer, langType);
 										if (filters != null) {
 											String closeLayerId = closeLayer.getLayerID();
 											for (OptionFilter filter : filters) {
@@ -487,7 +491,8 @@ public class CollectionValidator {
 											filterLayer.setLayerType(typeLayer.getLayerType());
 											filterLayer.setSimpleFeatureCollection(
 													layerOp.getTypeLayer().getSimpleFeatureCollection());
-											LayerValidator layerValidator = new LayerValidatorImpl(filterLayer);
+											LayerValidator layerValidator = new LayerValidatorImpl(filterLayer,
+													langType);
 											if (filters != null) {
 												String closeLayerId = closeLayer.getLayerID();
 												for (OptionFilter filter : filters) {
@@ -533,7 +538,7 @@ public class CollectionValidator {
 							Future<CloseCollectionResult> future = executorService.submit(task, closeCollectionResult);
 							if (future != null) {
 								futures.add(future);
-							}else{
+							} else {
 								Progress.modifyMax();
 							}
 						}
@@ -542,7 +547,7 @@ public class CollectionValidator {
 						try {
 							if (future != null) {
 								closeCollectionResult = future.get();
-								if (close_ < futures.size()){
+								if (close_ < futures.size()) {
 									BathService.pb.updateProgress();
 									close_++;
 								}
@@ -565,7 +570,8 @@ public class CollectionValidator {
 
 		DTLayer neatLayer = layerCollection.getNeatLine();
 
-		ExecutorService executorService = Executors.newFixedThreadPool(5, new ThreadFactoryBuilder().setNameFormat("CollectionValidator.attribute 검수-%d").build());
+		ExecutorService executorService = Executors.newFixedThreadPool(5,
+				new ThreadFactoryBuilder().setNameFormat("CollectionValidator.attribute 검수-%d").build());
 		AttResult attrResult = new AttResult();
 
 		class Task implements Runnable {
@@ -586,7 +592,7 @@ public class CollectionValidator {
 			public void run() {
 
 				ErrorLayer typeErrorLayer = null;
-				LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+				LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 				String layerID = typeLayer.getLayerID();
 				try {
 					for (AttributeMiss attributeMiss : attributeMisses) {
@@ -853,7 +859,7 @@ public class CollectionValidator {
 						Future<AttResult> future = executorService.submit(task, attrResult);
 						if (future != null) {
 							futures.add(future);
-						}else{
+						} else {
 							Progress.modifyMax();
 						}
 					}
@@ -861,7 +867,7 @@ public class CollectionValidator {
 				for (Future<AttResult> future : futures) {
 					try {
 						attrResult = future.get();
-						if (attr_ < futures.size()){
+						if (attr_ < futures.size()) {
 							BathService.pb.updateProgress();
 							attr_++;
 						}
@@ -883,7 +889,8 @@ public class CollectionValidator {
 
 		DTLayer neatLayer = layerCollection.getNeatLine();
 
-		ExecutorService executorService = Executors.newFixedThreadPool(5, new ThreadFactoryBuilder().setNameFormat("CollectionValidator.geometric 검수-%d").build());
+		ExecutorService executorService = Executors.newFixedThreadPool(5,
+				new ThreadFactoryBuilder().setNameFormat("CollectionValidator.geometric 검수-%d").build());
 		GeometricResult geometricResult = new GeometricResult();
 
 		class Task implements Runnable {
@@ -957,7 +964,7 @@ public class CollectionValidator {
 										}
 									}
 								}
-								LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+								LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 								typeErrorLayer = layerValidator.validateSymbolInLine(totalLayers, totalTolerances);
 								if (typeErrorLayer != null) {
 									geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -965,14 +972,14 @@ public class CollectionValidator {
 							}
 						}
 						if (option.equals("ULineCross")) {
-							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 							typeErrorLayer = layerValidator.validateLineCross();
 							if (typeErrorLayer != null) {
 								geometricResult.mergeErrorLayer(typeErrorLayer);
 							}
 						}
 						if (option.equals("USymbolsDistance")) {
-							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 							typeErrorLayer = layerValidator.validateSymbolsDistance();
 							if (typeErrorLayer != null) {
 								geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -998,7 +1005,7 @@ public class CollectionValidator {
 									} else {
 										relationLayers = types.getTypeLayers(relationName, layerCollection);
 									}
-									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 									typeErrorLayer = layerValidator.validateSymbolOut(relationLayers);
 									if (typeErrorLayer != null) {
 										geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1026,7 +1033,7 @@ public class CollectionValidator {
 									} else {
 										relationLayers = types.getTypeLayers(relationName, layerCollection);
 									}
-									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 									typeErrorLayer = layerValidator.validateUSymbolOut(relationLayers);
 									if (typeErrorLayer != null) {
 										geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1054,7 +1061,7 @@ public class CollectionValidator {
 									} else {
 										relationLayers = types.getTypeLayers(relationName, layerCollection);
 									}
-									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 									typeErrorLayer = layerValidator.validateUNodeMiss(relationLayers);
 									if (typeErrorLayer != null) {
 										geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1090,7 +1097,7 @@ public class CollectionValidator {
 									}
 								}
 								if (toleranceList != null) {
-									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 									typeErrorLayer = layerValidator.validateUAvrgDPH10(relationLayers, toleranceList);
 									if (typeErrorLayer != null) {
 										geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1118,7 +1125,7 @@ public class CollectionValidator {
 									} else {
 										relationLayers = types.getTypeLayers(relationName, layerCollection);
 									}
-									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 									typeErrorLayer = layerValidator.validateULeaderline(relationLayers);
 									if (typeErrorLayer != null) {
 										geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1127,7 +1134,7 @@ public class CollectionValidator {
 							}
 						}
 						if (option.equals("MultiPart")) {
-							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 							typeErrorLayer = layerValidator.validateMultiPart();
 							if (typeErrorLayer != null) {
 								geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1141,7 +1148,7 @@ public class CollectionValidator {
 										continue;
 									}
 								}
-								LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+								LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 								typeErrorLayer = layerValidator.validateSmallArea(tole);
 								if (typeErrorLayer != null) {
 									geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1175,7 +1182,7 @@ public class CollectionValidator {
 										} else {
 											relationLayers = types.getTypeLayers(relationName, layerCollection);
 										}
-										LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+										LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 										typeErrorLayer = layerValidator.validateSelfEntity(relationLayers, tole);
 										if (typeErrorLayer != null) {
 											geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1185,7 +1192,7 @@ public class CollectionValidator {
 							}
 						}
 						if (option.equals("HoleMisplacement")) {
-							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 							typeErrorLayer = layerValidator.validateHoleMissplacement();
 							if (typeErrorLayer != null) {
 								geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1216,7 +1223,7 @@ public class CollectionValidator {
 									} else {
 										relationLayers = types.getTypeLayers(relationName, layerCollection);
 									}
-									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 									typeErrorLayer = layerValidator.valildateLinearDisconnection(relationLayers, tole);
 									if (typeErrorLayer != null) {
 										geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1243,7 +1250,7 @@ public class CollectionValidator {
 									} else {
 										relationLayers = types.getTypeLayers(relationName, layerCollection);
 									}
-									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 									typeErrorLayer = layerValidator.validateEntityInHole(relationLayers);
 									if (typeErrorLayer != null) {
 										geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1252,7 +1259,7 @@ public class CollectionValidator {
 							}
 						}
 						if (option.equals("FEntityInHole")) {
-							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 							typeErrorLayer = layerValidator.validateFEntityInHole();
 							if (typeErrorLayer != null) {
 								geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1277,7 +1284,7 @@ public class CollectionValidator {
 									} else {
 										relationLayers = types.getTypeLayers(relationName, layerCollection);
 									}
-									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 									typeErrorLayer = layerValidator.validateCenterLineMiss(relationLayers);
 									if (typeErrorLayer != null) {
 										geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1304,7 +1311,7 @@ public class CollectionValidator {
 									} else {
 										relationLayers = types.getTypeLayers(relationName, layerCollection);
 									}
-									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 									typeErrorLayer = layerValidator.validateBoundaryMiss(relationLayers);
 									if (typeErrorLayer != null) {
 										geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1332,7 +1339,7 @@ public class CollectionValidator {
 										relationLayers.addAll(types.getTypeLayers(relationName, layerCollection));
 									}
 								}
-								LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+								LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 								typeErrorLayer = layerValidator.validateBuildingSiteMiss(relationLayers);
 								if (typeErrorLayer != null) {
 									geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1358,7 +1365,7 @@ public class CollectionValidator {
 									} else {
 										relationLayers = types.getTypeLayers(relationName, layerCollection);
 									}
-									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 									typeErrorLayer = layerValidator.validateOneStage(relationLayers);
 									if (typeErrorLayer != null) {
 										geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1367,7 +1374,7 @@ public class CollectionValidator {
 							}
 						}
 						if (option.equals("EntityDuplicated")) {
-							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 							typeErrorLayer = layerValidator.validateEntityDuplicated();
 							if (typeErrorLayer != null) {
 								geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1398,7 +1405,7 @@ public class CollectionValidator {
 									} else {
 										relationLayers = types.getTypeLayers(relationName, layerCollection);
 									}
-									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 									typeErrorLayer = layerValidator.validateOutBoundary(relationLayers, tole);
 									if (typeErrorLayer != null) {
 										geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1446,7 +1453,7 @@ public class CollectionValidator {
 
 											relationLayers = types.getTypeLayers(relationName, layerCollection);
 										}
-										LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+										LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 										typeErrorLayer = layerValidator.validateConBreak(relationLayers, tole);
 
 										if (typeErrorLayer != null) {
@@ -1457,7 +1464,7 @@ public class CollectionValidator {
 							}
 						}
 						if (option.equals("ConIntersected")) {
-							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 							typeErrorLayer = layerValidator.validateConIntersected();
 							if (typeErrorLayer != null) {
 								geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1474,7 +1481,7 @@ public class CollectionValidator {
 										continue;
 									}
 								}
-								LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+								LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 								typeErrorLayer = layerValidator.validateConOverDegree(tole);
 
 								if (typeErrorLayer != null) {
@@ -1483,7 +1490,7 @@ public class CollectionValidator {
 							}
 						}
 						if (option.equals("UselessPoint")) {
-							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 							typeErrorLayer = layerValidator.validateUselessPoint();
 							if (typeErrorLayer != null) {
 								geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1500,7 +1507,7 @@ public class CollectionValidator {
 										continue;
 									}
 								}
-								LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+								LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 								typeErrorLayer = layerValidator.validateSmallLength(tole);
 
 								if (typeErrorLayer != null) {
@@ -1548,7 +1555,7 @@ public class CollectionValidator {
 
 											relationLayers = types.getTypeLayers(relationName, layerCollection);
 										}
-										LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+										LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 										typeErrorLayer = layerValidator.validateOverShoot(relationLayers, tole);
 
 										if (typeErrorLayer != null) {
@@ -1598,7 +1605,7 @@ public class CollectionValidator {
 
 											relationLayers = types.getTypeLayers(relationName, layerCollection);
 										}
-										LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+										LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 										typeErrorLayer = layerValidator.validateEntityOpenMiss(relationLayers, tole);
 
 										if (typeErrorLayer != null) {
@@ -1609,7 +1616,7 @@ public class CollectionValidator {
 							}
 						}
 						if (option.equals("TwistedPolygon")) {
-							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 							typeErrorLayer = layerValidator.validateTwistedPolygon();
 							if (typeErrorLayer != null) {
 								geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1654,7 +1661,7 @@ public class CollectionValidator {
 
 											relationLayers = types.getTypeLayers(relationName, layerCollection);
 										}
-										LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+										LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 										typeErrorLayer = layerValidator.validateNodeMiss(relationLayers, "", tole);
 
 										if (typeErrorLayer != null) {
@@ -1665,7 +1672,7 @@ public class CollectionValidator {
 							}
 						}
 						if (option.equals("PointDuplicated")) {
-							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+							LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 							typeErrorLayer = layerValidator.validatePointDuplicated();
 							if (typeErrorLayer != null) {
 								geometricResult.mergeErrorLayer(typeErrorLayer);
@@ -1699,7 +1706,7 @@ public class CollectionValidator {
 
 										relationLayers = types.getTypeLayers(relationName, layerCollection);
 									}
-									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer);
+									LayerValidator layerValidator = new LayerValidatorImpl(typeLayer, langType);
 									typeErrorLayer = layerValidator.validateOneAcre(relationLayers, 0.0);
 
 									if (typeErrorLayer != null) {
@@ -1733,16 +1740,16 @@ public class CollectionValidator {
 						Future<GeometricResult> future = executorService.submit(task, geometricResult);
 						if (future != null) {
 							futures.add(future);
-						}else{
+						} else {
 							Progress.modifyMax();
 						}
 					}
 				}
 				for (Future<GeometricResult> future : futures) {
 					try {
-						
-						geometricResult = future.get();							
-						if (geo_ < futures.size()){
+
+						geometricResult = future.get();
+						if (geo_ < futures.size()) {
 							BathService.pb.updateProgress();
 							geo_++;
 						}
@@ -1773,7 +1780,7 @@ public class CollectionValidator {
 						continue;
 					}
 					BathService.pb.updateProgress();
-					LayerValidatorImpl layerValidator = new LayerValidatorImpl(codeLayer);
+					LayerValidatorImpl layerValidator = new LayerValidatorImpl(codeLayer, langType);
 					if (option.equals("LayerFixMiss")) { // tmp -> enum으로 대체
 						String geometry = layerFixMiss.getGeometry();
 						List<FixedValue> fixedValue = layerFixMiss.getFix();

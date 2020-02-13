@@ -3,6 +3,8 @@
  */
 package com.git.gdsbuilder.type.validate.option.type;
 
+import com.git.gdsbuilder.type.validate.option.en.LangType;
+
 /**
  * @className LayerFieldOptions.java
  * @description
@@ -10,12 +12,12 @@ package com.git.gdsbuilder.type.validate.option.type;
  * @since 2018. 4. 2. 오전 10:14:08
  */
 public class LayerFieldOptions {
-	
+
 	public enum Type {
 
-	LAYERFIELDFIXMISS("LayerFixMiss", "Feature with wrong attribute value", "필드구조오류", "LayerError", "레이어오류"),
-	LAYERTYPEFIXMISS("LayerFixMiss", "Feature with wrong geometry type", "Geometry타입오류","LayerError", "레이어오류");
-		
+		LAYERFIELDFIXMISS("LayerFixMiss", "Feature with wrong attribute value", "필드구조오류", "LayerError", "레이어오류"),
+		LAYERTYPEFIXMISS("LayerFixMiss", "Feature with wrong geometry type", "Geometry타입오류", "LayerError", "레이어오류");
+
 		String errCode;
 		String errNameE;
 		String errName;
@@ -50,6 +52,17 @@ public class LayerFieldOptions {
 			return errName;
 		}
 
+		public String getErrName(LangType langType) {
+
+			String name = null;
+			if (langType.getLang().equals("ko")) {
+				name = errName;
+			} else if (langType.getLang().equals("en")) {
+				name = errNameE;
+			}
+			return name;
+		}
+
 		public void setErrName(String errName) {
 			this.errName = errName;
 		}
@@ -68,7 +81,7 @@ public class LayerFieldOptions {
 
 		public void setErrTypeE(String errTypeE) {
 			this.errTypeE = errTypeE;
-		}		
-		
+		}
+
 	}
 }

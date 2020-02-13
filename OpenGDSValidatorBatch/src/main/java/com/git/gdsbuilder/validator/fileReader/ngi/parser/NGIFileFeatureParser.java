@@ -154,11 +154,6 @@ public class NGIFileFeatureParser {
 
 		SimpleFeature feature = null;
 		String id = StringReplace(featureID);
-
-		if (id.equals("RECORD 3877")) {
-//			System.out.println("");
-		}
-
 		String line = ngiReader.readLine();
 		if (line.equalsIgnoreCase("POLYGON")) {
 			feature = parserDTPolygonFeature(id, line, ndaHeader);

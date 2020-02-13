@@ -19,13 +19,14 @@ import com.git.gdsbuilder.type.dt.collection.DTLayerCollection;
 import com.git.gdsbuilder.type.dt.collection.DTLayerCollectionList;
 import com.git.gdsbuilder.type.dt.collection.MapSystemRule;
 import com.git.gdsbuilder.type.dt.collection.MapSystemRule.MapSystemRuleType;
+import com.git.gdsbuilder.type.dt.layer.DTLayer;
 import com.git.gdsbuilder.type.dt.layer.OpenDTLayer;
 import com.git.gdsbuilder.type.dt.layer.OpenDTLayerList;
-import com.git.gdsbuilder.type.dt.layer.DTLayer;
 import com.git.gdsbuilder.type.validate.error.ErrorLayer;
 import com.git.gdsbuilder.type.validate.layer.QALayerType;
 import com.git.gdsbuilder.type.validate.layer.QALayerTypeList;
 import com.git.gdsbuilder.type.validate.option.QAOption;
+import com.git.gdsbuilder.type.validate.option.en.LangType;
 import com.git.gdsbuilder.type.validate.option.specific.AttributeMiss;
 import com.git.gdsbuilder.type.validate.option.specific.CloseMiss;
 import com.git.gdsbuilder.type.validate.option.specific.GraphicMiss;
@@ -41,6 +42,7 @@ import me.tongfei.progressbar.ProgressBarStyle;
 
 /**
  * 검수 Progress 관리 클래스
+ * 
  * @author SG.LEE
  *
  */
@@ -55,29 +57,38 @@ public class Progress {
 	String epsg;
 	JSONArray attrFilter;
 	JSONArray stateFilter;
+	LangType langType;
 
-<<<<<<< HEAD
 	/**
 	 * 검수 시작시 Progress 객체 생성
+	 * 
 	 * @author SG.LEE
 	 */
-=======
 	public Progress() {
 	}
 
-	public Progress(String epsg, JSONArray attrFilter2, JSONArray stateFilter2) {
+	public Progress(String epsg, JSONArray attrFilter2, JSONArray stateFilter2, LangType langType) {
 		this.epsg = epsg;
 		this.attrFilter = attrFilter2;
 		this.stateFilter = stateFilter2;
+		this.langType = langType;
 	}
 
->>>>>>> open
+	public Progress(LangType langType) {
+		this.langType = langType;
+	}
+
 	public void startProgress() {
-		pb = new ProgressBar("Progressing", 100, 1000, System.out, ProgressBarStyle.ASCII, "", 1);
+		if (langType.getLang().equals("ko")) {
+			pb = new ProgressBar("검수 진행 중", 100, 1000, System.out, ProgressBarStyle.ASCII, "", 1);
+		} else if (langType.getLang().equals("en")) {
+			pb = new ProgressBar("Progressing", 100, 1000, System.out, ProgressBarStyle.ASCII, "", 1);
+		}
 	}
 
 	/**
-	 * Max Size 수정 
+	 * Max Size 수정
+	 * 
 	 * @author SG.LEE
 	 */
 	public static void modifyMax() {
@@ -85,15 +96,6 @@ public class Progress {
 			max--;
 	}
 
-<<<<<<< HEAD
-	/**
-	 * 검수수행전 전체 Progress 크기 설정
-	 * @author SG.LEE
-	 * @param types {@link QALayerTypeList} 옵션 리스트
-	 * @param collection {@link DTLayerCollection} 검수 대상도엽
-	 * @param collectionList {@link DTLayerCollectionList} 인접도엽
-	 */
-=======
 	public void countOpenTotalTask(String fileDir, QALayerTypeList validateLayerTypeList) {
 		for (QALayerType qaType : validateLayerTypeList) {
 			List<String> layerNames = qaType.getLayerIDList();
@@ -235,7 +237,6 @@ public class Progress {
 
 	}
 
->>>>>>> open
 	public void countTotalTask(QALayerTypeList types, DTLayerCollection collection,
 			DTLayerCollectionList collectionList) {
 		try {
@@ -254,57 +255,6 @@ public class Progress {
 		}
 	}
 
-<<<<<<< HEAD
-	/**
-	 * 전체 Max Size 백분율로 변환
-	 * @author SG.LEE
-	 * @return long Max Size 백분율
-	 */
-	public long convertStepByMax() {
-		double div = percentage / max;
-		return (long) (current += div);
-	}
-
-	/**
-	 * 검수 한단계 진행완료시 {@link Progress} 업데이트
-	 * @author SG.LEE
-	 */
-	public void updateProgress() {
-		// System.out.println("MAX : " + max + " CURR : " + ++i);
-		if (pb != null) {
-			long plus = convertStepByMax();
-			if (plus < pb.getMax()) {
-				pb.stepTo(plus);
-			} else {
-				pb.stepTo(100);
-				pb.close();
-				pb = null;
-				i = 0;
-			}
-			if (i == max) {
-				pb.stepTo(100);
-				pb.close();
-				pb = null;
-				i = 0;
-			}
-		}
-	}
-
-	/**
-	 * {@link Progress} 진행 100 설정후 {@link Progress} 진행 종료
-	 * @author SG.LEE
-	 */
-	public void terminate() {
-		if (pb != null) {
-			pb.stepTo(100);
-			pb.close();
-			pb = null;
-		}
-	}
-
-	// 도엽 검수
-=======
->>>>>>> open
 	private void closeCollectionValidate(QALayerTypeList types, DTLayerCollection collection,
 			DTLayerCollectionList closeCollections) {
 
@@ -430,13 +380,6 @@ public class Progress {
 		}
 	}
 
-<<<<<<< HEAD
-	/**
-	 * {@link Progress} Max Size Get
-	 * @author SG.LEE
-	 * @return long Max Size
-	 */
-=======
 	public long convertStepByMax() {
 		double div = percentage / max;
 		return (long) (current += div);
@@ -471,7 +414,6 @@ public class Progress {
 		}
 	}
 
->>>>>>> open
 	public long getMax() {
 		return Progress.max;
 	}

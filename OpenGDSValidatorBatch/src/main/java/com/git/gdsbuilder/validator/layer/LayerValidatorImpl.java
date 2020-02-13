@@ -60,6 +60,7 @@ import com.git.gdsbuilder.type.dt.layer.DTLayer;
 import com.git.gdsbuilder.type.dt.layer.DTLayerList;
 import com.git.gdsbuilder.type.validate.error.ErrorFeature;
 import com.git.gdsbuilder.type.validate.error.ErrorLayer;
+import com.git.gdsbuilder.type.validate.option.en.LangType;
 import com.git.gdsbuilder.type.validate.option.specific.AttributeFigure;
 import com.git.gdsbuilder.type.validate.option.specific.AttributeFilter;
 import com.git.gdsbuilder.type.validate.option.specific.OptionFigure;
@@ -78,14 +79,18 @@ import com.vividsolutions.jts.geom.Geometry;
 public class LayerValidatorImpl implements LayerValidator {
 
 	DTLayer validatorLayer;
-	FeatureGraphicValidator graphicValidator = new FeatureGraphicValidatorImpl();
-	FeatureAttributeValidator attributeValidator = new FeatureAttributeValidatorImpl();
-	FeatureCloseCollectionValidator closeCollectionValidator = new FeatureCloseCollectionValidatorImpl();
+	FeatureGraphicValidator graphicValidator;
+	FeatureAttributeValidator attributeValidator;
+	FeatureCloseCollectionValidator closeCollectionValidator;
+	LangType langType;
 
-	public LayerValidatorImpl(DTLayer validatorLayer) {
+	public LayerValidatorImpl(DTLayer validatorLayer, LangType langType) {
 		super();
 		this.validatorLayer = validatorLayer;
-
+		this.langType = langType;
+		this.graphicValidator = new FeatureGraphicValidatorImpl(langType);
+		this.attributeValidator = new FeatureAttributeValidatorImpl(langType);
+		this.closeCollectionValidator = new FeatureCloseCollectionValidatorImpl(langType);
 	}
 
 	public LayerValidatorImpl() {
@@ -129,7 +134,6 @@ public class LayerValidatorImpl implements LayerValidator {
 			DTFeature feature = new DTFeature(layerID, simpleFeature, attrConditions);
 
 			for (DTLayer relationLayer : relationLayers) {
-
 				List<ErrorFeature> errFeatures = graphicValidator.validateConBreak(feature, relationLayer, tole);
 				if (errFeatures != null) {
 					for (ErrorFeature errFeature : errFeatures) {
@@ -506,7 +510,6 @@ public class LayerValidatorImpl implements LayerValidator {
 
 			@Override
 			public void run() {
-				System.out.println(dtFeature.getSimefeature().getAttribute("osm_id"));
 				for (int j = this.index; j < reDtFeatureList.size(); j++) {
 					DTFeature reDtFeature = reDtFeatureList.get(j);
 					SimpleFeature reSf = reDtFeature.getSimefeature();
@@ -618,9 +621,9 @@ public class LayerValidatorImpl implements LayerValidator {
 					}
 				}
 			}
+			reSfcIter.close();
+			sfcIter.close();
 		}
-		reSfcIter.close();
-		sfcIter.close();
 		if (errorLayer.getErrFeatureList().size() > 0) {
 			errorLayer.setLayerName(validatorLayer.getLayerID());
 			return errorLayer;

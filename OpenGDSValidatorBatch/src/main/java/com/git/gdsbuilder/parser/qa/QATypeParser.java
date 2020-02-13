@@ -45,11 +45,7 @@ import com.git.gdsbuilder.type.validate.option.standard.LayerFixMiss;
  * JSONArray를 ValidateLayerTypeList 객체로 파싱하는 클래스
  * 
  * @author DY.Oh
-<<<<<<< HEAD
- * @since 2017. 4. 18. 오후 3:25:49
-=======
  * @Since 2017. 4. 18. 오후 3:25:49
->>>>>>> open
  */
 public class QATypeParser {
 
@@ -86,7 +82,7 @@ public class QATypeParser {
 			validateLayerTypeList = null;
 		}
 		if (validateTypeArray.size() != 0) {
-		//	try {
+			try {
 				this.validateLayerTypeList = new QALayerTypeList();
 				for (int j = 0; j < validateTypeArray.size(); j++) {
 					JSONObject layerType = (JSONObject) validateTypeArray.get(j);
@@ -97,10 +93,10 @@ public class QATypeParser {
 				if (validateLayerTypeList.size() < 0) {
 					this.comment += "옵션 미존재" + "<br>";
 				}
-//			} catch (Exception e) {
-//				this.comment += "옵션 설정 오류" + "<br>";
-//				validateLayerTypeList = null;
-//			}
+			} catch (Exception e) {
+				this.comment += "옵션 설정 오류" + "<br>";
+				validateLayerTypeList = null;
+			}
 		}
 	}
 
@@ -113,10 +109,6 @@ public class QATypeParser {
 		String name = (String) layerType.get("name");
 		type.setName(name);
 		qaOption.setName(name);
-
-		if (name.equals("차도경계면")) {
-			System.out.println("");
-		}
 
 		// layers
 		JSONArray typeLayers = (JSONArray) layerType.get("layers");
@@ -156,12 +148,9 @@ public class QATypeParser {
 	}
 
 	/**
-	 * @author DY.Oh
-<<<<<<< HEAD
-	 * @since 2018. 3. 22. 오전 10:05:49
-=======
-	 * @Since 2018. 3. 22. 오전 10:05:49
->>>>>>> open
+	 * @author DY.Oh <<<<<<< HEAD
+	 * @since 2018. 3. 22. 오전 10:05:49 =======
+	 * @Since 2018. 3. 22. 오전 10:05:49 >>>>>>> open
 	 * @param grapOption
 	 * @return List<CloseMiss>
 	 * @decription
@@ -235,15 +224,9 @@ public class QATypeParser {
 	}
 
 	/**
-	 * @author DY.Oh
-<<<<<<< HEAD
-	 * @since 2018. 3. 19. 오전 10:32:11
-	 * @param grapOption
-	 *            void
-=======
+	 * @author DY.Oh 
 	 * @Since 2018. 3. 19. 오전 10:32:11
-	 * @param grapOption void
->>>>>>> open
+	 * @param grapOption void 
 	 * @decription
 	 */
 	private List<GraphicMiss> parseGraphicOption(JSONObject grapOption) {
@@ -258,11 +241,6 @@ public class QATypeParser {
 		if (isGrapRun) {
 			while (optionIter.hasNext()) {
 				String optionName = (String) optionIter.next();
-
-				if (optionName.equals("ConBreak")) {
-					System.out.println("");
-				}
-
 				if (optionName.equals("run")) {
 					continue;
 				}
@@ -321,15 +299,9 @@ public class QATypeParser {
 	}
 
 	/**
-	 * @author DY.Oh
-<<<<<<< HEAD
-	 * @since 2018. 3. 19. 오전 10:32:09
-	 * @param attrOption
-	 *            void
-=======
+	 * @author DY.Oh 
 	 * @Since 2018. 3. 19. 오전 10:32:09
-	 * @param attrOption void
->>>>>>> open
+	 * @param attrOption void 
 	 * @decription
 	 */
 	private List<AttributeMiss> parseAttributeOption(JSONObject attrOption) {
@@ -402,11 +374,7 @@ public class QATypeParser {
 
 	/**
 	 * @author DY.Oh
-<<<<<<< HEAD
-	 * @since 2018. 3. 19. 오전 11:02:42
-=======
 	 * @Since 2018. 3. 19. 오전 11:02:42
->>>>>>> open
 	 * @param tolerances
 	 * @return List<OptionTolerance>
 	 * @decription
@@ -455,11 +423,7 @@ public class QATypeParser {
 
 	/**
 	 * @author DY.Oh
-<<<<<<< HEAD
-	 * @since 2018. 3. 19. 오전 11:01:12
-=======
 	 * @Since 2018. 3. 19. 오전 11:01:12
->>>>>>> open
 	 * @param relation
 	 * @return List<OptionRelation>
 	 * @decription
@@ -507,11 +471,7 @@ public class QATypeParser {
 
 	/**
 	 * @author DY.Oh
-<<<<<<< HEAD
-	 * @since 2018. 3. 19. 오전 11:00:08
-=======
 	 * @Since 2018. 3. 19. 오전 11:00:08
->>>>>>> open
 	 * @param filter
 	 * @return List<OptionFilter>
 	 * @decription
@@ -545,11 +505,7 @@ public class QATypeParser {
 
 	/**
 	 * @author DY.Oh
-<<<<<<< HEAD
-	 * @since 2018. 3. 19. 오전 11:15:48
-=======
 	 * @Since 2018. 3. 19. 오전 11:15:48
->>>>>>> open
 	 * @param attribute
 	 * @return List<AttributeFilter>
 	 * @decription
@@ -658,74 +614,70 @@ public class QATypeParser {
 
 	public Map<String, Object> parseLayerFix(JSONArray typeLayers) {
 
-	//	try {
-			Map<String, Object> returnMap = new HashMap<>();
+		Map<String, Object> returnMap = new HashMap<>();
 
-			List<String> layerIDList = new ArrayList<>();
-			List<LayerFixMiss> layerFixList = new ArrayList<>();
-			for (int i = 0; i < typeLayers.size(); i++) {
-				JSONObject layer = (JSONObject) typeLayers.get(i);
-				// code
-				Object codeObj = layer.get("code");
-				String code = null;
-				if (codeObj != null) {
-					code = (String) codeObj;
+		List<String> layerIDList = new ArrayList<>();
+		List<LayerFixMiss> layerFixList = new ArrayList<>();
+		for (int i = 0; i < typeLayers.size(); i++) {
+			JSONObject layer = (JSONObject) typeLayers.get(i);
+			// code
+			Object codeObj = layer.get("code");
+			String code = null;
+			if (codeObj != null) {
+				code = (String) codeObj;
+			}
+			// run
+			Object run = layer.get("run");
+			Boolean isRun = true;
+			if (run != null) {
+				isRun = (Boolean) run;
+			}
+			if (isRun) {
+				layerIDList.add(code);
+				// fixrun
+				Object fixrun = layer.get("fixrun");
+				Boolean isFixRun = true;
+				if (fixrun != null) {
+					isFixRun = (Boolean) fixrun;
 				}
-				// run
-				Object run = layer.get("run");
-				Boolean isRun = true;
-				if (run != null) {
-					isRun = (Boolean) run;
-				}
-				if (isRun) {
-					layerIDList.add(code);
-					// fixrun
-					Object fixrun = layer.get("fixrun");
-					Boolean isFixRun = true;
-					if (fixrun != null) {
-						isFixRun = (Boolean) fixrun;
-					}
-					if (isFixRun) {
-						LayerFixMiss fix = new LayerFixMiss();
-						fix.setOption("LayerFixMiss");
-						fix.setCode(code);
-						fix.setGeometry((String) layer.get("geometry"));
-						// attrFix
-						Object fixObj = layer.get("fix");
-						if (fixObj != null) {
-							List<FixedValue> fixedValues = new ArrayList<>();
-							JSONArray fixArr = (JSONArray) layer.get("fix");
-							for (int j = 0; j < fixArr.size(); j++) {
-								FixedValue fixedValue = new FixedValue();
-								JSONObject fixJson = (JSONObject) fixArr.get(j);
-								fixedValue.setName((String) fixJson.get("name"));
-								fixedValue.setType((String) fixJson.get("type"));
-								fixedValue.setIsnull((Boolean) fixJson.get("isnull"));
-								fixedValue.setLength((String) fixJson.get("length"));
-								Object valueObj = fixJson.get("values");
-								if (valueObj != null) {
-									List<Object> values = new ArrayList<>();
-									JSONArray valueArr = (JSONArray) valueObj;
-									for (int v = 0; v < valueArr.size(); v++) {
-										values.add(valueArr.get(v));
-									}
-									fixedValue.setValues(values);
-									fixedValues.add(fixedValue);
-								} else {
-									fixedValues.add(fixedValue);
+				if (isFixRun) {
+					LayerFixMiss fix = new LayerFixMiss();
+					fix.setOption("LayerFixMiss");
+					fix.setCode(code);
+					fix.setGeometry((String) layer.get("geometry"));
+					// attrFix
+					Object fixObj = layer.get("fix");
+					if (fixObj != null) {
+						List<FixedValue> fixedValues = new ArrayList<>();
+						JSONArray fixArr = (JSONArray) layer.get("fix");
+						for (int j = 0; j < fixArr.size(); j++) {
+							FixedValue fixedValue = new FixedValue();
+							JSONObject fixJson = (JSONObject) fixArr.get(j);
+							fixedValue.setName((String) fixJson.get("name"));
+							fixedValue.setType((String) fixJson.get("type"));
+							fixedValue.setIsnull((Boolean) fixJson.get("isnull"));
+							fixedValue.setLength((String) fixJson.get("length"));
+							Object valueObj = fixJson.get("values");
+							if (valueObj != null) {
+								List<Object> values = new ArrayList<>();
+								JSONArray valueArr = (JSONArray) valueObj;
+								for (int v = 0; v < valueArr.size(); v++) {
+									values.add(valueArr.get(v));
 								}
+								fixedValue.setValues(values);
+								fixedValues.add(fixedValue);
+							} else {
+								fixedValues.add(fixedValue);
 							}
-							fix.setFix(fixedValues);
 						}
-						layerFixList.add(fix);
+						fix.setFix(fixedValues);
 					}
+					layerFixList.add(fix);
 				}
 			}
-			returnMap.put("layerFix", layerFixList);
-			returnMap.put("layerCodes", layerIDList);
-			return returnMap;
-//		} catch (Exception e) {
-//			return null;
-//		}
+		}
+		returnMap.put("layerFix", layerFixList);
+		returnMap.put("layerCodes", layerIDList);
+		return returnMap;
 	}
 }

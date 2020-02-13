@@ -42,6 +42,7 @@ import com.git.gdsbuilder.type.validate.option.specific.OptionFilter;
 import com.git.gdsbuilder.type.validate.option.specific.OptionRelation;
 import com.git.gdsbuilder.type.validate.option.specific.OptionTolerance;
 import com.git.gdsbuilder.type.validate.option.standard.LayerFixMiss;
+import com.git.gdsbuilder.type.validate.option.type.OpenDMQAOptions;
 import com.git.gdsbuilder.validator.fileReader.shp.parser.SHPFileLayerParser;
 import com.git.gdsbuilder.validator.layer.OpenLayerValidator;
 import com.git.gdsbuilder.validator.quad.Quadtree;
@@ -137,7 +138,7 @@ public class OpenCollectionValidator {
 				if (attrMissArr != null) {
 					for (AttributeMiss attrMiss : attrMissArr) {
 						String optionName = attrMiss.getOption();
-						System.out.print(layerName + "-" + optionName);
+						System.out.println(layerName + "-" + OpenDMQAOptions.QAType.getName(optionName, langType));
 						OptionFilter filter = attrMiss.getLayerFilter(layerName);
 						OptionFigure figure = attrMiss.getLayerFigure(layerName);
 						OptionTolerance tolerance = attrMiss.getLayerTolerance(layerName);
@@ -352,7 +353,7 @@ public class OpenCollectionValidator {
 				if (grapMissArr != null) {
 					for (GraphicMiss grapMiss : grapMissArr) {
 						String optionName = grapMiss.getOption();
-						System.out.print(layerName + "-" + optionName);
+						System.out.print(layerName + "-" + OpenDMQAOptions.QAType.getName(optionName, langType));
 						OptionFilter filter = grapMiss.getLayerFilter(layerName);
 						OptionFigure figure = grapMiss.getLayerFigure(layerName);
 						OptionTolerance tolerance = grapMiss.getLayerTolerance(layerName);

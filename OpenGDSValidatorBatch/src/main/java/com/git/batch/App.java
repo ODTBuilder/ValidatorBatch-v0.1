@@ -10,38 +10,10 @@ import com.git.batch.service.BathService;
 import com.git.gdsbuilder.type.validate.option.en.LangType;
 
 /**
-<<<<<<< HEAD
- * 검수 수행 배치파일 Main 클래스
- * @author SG.Lee
- * @since 2018. 5. 14. 오후 3:48:11
- * */
-public class App {
-	
-	/**
-	 * 
-	 */
-	static Logger logger = LoggerFactory.getLogger(App.class);
-
-	/**
-	 * Main 함수
-	 * @author SG.LEE
-	 * @param args 검수수행을 위한 파라미터 {@link BatchArgs} 참고
-	 */
-	public static void main(String[] args){
-		
-		BathService service = new BathService();
-		boolean flag = false;
-		System.out.println("\n검수를 진행합니다.");
-//		System.out.println("\nVerification is in progress.");
-		
-		BatchArgs params = new BatchArgs();
-		JCommander cmd = new JCommander(params);
- 
-=======
- * 배치파일 Main 클래스
+ * <<<<<<< HEAD 검수 수행 배치파일 Main 클래스
  * 
  * @author SG.Lee
- * @Date 2018. 5. 14. 오후 3:48:11
+ * @since 2018. 5. 14. 오후 3:48:11
  */
 public class App {
 
@@ -51,13 +23,9 @@ public class App {
 
 		BathService service = new BathService();
 		boolean flag = false;
-//		System.out.println("\n검수를 진행합니다.");
-		System.out.println("\nVerification is in progress.");
-
 		BatchArgs params = new BatchArgs();
 		JCommander cmd = new JCommander(params);
 
->>>>>>> open
 		try { // Parse given arguments
 			cmd.parse(args);
 
@@ -72,43 +40,40 @@ public class App {
 			String objFilePath = params.getObjFilePath();
 			String crs = params.getCrs();
 			String langStr = params.getLangType();
-			LangType langType = LangType.getLang(langStr);
 
-<<<<<<< HEAD
+			LangType langType = LangType.getLang(langStr);
+			if (langType.getLang().equals("ko")) {
+				System.out.println("\n검수를 진행합니다.");
+			} else if (langType.getLang().equals("en")) {
+				System.out.println("\nVerification is in progress.");
+			}
+
 			try {
 				flag = service.validate(baseDir, valType, pFlag, valDType, fileType, category, layerDefPath, valOptPath,
-						objFilePath, crs);
+						objFilePath, crs, langType);
 				if (flag) {
-					System.out.println("요청 성공");
-//					System.out.println("Request successful");
+					if (langType.getLang().equals("ko")) {
+						System.out.println("검수를 완료하였습니다.");
+					} else if (langType.getLang().equals("en")) {
+						System.out.println("Request successful");
+					}
 					System.exit(200);
 				} else {
-					System.out.println("요청 실패");
-//					System.out.println("Request failed");
+					if (langType.getLang().equals("ko")) {
+						System.out.println("검수를 실패하였습니다.");
+					} else if (langType.getLang().equals("en")) {
+						System.out.println("Request failed");
+					}
 					System.exit(500);
 				}
 			} catch (Throwable e) {
-				// TODO Auto-generated catch block
-//				System.out.println(e.toString());
-				System.out.println("요청 실패");
-//				System.out.println("Request failed");
-=======
-			// try {
-			flag = service.validate(baseDir, valType, pFlag, valDType, fileType, category, layerDefPath, valOptPath,
-					objFilePath, crs, langType);
-			if (flag) {
-				System.out.println("Request successful");
-				System.exit(200);
-			} else {
-				System.out.println("Request failed");
->>>>>>> open
+				if (langType.getLang().equals("ko")) {
+					System.out.println("검수를 실패하였습니다.");
+				} else if (langType.getLang().equals("en")) {
+					System.out.println("Request failed");
+				}
 				System.exit(500);
 			}
-//			} catch (Throwable e) {
-//				System.out.println(e.toString());
-//				System.out.println("Request failed");
-//				System.exit(500);
-//			}
 		} catch (ParameterException e) {
 			JCommander.getConsole().println(e.toString());
 			cmd.usage();
