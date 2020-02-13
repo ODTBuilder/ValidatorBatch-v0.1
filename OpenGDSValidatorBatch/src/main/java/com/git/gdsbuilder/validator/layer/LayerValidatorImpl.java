@@ -76,6 +76,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.vividsolutions.jts.geom.Geometry;
 
 public class LayerValidatorImpl implements LayerValidator {
+
 	DTLayer validatorLayer;
 	FeatureGraphicValidator graphicValidator = new FeatureGraphicValidatorImpl();
 	FeatureAttributeValidator attributeValidator = new FeatureAttributeValidatorImpl();
@@ -99,8 +100,7 @@ public class LayerValidatorImpl implements LayerValidator {
 	}
 
 	/**
-	 * @param validatorLayer
-	 *            the validatorLayer to set
+	 * @param validatorLayer the validatorLayer to set
 	 */
 	public void setValidatorLayer(DTLayer validatorLayer) {
 		this.validatorLayer = validatorLayer;
@@ -526,7 +526,7 @@ public class LayerValidatorImpl implements LayerValidator {
 		}
 		SimpleFeatureIterator reSfcIter = null;
 		// relation
-		if (relationLayers != null) { 
+		if (relationLayers != null) {
 			for (int i = 0; i < relationLayers.size(); i++) {
 				DTLayer relationLayer = relationLayers.get(i);
 				String relationLayerId = relationLayer.getLayerID();
@@ -539,13 +539,13 @@ public class LayerValidatorImpl implements LayerValidator {
 				reSfcIter = reSfc.features();
 
 				// 자기 자신 처리 - 멀티스레딩
-				if (	
-						// relationLayers.size() == 1
-						layerID.equals(relationLayerId)
-						) {
+				if (
+				// relationLayers.size() == 1
+				layerID.equals(relationLayerId)) {
 //					int core = Runtime.getRuntime().availableProcessors();
 					int core = 2;
-					ExecutorService executorService = Executors.newFixedThreadPool(core, new ThreadFactoryBuilder().setNameFormat("self 검수-%d").build());
+					ExecutorService executorService = Executors.newFixedThreadPool(core,
+							new ThreadFactoryBuilder().setNameFormat("self 검수-%d").build());
 					DTFeatureList dtFeatureListJ = new DTFeatureList();
 					List<Future<List<ErrorFeature>>> futures = new ArrayList<>();
 					int index = 0;
@@ -553,13 +553,13 @@ public class LayerValidatorImpl implements LayerValidator {
 						SimpleFeature sf = sfcIter.next(); // 행
 						// Geometry geom = (Geometry) sf.getDefaultGeometry();
 						DTFeature feature = new DTFeature(layerID, sf, attrConditions);
-						
+
 						if (dtFeatureListJ.isEmpty()) {
 							while (reSfcIter.hasNext()) {
 								dtFeatureListJ.add(new DTFeature(layerID, reSfcIter.next(), attrConditions));
 							}
 						}
-						
+
 						for (int j = 1; j <= core; j++) {
 							int listSize = dtFeatureListJ.size();
 							int front = (listSize / core) * (j - 1);
@@ -628,7 +628,6 @@ public class LayerValidatorImpl implements LayerValidator {
 			return null;
 		}
 	}
-
 
 	public ErrorLayer validateSelfEntity3(DTLayerList relationLayers, OptionTolerance tolerance)
 			throws SchemaException, IOException {
@@ -1650,7 +1649,8 @@ public class LayerValidatorImpl implements LayerValidator {
 		// 관로
 		SimpleFeatureCollection sfc = validatorLayer.getSimpleFeatureCollection();
 
-		ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), new ThreadFactoryBuilder().setNameFormat("관로-%d").build());
+		ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(),
+				new ThreadFactoryBuilder().setNameFormat("관로-%d").build());
 		ValidateUNodeMissResult mergeValidateUNodeMissResult = new ValidateUNodeMissResult();
 
 		class Task implements Runnable {
@@ -1761,7 +1761,8 @@ public class LayerValidatorImpl implements LayerValidator {
 		OptionFilter filter = validatorLayer.getFilter();
 		SimpleFeatureCollection sfc = validatorLayer.getSimpleFeatureCollection();
 
-		ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), new ThreadFactoryBuilder().setNameFormat("validateUAvrgDPH20-%d").build());
+		ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(),
+				new ThreadFactoryBuilder().setNameFormat("validateUAvrgDPH20-%d").build());
 		ValidateUAvrgDPH20Result mergeValidateUAvrgDPH20Result = new ValidateUAvrgDPH20Result();
 
 		class Task implements Runnable {
@@ -1884,7 +1885,8 @@ public class LayerValidatorImpl implements LayerValidator {
 
 		final String layerID = validatorLayer.getLayerID();
 		final OptionFilter filter = validatorLayer.getFilter();
-		ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), new ThreadFactoryBuilder().setNameFormat("validateULeaderline-%d").build());
+		ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(),
+				new ThreadFactoryBuilder().setNameFormat("validateULeaderline-%d").build());
 		ValidateULeaderlineResult mergeValidateULeaderlineResult = new ValidateULeaderlineResult();
 
 		class Task implements Runnable {
@@ -2074,7 +2076,8 @@ public class LayerValidatorImpl implements LayerValidator {
 		}
 		SimpleFeatureCollection sfc = validatorLayer.getSimpleFeatureCollection();
 
-		ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), new ThreadFactoryBuilder().setNameFormat("ValidateUSymbolDirectionResult-%d").build());
+		ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(),
+				new ThreadFactoryBuilder().setNameFormat("ValidateUSymbolDirectionResult-%d").build());
 		ValidateUSymbolDirectionResult mergeValidateUSymbolDirectionResult = new ValidateUSymbolDirectionResult();
 
 		class Task implements Runnable {
@@ -2205,7 +2208,8 @@ public class LayerValidatorImpl implements LayerValidator {
 		// 시설물, 심도
 		SimpleFeatureCollection sfc = validatorLayer.getSimpleFeatureCollection();
 
-		ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), new ThreadFactoryBuilder().setNameFormat("validateUSymbolOut-%d").build());
+		ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(),
+				new ThreadFactoryBuilder().setNameFormat("validateUSymbolOut-%d").build());
 		ValidateUSymbolOutResult mergeValidateUSymbolOutResult = new ValidateUSymbolOutResult();
 
 		class Task implements Runnable {

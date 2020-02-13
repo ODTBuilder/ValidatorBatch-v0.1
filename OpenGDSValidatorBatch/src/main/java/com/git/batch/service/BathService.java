@@ -3,10 +3,7 @@ package com.git.batch.service;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +12,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -26,9 +22,6 @@ import org.geotools.feature.SchemaException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +35,9 @@ import com.git.gdsbuilder.type.dt.collection.DTLayerCollection;
 import com.git.gdsbuilder.type.dt.collection.DTLayerCollectionList;
 import com.git.gdsbuilder.type.validate.error.ErrorLayer;
 import com.git.gdsbuilder.type.validate.layer.QALayerTypeList;
+import com.git.gdsbuilder.type.validate.option.en.LangType;
 import com.git.gdsbuilder.validator.collection.CollectionValidator;
+import com.git.gdsbuilder.validator.collection.OpenCollectionValidator;
 import com.git.gdsbuilder.validator.fileReader.UnZipFile;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
@@ -60,6 +55,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
  */
 public class BathService {
 
+<<<<<<< HEAD
 	private final String QA1DEFDIR;
 	private final String QA2DEFDIR;
 	private final String NM1LAYERDEF;
@@ -84,12 +80,15 @@ public class BathService {
 	/**
 	 * 전체 검수 수행 개수
 	 */
+=======
+>>>>>>> open
 	public static int totalValidSize = 0;
 	/**
 	 * 검수 수행 {@link Progress}
 	 */
 	public static Progress pb;
 
+<<<<<<< HEAD
 	{
 
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -131,6 +130,9 @@ public class BathService {
 	/**
 	 * 에러 레이어 Output 최상위 폴더경로
 	 */
+=======
+	// file dir
+>>>>>>> open
 	protected String ERR_OUTPUT_DIR;
 	/**
 	 * 에러 레이어 Output 폴더경로
@@ -164,6 +166,7 @@ public class BathService {
 
 	Logger logger = LoggerFactory.getLogger(BathService.class);
 
+<<<<<<< HEAD
 	/**
 	 * 해당 경로 및 옵션파일을 통한 검수 수행 
 	 * @param baseDir 최상위 폴더
@@ -179,9 +182,12 @@ public class BathService {
 	 * @return boolean 검수 성공여부
 	 * @throws Throwable 검수 폴더 생성 {@link Exception}
 	 */
+=======
+>>>>>>> open
 	@SuppressWarnings("unchecked")
 	public boolean validate(String baseDir, String valType, String pFlag, String valDType, String fileType,
-			int category, String layerDefPath, String valOptPath, String objFilePath, String crs) throws Throwable {
+			int category, String layerDefPath, String valOptPath, String objFilePath, String crs, LangType langType)
+			throws Throwable {
 		java.util.logging.Logger.getLogger("com.git.batch.service.BathService").setLevel(Level.OFF);
 		boolean isSuccess = false;
 
@@ -189,109 +195,16 @@ public class BathService {
 		String qaType = valType;
 		String prid = pFlag;
 		String fileformat = fileType;
-
 		int cIdx = category;
 		String epsg = crs;
-
 		String support = fileType;
-
-		// preset
-		if (prid.equals("nonset")) {
-			if (qaVer.equals("qa1")) {
-				switch (qaType) {
-				case "nm1":
-					layerDefPath = QA1DEFDIR + File.separator + NM1LAYERDEF;
-					valOptPath = QA1DEFDIR + File.separator + NM1OPTIONDEF;
-					break;
-				case "nm5":
-					layerDefPath = QA1DEFDIR + File.separator + NM5LAYERDEF;
-					valOptPath = QA1DEFDIR + File.separator + NM5OPTIONDEF;
-					break;
-				case "nm25":
-					layerDefPath = QA1DEFDIR + File.separator + NM25LAYERDEF;
-					valOptPath = QA1DEFDIR + File.separator + NM25OPTIONDEF;
-					break;
-				case "ug1":
-					layerDefPath = QA1DEFDIR + File.separator + UG1LAYERDEF;
-					valOptPath = QA1DEFDIR + File.separator + UG1OPTIONDEF;
-					break;
-				case "ug5":
-					layerDefPath = QA1DEFDIR + File.separator + UG5LAYERDEF;
-					valOptPath = QA1DEFDIR + File.separator + UG5OPTIONDEF;
-					break;
-				case "ug25":
-					layerDefPath = QA1DEFDIR + File.separator + UG25LAYERDEF;
-					valOptPath = QA1DEFDIR + File.separator + UG25OPTIONDEF;
-					break;
-				case "fr1":
-					layerDefPath = QA1DEFDIR + File.separator + FR1LAYERDEF;
-					valOptPath = QA1DEFDIR + File.separator + FR1OPTIONDEF;
-					break;
-				case "fr5":
-					layerDefPath = QA1DEFDIR + File.separator + FR5LAYERDEF;
-					valOptPath = QA1DEFDIR + File.separator + FR5OPTIONDEF;
-					break;
-				case "fr25":
-					layerDefPath = QA1DEFDIR + File.separator + FR25LAYERDEF;
-					valOptPath = QA1DEFDIR + File.separator + FR25OPTIONDEF;
-					break;
-				default:
-					break;
-				}
-			} else if (qaVer.equals("qa2")) {
-				switch (qaType) {
-				case "nm1":
-					layerDefPath = QA2DEFDIR + File.separator + NM1LAYERDEF;
-					valOptPath = QA2DEFDIR + File.separator + NM1OPTIONDEF;
-					break;
-				case "nm5":
-					layerDefPath = QA2DEFDIR + File.separator + NM5LAYERDEF;
-					valOptPath = QA2DEFDIR + File.separator + NM5OPTIONDEF;
-					break;
-				case "nm25":
-					layerDefPath = QA2DEFDIR + File.separator + NM25LAYERDEF;
-					valOptPath = QA2DEFDIR + File.separator + NM25OPTIONDEF;
-					break;
-				case "ug1":
-					layerDefPath = QA2DEFDIR + File.separator + UG1LAYERDEF;
-					valOptPath = QA2DEFDIR + File.separator + UG1OPTIONDEF;
-					break;
-				case "ug5":
-					layerDefPath = QA2DEFDIR + File.separator + UG5LAYERDEF;
-					valOptPath = QA2DEFDIR + File.separator + UG5OPTIONDEF;
-					break;
-				case "ug25":
-					layerDefPath = QA2DEFDIR + File.separator + UG25LAYERDEF;
-					valOptPath = QA2DEFDIR + File.separator + UG25OPTIONDEF;
-					break;
-				case "fr1":
-					layerDefPath = QA2DEFDIR + File.separator + FR1LAYERDEF;
-					valOptPath = QA2DEFDIR + File.separator + FR1OPTIONDEF;
-					break;
-				case "fr5":
-					layerDefPath = QA2DEFDIR + File.separator + FR5LAYERDEF;
-					valOptPath = QA2DEFDIR + File.separator + FR5OPTIONDEF;
-					break;
-				case "fr25":
-					layerDefPath = QA2DEFDIR + File.separator + FR25LAYERDEF;
-					valOptPath = QA2DEFDIR + File.separator + FR25OPTIONDEF;
-					break;
-				default:
-					break;
-				}
-			}
-		}
 
 		// 옵션또는 파일이 제대로 넘어오지 않았을때 강제로 예외발생
 		if (qaVer == null || qaType == null || prid == null) {
-			// logger.info("다시 요청해주세요.");
-//			System.out.println("다시 요청해주세요.");
 			System.out.println("Please request again.");
 			return isSuccess;
 		} else if (fileformat == null) {
-//			System.out.println("파일포맷을 설정해주세요.");
 			System.out.println("Please set the file format.");
-			// logger.info("파일포맷을 설정해주세요.");
 			return isSuccess;
 		} else {
 			long time = System.currentTimeMillis();
@@ -299,19 +212,9 @@ public class BathService {
 			SimpleDateFormat dayTime = new SimpleDateFormat("yyMMdd_HHmmss");
 			String cTimeStr = dayTime.format(new Date(time));
 
-			// temp file 적용 시작
-			// Windows Temp기본 경로 : C:\Users\GIT\AppData\Local\Temp\
-			String defaultTempPath = System.getProperty("java.io.tmpdir") + "GeoDT";
-			if (!new File(defaultTempPath).exists()) {
-				new File(defaultTempPath).mkdirs();
-			}
-
-			// C:\Users\GIT\AppData\Local\Temp\GeoDT\...
-			Path tmpBasedir = Files.createTempDirectory(Paths.get(defaultTempPath), "Validate_temp_");
-			Path tmpFileunzipPath = Files.createTempDirectory(tmpBasedir, "unzipfiles");
-			UnZipFile unZipFile = new UnZipFile(tmpFileunzipPath.toString());
-			unZipFile.decompress(new File(objFilePath), cIdx);
-			totalValidSize = unZipFile.getTotalSize();
+//			File unZipfile = new File(objFilePath);
+			UnZipFile unZipFile = new UnZipFile(objFilePath);
+			unZipFile.getFilMeta(objFilePath);
 			String comment = unZipFile.getFileState();
 
 			/*
@@ -341,8 +244,8 @@ public class BathService {
 				}
 			}
 			if (!checkExt) {
-//				System.out.println("검수 대상 파일에 " + fileType + "가 존재하지 않습니다.");
-				System.out.println(fileType + " does not exist in the target file.");
+				System.out.println("검수 대상 파일에 " + fileType + "가 존재하지 않습니다.");
+//				System.out.println(fileType + " does not exist in the target file.");
 				throw new Throwable();
 			}
 			// #####################################
@@ -354,14 +257,14 @@ public class BathService {
 			try {
 				option = (JSONObject) ((Object) jsonP.parse(new FileReader(valOptPath)));
 			} catch (ClassCastException e) {
-//				System.out.println("잘못된 옵션 파일입니다.");
+				// System.out.println("잘못된 옵션 파일입니다.");
 				System.out.println("Invalid option file");
 				throw new Throwable();
 			}
 			try {
 				layers = (JSONArray) ((Object) jsonP.parse(new FileReader(layerDefPath)));
 			} catch (ClassCastException e) {
-//				System.out.println("잘못된 레이어 정의 파일입니다.");
+				// System.out.println("잘못된 레이어 정의 파일입니다.");
 				System.out.println("Invalid layer definition file.");
 				throw new Throwable();
 			}
@@ -373,37 +276,21 @@ public class BathService {
 				neatLineCode = (String) neatLineObj.get("code");
 			}
 
-			// files
-			QAFileParser parser = new QAFileParser(epsg, cIdx, support, unZipFile, neatLineCode);
-			boolean parseTrue = parser.isTrue();
-			if (!parseTrue) {
-				comment += parser.getFileState();
-				if (!comment.equals("")) {
-					// logger.info(comment);
-					System.out.println(comment);
+			JSONArray attrFilterArry = null;
+			JSONArray stateFilterArry = null;
+			Object filterObj = option.get("filter");
+			if (filterObj != null) {
+				JSONObject filterJson = (JSONObject) filterObj;
+				Object attrObj = filterJson.get("attribute");
+				if (attrObj != null) {
+					attrFilterArry = (JSONArray) attrObj;
 				}
-				deleteDirectory(tmpBasedir.toFile());
-				return isSuccess;
+				Object stateObj = filterJson.get("state");
+				if (stateObj != null) {
+					stateFilterArry = (JSONArray) stateObj;
+				}
 			}
 
-			DTLayerCollectionList collectionList = parser.getCollectionList();
-			if (collectionList == null) {
-				// 파일 다 에러
-				comment += parser.getFileState();
-				if (!comment.equals("")) {
-					// logger.info(comment);
-					System.out.println(comment);
-				}
-				deleteDirectory(tmpBasedir.toFile());
-				return isSuccess;
-			} else {
-				// 몇개만 에러
-				comment += parser.getFileState();
-				if (!comment.equals("")) {
-					// logger.info(comment);
-					System.out.println(comment);
-				}
-			}
 			JSONArray typeValidate = (JSONArray) option.get("definition");
 			for (int j = 0; j < layers.size(); j++) {
 				JSONObject lyrItem = (JSONObject) layers.get(j);
@@ -423,7 +310,6 @@ public class BathService {
 					typeValidate.add(obj);
 				}
 			}
-
 			// options
 			QATypeParser validateTypeParser = new QATypeParser(typeValidate);
 			QALayerTypeList validateLayerTypeList = validateTypeParser.getValidateLayerTypeList();
@@ -433,7 +319,6 @@ public class BathService {
 					// logger.info(comment);
 					System.out.println(comment);
 				}
-				deleteDirectory(tmpBasedir.toFile());
 				return isSuccess;
 			}
 			validateLayerTypeList.setCategory(cIdx);
@@ -447,33 +332,58 @@ public class BathService {
 			ERR_FILE_DIR = ERR_OUTPUT_DIR + File.separator + ERR_OUTPUT_NAME;
 			createFileDirectory(ERR_FILE_DIR);
 
-			// excute validation
-			isSuccess = executorValidate(collectionList, validateLayerTypeList, epsg);
-			if (isSuccess) {
-				// logger.info("검수 요청이 성공적으로 완료되었습니다.");
-//				System.out.println("검수 요청이 성공적으로 완료되었습니다.");
-				System.out.println("Validation request completed successfully.");
-				// zip err shp directory
-				/*
-				 * zipFileDirectory(); InputStream inputStream = new
-				 * FileInputStream(ERR_FILE_DIR + ".zip");
-				 */
+			if (cIdx == 0) { // 수치지도 basic
+				String fileDir = unZipFile.getUpzipPath();
+				isSuccess = executorValidate(fileDir, validateLayerTypeList, epsg, attrFilterArry, stateFilterArry,
+						langType);
 			} else {
-				// insert validate state
-				// logger.info("검수 요청이 실패했습니다.");
-//				System.out.println("검수 요청이 실패했습니다.");
-				System.out.println("Validation request failed.");
+				// files
+				QAFileParser parser = new QAFileParser(epsg, cIdx, support, unZipFile, neatLineCode);
+				boolean parseTrue = parser.isTrue();
+				if (!parseTrue) {
+					comment += parser.getFileState();
+					if (!comment.equals("")) {
+						// logger.info(comment);
+						System.out.println(comment);
+					}
+					return isSuccess;
+				}
+
+				DTLayerCollectionList collectionList = parser.getCollectionList();
+				if (collectionList == null) {
+					// 파일 다 에러
+					comment += parser.getFileState();
+					if (!comment.equals("")) {
+						// logger.info(comment);
+						System.out.println(comment);
+					}
+					return isSuccess;
+				} else {
+					// 몇개만 에러
+					comment += parser.getFileState();
+					if (!comment.equals("")) {
+						// logger.info(comment);
+						System.out.println(comment);
+					}
+				}
+				// excute validation
+				isSuccess = executorValidate(collectionList, validateLayerTypeList, epsg);
+				parser = null;
+				collectionList = null;
+			}
+			if (isSuccess) {
+				pb.terminate();// Process 완료
+			} else {
+				pb.terminate();// Process 완료
 			}
 			validateTypeParser = null;
 			validateLayerTypeList = null;
 			unZipFile = null;
-			parser = null;
-			collectionList = null;
-			deleteDirectory(tmpBasedir.toFile());
 			return isSuccess;
 		}
 	}
 
+<<<<<<< HEAD
 	/**
 	 * @author DY.Oh
 	 * @since 2018. 2. 6. 오전 10:12:22
@@ -487,6 +397,37 @@ public class BathService {
 	 * @throws NoSuchAuthorityCodeException
 	 * @description
 	 */
+=======
+	private boolean executorValidate(String fileDir, QALayerTypeList validateLayerTypeList, String epsg,
+			JSONArray attrFilter, JSONArray stateFilter, LangType langType) throws SchemaException {
+		// 콘솔창에 로그 안찍히게 하기
+		org.geotools.util.logging.Logging.getLogger("org").setLevel(Level.OFF);
+
+		pb = new Progress(epsg, attrFilter, stateFilter);
+		pb.countOpenTotalTask(fileDir, validateLayerTypeList);
+		pb.startProgress();
+
+		boolean isSuccess = false;
+		try {
+			OpenCollectionValidator validator = new OpenCollectionValidator(fileDir, validateLayerTypeList, epsg,
+					attrFilter, stateFilter, langType);
+
+			long time = System.currentTimeMillis();
+			SimpleDateFormat dayTime = new SimpleDateFormat("yyMMdd_HHmmss");
+			String cTimeStr = dayTime.format(new Date(time));
+			String fileName = ERR_FILE_DIR + "\\" + cTimeStr;
+
+			isSuccess = writeErrShp(epsg, validator.collectionAttributeValidate(), fileName + "_attribute_err.shp",
+					"Attribute");
+			isSuccess = writeErrShp(epsg, validator.collectionGraphicValidate(), fileName + "_graphic_err.shp",
+					"Graphic");
+		} catch (IOException e) {
+			System.out.println("검수 요청이 실패했습니다.");
+		}
+		return isSuccess;
+	}
+
+>>>>>>> open
 	private boolean executorValidate(DTLayerCollectionList collectionList, QALayerTypeList validateLayerTypeList,
 			String epsg) {
 		// 콘솔창에 로그 안찍히게 하기
@@ -546,13 +487,15 @@ public class BathService {
 		return futureCount == collectionList.size();
 	}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> open
 	private boolean writeErrShp(String epsg, CollectionValidator validator) {
 		try {
 			// 오류레이어 발행
 			ErrorLayer errLayer = validator.getErrLayer();
 			int errSize = errLayer.getErrFeatureList().size();
-			// System.out.println(errSize);
 			if (errSize > 0) {
 				SHPFileWriter.writeSHP(epsg, errLayer, ERR_FILE_DIR + "\\" + errLayer.getCollectionName() + "_err.shp");
 				return true;
@@ -561,6 +504,23 @@ public class BathService {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	private boolean writeErrShp(String epsg, ErrorLayer errLayer, String fileName, String qaType) {
+		try {
+			// 오류레이어 발행
+			if (errLayer != null) {
+				int errSize = errLayer.getErrFeatureList().size();
+				if (errSize > 0) {
+					SHPFileWriter.writeSHP(epsg, errLayer, fileName);
+				}
+			}
+			System.out.println(qaType + " Success.");
+			return true;
+		} catch (Exception e) {
+			System.out.println(qaType + " Fail.");
+			return false;
+		}
 	}
 
 	private void createFileDirectory(String directory) {
@@ -614,9 +574,14 @@ public class BathService {
 	 * 폴더 내에 폴더가 있을시 하위 폴더 탐색
 	 * 
 	 * @author SG.Lee
+<<<<<<< HEAD
 	 * @since 2018. 4. 18. 오전 9:09:33
 	 * @param source
 	 *            void
+=======
+	 * @Date 2018. 4. 18. 오전 9:09:33
+	 * @param source void
+>>>>>>> open
 	 */
 	@SuppressWarnings("unused")
 	private void subDirList(String source) {
@@ -720,8 +685,7 @@ public class BathService {
 	 * @since 2018. 4. 18. 오전 9:45:55
 	 * @param source
 	 * @param dest
-	 * @throws IOException
-	 *             void
+	 * @throws IOException void
 	 */
 	private void FileNio2Copy(String source, String dest) throws IOException {
 		Files.copy(new File(source).toPath(), new File(dest).toPath());

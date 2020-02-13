@@ -40,6 +40,10 @@ public class ErrorFeature {
 	String comment;
 	Geometry errPoint;
 
+	public ErrorFeature() {
+
+	}
+
 	public ErrorFeature(String featureID, String errCode, String errType, String errName, String comment,
 			Geometry errPoint) {
 		super();
@@ -78,7 +82,7 @@ public class ErrorFeature {
 		this.comment = comment;
 		this.errPoint = errPoint;
 	}
-	
+
 	public String getLayerID() {
 		return layerID;
 	}

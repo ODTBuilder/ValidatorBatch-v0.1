@@ -1,11 +1,16 @@
 package com.git.batch.step;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.SchemaException;
+import org.json.simple.JSONArray;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.GeometryType;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.operation.TransformException;
@@ -14,6 +19,8 @@ import com.git.gdsbuilder.type.dt.collection.DTLayerCollection;
 import com.git.gdsbuilder.type.dt.collection.DTLayerCollectionList;
 import com.git.gdsbuilder.type.dt.collection.MapSystemRule;
 import com.git.gdsbuilder.type.dt.collection.MapSystemRule.MapSystemRuleType;
+import com.git.gdsbuilder.type.dt.layer.OpenDTLayer;
+import com.git.gdsbuilder.type.dt.layer.OpenDTLayerList;
 import com.git.gdsbuilder.type.dt.layer.DTLayer;
 import com.git.gdsbuilder.type.validate.error.ErrorLayer;
 import com.git.gdsbuilder.type.validate.layer.QALayerType;
@@ -22,7 +29,12 @@ import com.git.gdsbuilder.type.validate.option.QAOption;
 import com.git.gdsbuilder.type.validate.option.specific.AttributeMiss;
 import com.git.gdsbuilder.type.validate.option.specific.CloseMiss;
 import com.git.gdsbuilder.type.validate.option.specific.GraphicMiss;
+import com.git.gdsbuilder.type.validate.option.specific.OptionFigure;
+import com.git.gdsbuilder.type.validate.option.specific.OptionFilter;
+import com.git.gdsbuilder.type.validate.option.specific.OptionRelation;
+import com.git.gdsbuilder.type.validate.option.standard.FixedValue;
 import com.git.gdsbuilder.type.validate.option.standard.LayerFixMiss;
+import com.git.gdsbuilder.validator.fileReader.shp.parser.SHPFileLayerParser;
 
 import me.tongfei.progressbar.ProgressBar;
 import me.tongfei.progressbar.ProgressBarStyle;
@@ -40,16 +52,28 @@ public class Progress {
 	static double current = 0;
 	static int i = 0;
 	DTLayerCollection collection;
+	String epsg;
+	JSONArray attrFilter;
+	JSONArray stateFilter;
 
+<<<<<<< HEAD
 	/**
 	 * 검수 시작시 Progress 객체 생성
 	 * @author SG.LEE
 	 */
+=======
+	public Progress() {
+	}
+
+	public Progress(String epsg, JSONArray attrFilter2, JSONArray stateFilter2) {
+		this.epsg = epsg;
+		this.attrFilter = attrFilter2;
+		this.stateFilter = stateFilter2;
+	}
+
+>>>>>>> open
 	public void startProgress() {
-		// System.out.println(max);
-		// pb = new ProgressBar("진행중", 100, ProgressBarStyle.ASCII);
-		// default : System.err 에서 변경
-		pb = new ProgressBar("Proceeding", 100, 1000, System.out, ProgressBarStyle.ASCII, "", 1);
+		pb = new ProgressBar("Progressing", 100, 1000, System.out, ProgressBarStyle.ASCII, "", 1);
 	}
 
 	/**
@@ -61,6 +85,7 @@ public class Progress {
 			max--;
 	}
 
+<<<<<<< HEAD
 	/**
 	 * 검수수행전 전체 Progress 크기 설정
 	 * @author SG.LEE
@@ -68,6 +93,149 @@ public class Progress {
 	 * @param collection {@link DTLayerCollection} 검수 대상도엽
 	 * @param collectionList {@link DTLayerCollectionList} 인접도엽
 	 */
+=======
+	public void countOpenTotalTask(String fileDir, QALayerTypeList validateLayerTypeList) {
+		for (QALayerType qaType : validateLayerTypeList) {
+			List<String> layerNames = qaType.getLayerIDList();
+			for (String layerName : layerNames) {
+				// target layer
+				OpenDTLayer dtLayer = null;
+				dtLayer = getDTLayer(fileDir, layerName);
+				if (dtLayer == null) {
+					continue;
+				}
+				// option
+				QAOption qaOption = qaType.getOption();
+				List<LayerFixMiss> layerFixMissArr = qaOption.getLayerMissOptions();
+				if (layerFixMissArr != null) {
+					for (LayerFixMiss fix : layerFixMissArr) {
+						List<FixedValue> fixedList = fix.getFix();
+						if (fixedList != null) {
+							max++;
+						}
+					}
+				}
+				List<AttributeMiss> attrMissArr = qaOption.getAttributeMissOptions();
+				if (attrMissArr != null) {
+					for (AttributeMiss attrMiss : attrMissArr) {
+						String optionName = attrMiss.getOption();
+						List<OptionRelation> relations = attrMiss.getRetaion();
+						// 속성오류 (AttributeMiss)
+						if (optionName.equals("AttributeMiss")) {
+							LayerFixMiss fix = qaOption.getLayerMissOption(layerName);
+							if (fix != null) {
+								max++;
+							}
+						}
+						// 필수속성오류 (AttributeFixMiss)
+						if (optionName.equals("AttributeFixMiss")) {
+							LayerFixMiss fix = qaOption.getLayerMissOption(layerName);
+							if (fix != null) {
+								max++;
+							}
+						}
+						// 고도값오류 (Z-Value Abmiguous)
+						if (optionName.equals("ZValueAmbiguous2")) {
+							max++;
+						}
+						// 인접속성오류 (RefAttributeMiss)
+						if (optionName.equals("RefAttributeMissB")) {
+							if (relations != null) {
+								for (OptionRelation relation : relations) {
+									max++;
+								}
+							}
+						}
+						// 문자의 정확성(Text Accuracy)
+						if (optionName.equals("FixValues")) {
+							max++;
+						}
+					}
+				}
+				List<GraphicMiss> grapMissArr = qaOption.getGraphicMissOptions();
+				if (grapMissArr != null) {
+					for (GraphicMiss grapMiss : grapMissArr) {
+						String optionName = grapMiss.getOption();
+						List<OptionRelation> relations = grapMiss.getRetaion();
+						// 계층오류 (LayerFix)
+						if (optionName.equals("LayerMiss")) {
+							LayerFixMiss fix = qaOption.getLayerMissOption(layerName);
+							if (fix != null) {
+								max++;
+							}
+						}
+						// 허용범위 이하 길이 (SmallLength)
+						if (optionName.equals("SmallLengthB")) {
+							max++;
+						}
+						// 허용범위 이하 면적 (SmallArea)
+						if (optionName.equals("SmallAreaB")) {
+							max++;
+						}
+						// 단독존재오류 (Self Entity)
+						if (optionName.equals("SelfEntityB")) {
+							if (relations != null) {
+								for (OptionRelation relation : relations) {
+									max++;
+								}
+							}
+						}
+						// 요소중복오류 (EntityDuplicated)
+						if (optionName.equals("EntityDuplicatedB")) {
+							max++;
+						}
+						// 등고선 꺾임 오류 (ConOverDegree)
+						if (optionName.equals("ConOverDegreeB")) {
+							max++;
+						}
+						// 등고선교차오류 (ConIntersected)
+						if (optionName.equals("ConIntersectedB")) {
+							max++;
+						}
+						// 등고선 끊김오류 (ConBreak)
+						if (optionName.equals("ConBreakB")) {
+							max++;
+						}
+						// 등고선 직선화미처리오류(UselessPoint)
+						if (optionName.equals("UselessPoint")) {
+							max++;
+						}
+						// 중복점오류(DuplicatedPoint)
+						if (optionName.equals("PointDuplicatedB")) {
+							max++;
+						}
+						// 경계초과오류 (OutBoundary)
+						if (optionName.equals("OutBoundaryB")) {
+							if (relations != null) {
+								for (OptionRelation relation : relations) {
+								}
+							}
+							max++;
+						}
+						// 노드오류 (NodeMiss)
+						if (optionName.equals("NodeMissB")) {
+							if (relations != null) {
+								for (OptionRelation relation : relations) {
+									max++;
+								}
+							}
+						}
+						// 기준점 초과오류 (OverShoot)
+						if (optionName.equals("OverShootB")) {
+							max++;
+						}
+						// 폴리곤 꼬임 오류 (InvalidPolygon)
+						if (optionName.equals("EntityTwisted")) {
+							max++;
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+>>>>>>> open
 	public void countTotalTask(QALayerTypeList types, DTLayerCollection collection,
 			DTLayerCollectionList collectionList) {
 		try {
@@ -84,9 +252,9 @@ public class Progress {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
+<<<<<<< HEAD
 	/**
 	 * 전체 Max Size 백분율로 변환
 	 * @author SG.LEE
@@ -135,6 +303,8 @@ public class Progress {
 	}
 
 	// 도엽 검수
+=======
+>>>>>>> open
 	private void closeCollectionValidate(QALayerTypeList types, DTLayerCollection collection,
 			DTLayerCollectionList closeCollections) {
 
@@ -260,12 +430,121 @@ public class Progress {
 		}
 	}
 
+<<<<<<< HEAD
 	/**
 	 * {@link Progress} Max Size Get
 	 * @author SG.LEE
 	 * @return long Max Size
 	 */
+=======
+	public long convertStepByMax() {
+		double div = percentage / max;
+		return (long) (current += div);
+	}
+
+	public void updateProgress() {
+		// System.out.println("MAX : " + max + " CURR : " + ++i);
+		if (pb != null) {
+			long plus = convertStepByMax();
+			if (plus < pb.getMax()) {
+				pb.stepTo(plus);
+			} else {
+				pb.stepTo(100);
+				pb.close();
+				pb = null;
+				i = 0;
+			}
+			if (i == max) {
+				pb.stepTo(100);
+				pb.close();
+				pb = null;
+				i = 0;
+			}
+		}
+	}
+
+	public void terminate() {
+		if (pb != null) {
+			pb.stepTo(100);
+			pb.close();
+			pb = null;
+		}
+	}
+
+>>>>>>> open
 	public long getMax() {
 		return Progress.max;
+	}
+
+	private OpenDTLayer getDTLayer(String filePath, String fileName) {
+
+		OpenDTLayer dtLayer = new OpenDTLayer();
+		File layerFile = new File(filePath + File.separator + fileName + ".shp");
+		SimpleFeatureCollection sfc = new SHPFileLayerParser().getShpObject(layerFile);
+		if (sfc != null) {
+			SimpleFeatureType featureType = sfc.getSchema();
+			GeometryType geometryType = featureType.getGeometryDescriptor().getType();
+			String geomType = geometryType.getBinding().getSimpleName().toString();
+			dtLayer.setLayerID(fileName);
+			dtLayer.setLayerType(geomType);
+			dtLayer.setSimpleFeatureCollection(sfc);
+			return dtLayer;
+		} else {
+			return null;
+		}
+	}
+
+	public OpenDTLayerList getRelationTypeDTLayers(OpenDTLayer dtLayer, OptionRelation relation,
+			QALayerTypeList qaTypes) {
+
+		OpenDTLayerList reDTLayers = new OpenDTLayerList();
+
+		String layerName = dtLayer.getLayerID();
+		String reLayerType = relation.getName();
+		QALayerType reQaType = null;
+		for (QALayerType innerQaType : qaTypes) {
+			String innerTypeName = innerQaType.getName();
+			if (reLayerType.equals(innerTypeName)) {
+				reQaType = innerQaType;
+				break;
+			}
+		}
+		if (reQaType != null) {
+			// other type
+			List<OptionFilter> reFilters = relation.getFilters();
+			if (reFilters != null) {
+				for (OptionFilter refilter : reFilters) {
+					String refilterCode = refilter.getCode();
+					if (refilterCode.equals(layerName)) {
+						OpenDTLayer reDtLayer = dtLayer;
+						reDTLayers.add(reDtLayer);
+					}
+				}
+			} else {
+				List<String> reLayerIDs = reQaType.getLayerIDList();
+				for (String reLayerId : reLayerIDs) {
+					if (reLayerId.equals(layerName)) {
+						OpenDTLayer reDtLayer = dtLayer;
+						reDTLayers.add(reDtLayer);
+					}
+				}
+			}
+		}
+		if (reDTLayers.size() > 0) {
+			for (OpenDTLayer tmp : reDTLayers) {
+				String code = tmp.getLayerID();
+				OptionFilter filter = relation.getFilter(code);
+				OptionFigure figure = relation.getFigure(code);
+				if (filter != null) {
+					tmp.setFilter(filter);
+				}
+				if (figure != null) {
+					tmp.setFigure(figure);
+				}
+			}
+			return reDTLayers;
+		} else {
+			return null;
+		}
 	}
 }

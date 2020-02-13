@@ -18,6 +18,7 @@ import com.git.gdsbuilder.type.validate.option.specific.AttributeFilter;
 
 public class DTFeature {
 
+	String typeName;
 	String layerID;
 	SimpleFeature simefeature;
 	List<AttributeFilter> filter;
@@ -29,6 +30,21 @@ public class DTFeature {
 		this.layerID = layerID;
 		this.simefeature = simplefeature;
 		this.filter = filter;
+	}
+
+	public DTFeature(String typeName, String layerID, SimpleFeature simplefeature, List<AttributeFilter> filter) {
+		this.typeName = typeName;
+		this.layerID = layerID;
+		this.simefeature = simplefeature;
+		this.filter = filter;
+	}
+
+	public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
 	}
 
 	public String getLayerID() {
