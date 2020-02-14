@@ -49,7 +49,7 @@ Getting Started
                      5 - 임상도
 *  --layerdefpath  : 레이어 정의 옵션 경로
 *  --valoptpath    : 검수 옵션 경로
-*  --objfilepath   : 검수 대상파일 경로
+*  --objfilepath   : 검수 대상  경로
 *  --crs           : 좌표계
 ```
 
